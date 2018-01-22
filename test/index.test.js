@@ -207,4 +207,66 @@ describe('index.test.js', () => {
             });
         });
     });
+    describe('.encryptWithPublicKey()', () => {
+        describe('positive', () => {
+            it('should encrypt the message', () => {
+                const privateKey = EthereumEncryption.createPrivateKey();
+                const publicKey = EthereumEncryption.publicKeyFromPrivateKey(
+                    privateKey
+                );
+                const encrypted = EthereumEncryption.encryptWithPublicKey(
+                    publicKey,
+                    'foobar'
+                );
+                assert.equal(typeof encrypted, 'string');
+            });
+        });
+        describe('negative', () => {
+            it('should throw when no publicKey given', () => {
+                assert.throws(
+                    () => EthereumEncryption.encryptWithPublicKey(
+                        'foobar',
+                        'foobar'
+                    )
+                );
+            });
+        });
+    });
+    describe('.decryptWithPrivateKey()', () => {
+        describe('positive', () => {
+            it('should decrypt the message', () => {
+                const privateKey = EthereumEncryption.createPrivateKey();
+                const publicKey = EthereumEncryption.publicKeyFromPrivateKey(
+                    privateKey
+                );
+                const encrypted = EthereumEncryption.encryptWithPublicKey(
+                    publicKey,
+                    'foobar'
+                );
+                const decrypted = EthereumEncryption.decryptWithPrivateKey(
+                    privateKey,
+                    encrypted
+                );
+                assert.equal('foobar', decrypted);
+            });
+        });
+        describe('negative', () => {
+            it('should throw when no privateKey given', () => {
+                const privateKey = EthereumEncryption.createPrivateKey();
+                const publicKey = EthereumEncryption.publicKeyFromPrivateKey(
+                    privateKey
+                );
+                const encrypted = EthereumEncryption.encryptWithPublicKey(
+                    publicKey,
+                    'foobar'
+                );
+                assert.throws(
+                    () => EthereumEncryption.encryptWithPublicKey(
+                        'foobar',
+                        encrypted
+                    )
+                );
+            });
+        });
+    });
 });
