@@ -2,6 +2,13 @@
   "name": "ethereum-encryption",
   "version": "0.0.2",
   "description": "Use this to encrypt, decrypt, sign and verify data with an ethereum public- or privateKey",
+  "keywords": [
+    "ethereum",
+    "encryption",
+    "secp256k1",
+    "privateKey",
+    "publicKey"
+  ],
   "main": "./dist/lib/index.js",
   "jsnext:main": "./dist/es/index.js",
   "module": "./dist/es/index.js",
