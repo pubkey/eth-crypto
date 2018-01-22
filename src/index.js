@@ -2,15 +2,8 @@ import * as ethUtil from 'ethereumjs-util';
 import randombytes from 'randombytes';
 import * as secp256k1 from 'secp256k1';
 
-import ECIES from 'bitcore-ecies';
-/**
- * because bitcore does a stupid instance-check "More than one instance of bitcore-lib found"
- * we have to ensure we always use the same instance as bitcore-ecies
- * so we hard-install a non-used bitcore-lib and then use the one from bitcore-ecies/node_modules
- * We also have to do a required instead of import to ensure
- * the same module is loaded like ecies does, no mather if you use es6-modules or not.
- */
-const bitcore = require('bitcore-ecies/node_modules/bitcore-lib');
+import ECIES from './bitcore-ecies/ecies';
+import bitcore from 'bitcore-lib';
 
 import {
     sha3_256
