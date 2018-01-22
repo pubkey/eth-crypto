@@ -4,7 +4,7 @@ os:
 node_js:
   - "7"
 script:
-- npm install
+- npm install --depth 0 --silent
 - npm run lint
 - npm run build
 - npm test
