@@ -24,9 +24,13 @@ var _secp256k = require('secp256k1');
 
 var secp256k1 = _interopRequireWildcard(_secp256k);
 
-var _bitcoreEcies = require('bitcore-ecies');
+var _ecies = require('./bitcore-ecies/ecies');
 
-var _bitcoreEcies2 = _interopRequireDefault(_bitcoreEcies);
+var _ecies2 = _interopRequireDefault(_ecies);
+
+var _bitcoreLib = require('bitcore-lib');
+
+var _bitcoreLib2 = _interopRequireDefault(_bitcoreLib);
 
 var _jsSha = require('js-sha3');
 
@@ -35,15 +39,6 @@ var _util = require('./util');
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
-
-/**
- * because bitcore does a stupid instance-check "More than one instance of bitcore-lib found"
- * we have to ensure we always use the same instance as bitcore-ecies
- * so we hard-install a non-used bitcore-lib and then use the one from bitcore-ecies/node_modules
- * We also have to do a required instead of import to ensure
- * the same module is loaded like ecies does, no mather if you use es6-modules or not.
- */
-var bitcore = require('bitcore-ecies/node_modules/bitcore-lib');
 
 /**
  * get the ethereum-address by the publicKey
@@ -114,9 +109,9 @@ function verifyHashSignature(publicKey, hash, signature) {
  */
 function encryptWithPublicKey(publicKey, message) {
     // this key is used as false sample, because bitcore would crash when alice has no privateKey
-    var privKey = new bitcore.PrivateKey('52435b1ff21b894da15d87399011841d5edec2de4552fdc29c8299574436925d');
+    var privKey = new _bitcoreLib2['default'].PrivateKey('52435b1ff21b894da15d87399011841d5edec2de4552fdc29c8299574436925d');
 
-    var alice = (0, _bitcoreEcies2['default'])().privateKey(privKey).publicKey(new bitcore.PublicKey(publicKey));
+    var alice = (0, _ecies2['default'])().privateKey(privKey).publicKey(new _bitcoreLib2['default'].PublicKey(publicKey));
 
     var encrypted = alice.encrypt(message);
     var ret = encrypted.toString('hex');
@@ -130,8 +125,8 @@ function encryptWithPublicKey(publicKey, message) {
  * @return {string}
  */
 function decryptWithPrivateKey(privateKey, encrypted) {
-    var privKey = new bitcore.PrivateKey(privateKey);
-    var alice = (0, _bitcoreEcies2['default'])().privateKey(privKey);
+    var privKey = new _bitcoreLib2['default'].PrivateKey(privateKey);
+    var alice = (0, _ecies2['default'])().privateKey(privKey);
 
     var decryptMe = new Buffer(encrypted, 'hex');
 
