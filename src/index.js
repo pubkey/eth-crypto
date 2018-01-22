@@ -1,6 +1,9 @@
 import * as ethUtil from 'ethereumjs-util';
 import randombytes from 'randombytes';
 import * as secp256k1 from 'secp256k1';
+import {
+    sha3_256
+} from 'js-sha3';
 
 import {
     ensureBuffer,
@@ -40,15 +43,38 @@ export function createPrivateKey() {
     return key;
 }
 
+
 /**
- * signs the message with the privateKey
+ * create the publicKey from the privateKey
+ * @param  {string} privateKey as hex
+ * @return {string} publicKey as hex
+ */
+export function publicKeyFromPrivateKey(privateKey) {
+    return secp256k1
+        .publicKeyCreate(
+            ensureBuffer(privateKey)
+        )
+        .toString('hex');
+}
+
+/**
+ * creates a sha3_256 of the message
+ * @param  {string} message
+ * @return {string} the hash
+ */
+export function hash(message) {
+    return sha3_256(message);
+}
+
+/**
+ * signs the sha3_256-hash with the privateKey
  * @param {string} privateKey
- * @param {string} message
+ * @param {string} hash
  * @return {string} signature as hex
  */
-export function sign(privateKey, message) {
+export function signHash(privateKey, hash) {
     const sigObj = secp256k1.sign(
-        ensureBuffer(message),
+        ensureBuffer(hash),
         ensureBuffer(privateKey)
     );
     return sigObj.signature.toString('hex');
@@ -57,14 +83,14 @@ export function sign(privateKey, message) {
 /**
  * check if signature of message is signed by the privateKey of the publicKey
  * @param {string} publicKey
- * @param {string} message
+ * @param {string} hash sha3_256-hash
  * @param {string} signature
  * @return {boolean} true if valid, false if not
  */
-export function verify(publicKey, message, signature) {
+export function verifyHashSignature(publicKey, hash, signature) {
     return secp256k1.verify(
-        _helper.ensureBuffer(message),
-        _helper.ensureBuffer(signature),
-        _helper.ensureBuffer(publicKey)
+        ensureBuffer(hash),
+        ensureBuffer(signature),
+        ensureBuffer(publicKey)
     );
 }
