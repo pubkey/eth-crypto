@@ -9,6 +9,24 @@ const testData = {
 };
 
 describe('index.test.js', () => {
+    describe('playground', () => {
+        it('do things', () => {
+            // TODO remove this block
+            return;
+            const privateKey = EthereumEncryption.createPrivateKey();
+            const publicKey = EthereumEncryption.publicKeyFromPrivateKey(
+                privateKey
+            );
+            const message = 'foobar';
+            const hash = EthereumEncryption.hash(message);
+            console.log(hash);
+            const sig = EthereumEncryption.signHash(
+                publicKey,
+                hash
+            );
+            console.log(sig);
+        });
+    });
     describe('.publicKeyToAddress()', () => {
         describe('positive', () => {
             it('should give the correct address', () => {

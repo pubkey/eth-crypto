@@ -10,7 +10,6 @@ import {
     formatAddress
 } from './util';
 
-
 /**
  * get the ethereum-address by the publicKey
  * @param  {string} publicKey
@@ -42,7 +41,6 @@ export function createPrivateKey() {
         .toString('hex');
     return key;
 }
-
 
 /**
  * create the publicKey from the privateKey
@@ -93,4 +91,17 @@ export function verifyHashSignature(publicKey, hash, signature) {
         ensureBuffer(signature),
         ensureBuffer(publicKey)
     );
+}
+
+/**
+ * encrypts the message with the publicKey
+ * This is using aes256Cbc
+ * @param  {string} publicKey
+ * @param  {string} message
+ * @return {string}
+ */
+export function encryptWithPublicKey(publicKey, message) {
+    const messageBuffer = ensureBuffer(message);
+    const ivbuf = new Buffer(randombytes(16), 'hex'); // 16-byte Buffer to be used in AES-CBC
+    // TODO
 }
