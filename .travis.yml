@@ -2,7 +2,7 @@ language: node_js
 os:
   - linux
 node_js:
-  - "7"
+  - "9.4.0"
 script:
 - npm install --depth 0 --silent
 - npm run lint
