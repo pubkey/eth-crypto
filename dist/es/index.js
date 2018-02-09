@@ -71,6 +71,8 @@ export function verifyHashSignature(publicKey, hash, signature) {
 }
 
 var _encryptWithPublicKeyEciesCache = new _Map();
+// this key is used as false sample, because bitcore would crash when alice has no privateKey
+var _encryptWithPublicKeyDefaultKey = new bitcore.PrivateKey('52435b1ff21b894da15d87399011841d5edec2de4552fdc29c8299574436925d');
 /**
  * encrypts the message with the publicKey
  * This is using aes256Cbc
@@ -81,9 +83,7 @@ var _encryptWithPublicKeyEciesCache = new _Map();
 export function encryptWithPublicKey(publicKey, message) {
     // caching
     if (!_encryptWithPublicKeyEciesCache.has(publicKey)) {
-        // this key is used as false sample, because bitcore would crash when alice has no privateKey
-        var privKey = new bitcore.PrivateKey('52435b1ff21b894da15d87399011841d5edec2de4552fdc29c8299574436925d');
-        var _alice = ECIES().privateKey(privKey).publicKey(new bitcore.PublicKey(publicKey));
+        var _alice = ECIES().privateKey(_encryptWithPublicKeyDefaultKey).publicKey(new bitcore.PublicKey(publicKey));
         _encryptWithPublicKeyEciesCache.set(publicKey, _alice);
     }
 
