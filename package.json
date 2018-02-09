@@ -4,10 +4,16 @@
   "description": "Use this to encrypt, decrypt, sign and verify data with an ethereum public- or privateKey",
   "keywords": [
     "ethereum",
+    "eth",
+    "web3"
     "encryption",
     "secp256k1",
-    "privateKey",
-    "publicKey"
+    "dapp",
+    "blockchain",
+    "eth",
+    "ecies",
+    "signature",
+    "smart-contract"
   ],
   "main": "./dist/lib/index.js",
   "jsnext:main": "./dist/es/index.js",
