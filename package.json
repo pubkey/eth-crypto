@@ -14,7 +14,7 @@
   "module": "./dist/es/index.js",
   "types": "./typings/index.d.ts",
   "scripts": {
-    "test": "npm run build && mocha -b --exit",
+    "test": "npm run build && mocha ./test/index.test.js -b --exit",
     "lint": "eslint src test",
     "clear": "rimraf -rf ./dist",
     "build:es6": "rimraf -rf dist/es && cross-env NODE_ENV=es6 babel src --out-dir dist/es",
@@ -33,7 +33,7 @@
   "homepage": "https://github.com/pubkey/ethereum-encryption#readme",
   "devDependencies": {
     "assert": "1.4.1",
-    "async-test-util": "1.2.1",
+    "async-test-util": "1.5.1",
     "babel-cli": "6.26.0",
     "babel-core": "6.26.0",
     "babel-eslint": "8.2.1",
@@ -55,7 +55,7 @@
     "babel-preset-es2017": "6.24.1",
     "babel-preset-latest": "6.24.1",
     "cross-env": "5.1.3",
-    "eslint": "4.16.0",
+    "eslint": "4.17.0",
     "mocha": "5.0.0",
     "rimraf": "2.6.2"
   },
@@ -63,9 +63,9 @@
     "aes": "0.1.0",
     "babel-runtime": "6.26.0",
     "bitcore-lib": "0.15.0",
-    "ethereumjs-util": "5.1.3",
+    "ethereumjs-util": "5.1.4",
     "js-sha3": "0.7.0",
     "randombytes": "2.0.6",
-    "secp256k1": "3.4.0"
+    "secp256k1": "3.5.0"
   }
 }
