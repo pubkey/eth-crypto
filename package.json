@@ -1,6 +1,6 @@
 {
   "name": "ethereum-encryption",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Use this to encrypt, decrypt, sign and verify data with an ethereum public- or privateKey",
   "keywords": [
     "ethereum",
