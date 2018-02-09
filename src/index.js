@@ -97,6 +97,7 @@ export function verifyHashSignature(publicKey, hash, signature) {
     );
 }
 
+const _encryptWithPublicKeyEciesCache = new Map();
 /**
  * encrypts the message with the publicKey
  * This is using aes256Cbc
@@ -105,18 +106,26 @@ export function verifyHashSignature(publicKey, hash, signature) {
  * @return {string}
  */
 export function encryptWithPublicKey(publicKey, message) {
-    // this key is used as false sample, because bitcore would crash when alice has no privateKey
-    const privKey = new bitcore.PrivateKey('52435b1ff21b894da15d87399011841d5edec2de4552fdc29c8299574436925d');
+    // caching
+    if (!_encryptWithPublicKeyEciesCache.has(publicKey)) {
+        // this key is used as false sample, because bitcore would crash when alice has no privateKey
+        const privKey = new bitcore.PrivateKey('52435b1ff21b894da15d87399011841d5edec2de4552fdc29c8299574436925d');
+        const alice = ECIES()
+            .privateKey(privKey)
+            .publicKey(new bitcore.PublicKey(publicKey));
+        _encryptWithPublicKeyEciesCache.set(
+            publicKey,
+            alice
+        );
+    }
 
-    const alice = ECIES()
-        .privateKey(privKey)
-        .publicKey(new bitcore.PublicKey(publicKey));
-
+    const alice = _encryptWithPublicKeyEciesCache.get(publicKey);
     const encrypted = alice.encrypt(message);
     const ret = encrypted.toString('hex');
     return ret;
 }
 
+const _decryptWithPrivateKeyEciesMap = new Map();
 /**
  * decrypt the encrypted message with the privateKey
  * @param  {string} privateKey
@@ -124,11 +133,15 @@ export function encryptWithPublicKey(publicKey, message) {
  * @return {string}
  */
 export function decryptWithPrivateKey(privateKey, encrypted) {
-    const privKey = new bitcore.PrivateKey(privateKey);
-    const alice = ECIES().privateKey(privKey);
+    // caching
+    if (!_decryptWithPrivateKeyEciesMap.has(privateKey)) {
+        const privKey = new bitcore.PrivateKey(privateKey);
+        const alice = ECIES().privateKey(privKey);
+        _decryptWithPrivateKeyEciesMap.set(privateKey, alice);
+    }
 
+    const alice = _decryptWithPrivateKeyEciesMap.get(privateKey);
     const decryptMe = new Buffer(encrypted, 'hex');
-
     const decrypted = alice.decrypt(decryptMe);
     const ret = decrypted.toString();
     return ret;

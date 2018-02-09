@@ -1,3 +1,4 @@
+import _Map from 'babel-runtime/core-js/map';
 import * as ethUtil from 'ethereumjs-util';
 import randombytes from 'randombytes';
 import * as secp256k1 from 'secp256k1';
@@ -69,6 +70,7 @@ export function verifyHashSignature(publicKey, hash, signature) {
     return secp256k1.verify(ensureBuffer(hash), ensureBuffer(signature), ensureBuffer(publicKey));
 }
 
+var _encryptWithPublicKeyEciesCache = new _Map();
 /**
  * encrypts the message with the publicKey
  * This is using aes256Cbc
@@ -77,16 +79,21 @@ export function verifyHashSignature(publicKey, hash, signature) {
  * @return {string}
  */
 export function encryptWithPublicKey(publicKey, message) {
-    // this key is used as false sample, because bitcore would crash when alice has no privateKey
-    var privKey = new bitcore.PrivateKey('52435b1ff21b894da15d87399011841d5edec2de4552fdc29c8299574436925d');
+    // caching
+    if (!_encryptWithPublicKeyEciesCache.has(publicKey)) {
+        // this key is used as false sample, because bitcore would crash when alice has no privateKey
+        var privKey = new bitcore.PrivateKey('52435b1ff21b894da15d87399011841d5edec2de4552fdc29c8299574436925d');
+        var _alice = ECIES().privateKey(privKey).publicKey(new bitcore.PublicKey(publicKey));
+        _encryptWithPublicKeyEciesCache.set(publicKey, _alice);
+    }
 
-    var alice = ECIES().privateKey(privKey).publicKey(new bitcore.PublicKey(publicKey));
-
+    var alice = _encryptWithPublicKeyEciesCache.get(publicKey);
     var encrypted = alice.encrypt(message);
     var ret = encrypted.toString('hex');
     return ret;
 }
 
+var _decryptWithPrivateKeyEciesMap = new _Map();
 /**
  * decrypt the encrypted message with the privateKey
  * @param  {string} privateKey
@@ -94,11 +101,15 @@ export function encryptWithPublicKey(publicKey, message) {
  * @return {string}
  */
 export function decryptWithPrivateKey(privateKey, encrypted) {
-    var privKey = new bitcore.PrivateKey(privateKey);
-    var alice = ECIES().privateKey(privKey);
+    // caching
+    if (!_decryptWithPrivateKeyEciesMap.has(privateKey)) {
+        var privKey = new bitcore.PrivateKey(privateKey);
+        var _alice2 = ECIES().privateKey(privKey);
+        _decryptWithPrivateKeyEciesMap.set(privateKey, _alice2);
+    }
 
+    var alice = _decryptWithPrivateKeyEciesMap.get(privateKey);
     var decryptMe = new Buffer(encrypted, 'hex');
-
     var decrypted = alice.decrypt(decryptMe);
     var ret = decrypted.toString();
     return ret;
