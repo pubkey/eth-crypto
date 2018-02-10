@@ -1,11 +1,11 @@
 {
   "name": "ethereum-encryption",
   "version": "0.0.5",
-  "description": "Use this to encrypt, decrypt, sign and verify data with an ethereum public- or privateKey",
+  "description": "Use this to encrypt, decrypt, sign and verify data with an ethereum public- or private-key",
   "keywords": [
     "ethereum",
     "eth",
-    "web3"
+    "web3",
     "encryption",
     "secp256k1",
     "dapp",
