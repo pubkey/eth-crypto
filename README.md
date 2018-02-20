@@ -25,9 +25,22 @@ const EthereumEncryption = require('ethereum-encryption');
 Creates a new privateKey from random bytes and returns it as hex-string.
 
 ```javascript
-
   const privateKey = EthereumEncryption.createPrivateKey();
   // '2400238629a674a372694567f949c94847b76607de151433587c20547aa90460'
+```
+
+You can then use the created privateKeys together with ganache by transforming them into a buffer.
+
+```javascript
+const ganache = require('ganache-cli');
+const Web3 = require('web3');
+const web3 = new Web3();
+web3.setProvider(ganache.provider({
+    accounts: [{
+        secretKey: new Buffer(privateKey, 'hex'),
+        balance: web3.utils.toWei('100', 'ether')
+    }]
+}));
 ```
 
 ### publicKeyFromPrivateKey()

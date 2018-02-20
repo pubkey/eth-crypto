@@ -8,7 +8,7 @@ const testData = {
     publicKey: '03a34d6aef3eb42335fb3cacb59478c0b44c0bbeb8bb4ca427dbc7044157a5d24b'
 };
 
-describe('src.test.js', () => {
+describe('unit.test.js', () => {
     describe('.publicKeyToAddress()', () => {
         describe('positive', () => {
             it('should give the correct address', () => {
