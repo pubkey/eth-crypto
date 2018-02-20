@@ -4,8 +4,60 @@ const Tx = require('ethereumjs-tx');
 const AsyncTestUtil = require('async-test-util');
 const assert = require('assert');
 const EthereumEncryption = require('../dist/lib/index');
+const compiled = require('../gen/TestContract.json');
+
 
 describe('integration.test.js', () => {
+    const state = {
+        web3: null,
+        privateKeys: []
+    };
+    describe('init', () => {
+        it('create web3', () => {
+            state.web3 = new Web3();
+        });
+        it('create testnet', async () => {
+            // create accounts
+            const ganacheAccounts = new Array(20)
+                .fill(0)
+                .map(() => EthereumEncryption.createPrivateKey())
+                .map(privateKey => {
+                    state.privateKeys.push(privateKey);
+                    return {
+                        secretKey: new Buffer(privateKey, 'hex'),
+                        balance: state.web3.utils.toWei('100', 'ether')
+                    };
+                });
+            state.web3.setProvider(ganache.provider({
+                accounts: ganacheAccounts
+            }));
+        });
+        it('deploy test-contract', async () => {
+            const privateKey = state.privateKeys.pop();
+            const publicKey = EthereumEncryption.publicKeyFromPrivateKey(privateKey);
+            const address = EthereumEncryption.publicKeyToAddress(publicKey);
+            const gasPrice = await state.web3.eth.getGasPrice();
+
+            const rawTx = {
+                from: address,
+                gasPrice: parseInt(gasPrice),
+                data: compiled.code
+            };
+            const estimateGas = await state.web3.eth.estimateGas(rawTx);
+            rawTx.gasLimit = estimateGas * 5;
+
+            const receipt = await state.web3.eth.sendTransaction(rawTx);
+            state.contractAddress = receipt.contractAddress;
+            assert.ok(state.contractAddress);
+        });
+        it('create contract-instance', async()=>{
+            state.contract = new state.web3.eth.Contract(
+                compiled.interface,
+                state.contractAddress
+            );
+            assert.ok(state.contract);
+        });
+    });
     describe('privateKey', () => {
         it('should be possible to use the keys with ganache', async () => {
             const web3 = new Web3();
@@ -46,6 +98,13 @@ describe('integration.test.js', () => {
             const receipt = await web3.eth.sendSignedTransaction(serializedTx);
             assert.equal(receipt.blockNumber, 1);
             assert.equal(receipt.status, 1);
+        });
+    });
+    describe('hash', () => {
+        it('should create the same hash from string as solidity', async()=>{
+            const str = EthereumEncryption.hash(AsyncTestUtil.randomString(12));
+            const jshash = EthereumEncryption.hash(str);
+
         });
     });
 });

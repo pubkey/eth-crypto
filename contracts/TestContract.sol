@@ -12,6 +12,14 @@ contract TestContract {
      * hashes the given values
      * should be equal to own hash()-function in js
      */
+     function hashString(
+         bytes32 someString
+     ) public constant returns(bytes32) {
+         return keccak256(
+             someString
+         );
+     }
+
     function hashSomething(
         uint someNumber,
         bytes32 someString,
