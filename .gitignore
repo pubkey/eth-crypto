@@ -3,3 +3,4 @@ npm-debug.log
 core
 log.txt
 package-lock.json
+gen/
