@@ -78,6 +78,7 @@
     "base58": "^1.0.1",
     "bitcore-ecies": "^1.0.3",
     "bitcore-lib": "0.15.0",
+    "eccrypto": "^1.0.3",
     "ethereumjs-util": "^5.1.4",
     "js-sha3": "0.7.0",
     "randombytes": "2.0.6",
