@@ -50,12 +50,16 @@ describe('integration.test.js', () => {
             state.contractAddress = receipt.contractAddress;
             assert.ok(state.contractAddress);
         });
-        it('create contract-instance', async()=>{
+        it('create contract-instance', async () => {
             state.contract = new state.web3.eth.Contract(
                 compiled.interface,
                 state.contractAddress
             );
             assert.ok(state.contract);
+        });
+        it('should get the public value out of the contract', async () => {
+            const value = await state.contract.methods.onePublicValue().call();
+            assert.equal(value, 1337);
         });
     });
     describe('privateKey', () => {
@@ -101,10 +105,37 @@ describe('integration.test.js', () => {
         });
     });
     describe('hash', () => {
-        it('should create the same hash from string as solidity', async()=>{
-            const str = EthereumEncryption.hash(AsyncTestUtil.randomString(12));
-            const jshash = EthereumEncryption.hash(str);
+        it('number: should create the same hash as solidity', async () => {
+            const nr = 1337;
+            console.log('nr:');
+            console.dir(nr);
 
+            const web3Hash = state.web3.utils.soliditySha3(nr);
+            console.log('web3Hash:');
+            console.dir(web3Hash);
+
+            const solHash = await state.contract
+                .methods.hashNumber(nr)
+                .call();
+            console.log('solHash:');
+            console.dir(solHash);
+
+            assert.equal(web3Hash, solHash);
+        });
+        it('string: should create the same hash as solidity', async () => {
+            const str = 'foobar';
+            const jsHash = EthereumEncryption.hash(str);
+            const web3Hash = state.web3.utils.soliditySha3(str);
+            console.log('web3Hash:');
+            console.dir(web3Hash);
+            console.log('str:');
+            console.dir(str);
+            const solHash = await state.contract
+                .methods.hashString(str)
+                .call();
+            console.log('solHash:');
+            console.dir(solHash);
+            assert.equal(jsHash, solHash);
         });
     });
 });

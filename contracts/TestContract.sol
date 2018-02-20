@@ -8,17 +8,28 @@ pragma solidity 0.4.19;
 
 contract TestContract {
 
+    uint public onePublicValue = 1337;
+
     /**
      * hashes the given values
      * should be equal to own hash()-function in js
      */
-     function hashString(
-         bytes32 someString
-     ) public constant returns(bytes32) {
-         return keccak256(
-             someString
-         );
-     }
+    function hashNumber(
+        uint someNumber
+    ) public constant returns(bytes32) {
+        return keccak256(
+            someNumber
+        );
+    }
+
+
+    function hashString(
+        bytes32 someString
+    ) public constant returns(bytes32) {
+        return keccak256(
+            someString
+        );
+    }
 
     function hashSomething(
         uint someNumber,
