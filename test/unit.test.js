@@ -1,6 +1,11 @@
 const AsyncTestUtil = require('async-test-util');
 const assert = require('assert');
 const EthereumEncryption = require('../dist/lib/index');
+const ethUtil = require('ethereumjs-util');
+// const ECIES = require('../dist/lib/bitcore-ecies/ecies').default;
+const ECIES = require('bitcore-ecies');
+const bitcore = require('bitcore-lib');
+const Base58 = require('base58');
 
 const testData = {
     address: '0x63dcee1fd1d814858acd4172bb20e1aa0c947c0a',
@@ -82,6 +87,12 @@ describe('unit.test.js', () => {
             });
         });
     });
+    describe('.soliditySha3()', () => {
+        it('should hash the value', () => {
+            const hash = EthereumEncryption.soliditySha3('foobar');
+            assert.equal(hash, '0x38d18acb67d25c8bb9942764b62f18e17054f66a817bd4295423adf9ed98873e');
+        });
+    });
     describe('.signHash()', () => {
         describe('positive', () => {
             it('should sign the hash', () => {
@@ -107,6 +118,118 @@ describe('unit.test.js', () => {
                     hash
                 );
                 assert.equal(signature1, signature2);
+            });
+            it('should sign the solidity hash', () => {
+                // return;
+                const web3 = EthereumEncryption.web3;
+
+                console.log('Account:');
+                const account = web3.eth.accounts.create();
+                console.dir(account);
+
+                console.log('account2:');
+                const account2 = web3.eth.accounts
+                    .privateKeyToAccount(account.privateKey);
+                console.dir(account2);
+
+                console.log('publicKey:');
+                const publicKey = ethUtil.privateToPublic(account.privateKey);
+                console.dir(publicKey.toString('hex'));
+
+                console.log('address:');
+                const address = ethUtil.pubToAddress(publicKey);
+                console.dir(address.toString('hex'));
+
+                console.log('sign:');
+                const sig1 = account.sign('foobar');
+                console.dir(sig1);
+
+                console.log('rec:');
+                const rec = EthereumEncryption
+                    .web3.eth.accounts
+                    .recover(
+                        sig1.messageHash,
+                        sig1.v,
+                        sig1.r,
+                        sig1.s
+                    );
+                console.dir(rec);
+
+
+                console.log('# encrypt:');
+                const message = 'foobar';
+                const pubString = '04' + publicKey.toString('hex');
+                console.dir('pubString: ' + pubString);
+                const encrypted = EthereumEncryption.encryptWithPublicKey(
+                    pubString,
+                    'foobar'
+                );
+                console.log('encrypted:');
+                console.dir(encrypted.toString('hex'));
+
+
+                console.log('# decrypt:');
+                console.log('privKey: ' + account.privateKey);
+                const twoStripped = account.privateKey.replace(/^.{2}/g, '');
+                const privBuffer = new Buffer(twoStripped);
+                console.log('privKeyString: ' + privBuffer.toString());
+
+                console.log('aliceDec:');
+                const aliceDec = ECIES().privateKey(twoStripped);
+                console.log('decryptMe');
+                const decryptMe = new Buffer(encrypted, 'hex');
+                console.log('decryptedBuffer');
+                const decryptedBuffer = aliceDec.decrypt(decryptMe);
+                console.log('decrypted:');
+                const decrypted = decryptedBuffer.toString();
+
+                console.dir(decrypted);
+
+                process.exit();
+                /*
+                const privateKey = EthereumEncryption.createPrivateKey();
+                const publicKey = EthereumEncryption.publicKeyFromPrivateKey(privateKey);
+                const address = EthereumEncryption.publicKeyToAddress(publicKey);
+                console.log('address:');
+                console.dir(EthereumEncryption.web3.utils.toChecksumAddress(address));
+
+                const hash = EthereumEncryption.soliditySha3('foobar');
+                console.log('hash:');
+                console.dir(hash);
+                const useHash = hash;
+
+                console.log('privKey:');
+                console.dir(privateKey);
+
+                const sig1 = EthereumEncryption
+                    .web3.eth.accounts
+                    .sign(
+                        'Hello, world!',
+                        new Buffer(privateKey, 'hex')
+                    );
+                console.log('sig1:');
+                console.dir(sig1);
+
+                const rec = EthereumEncryption
+                    .web3.eth.accounts
+                    .recover(
+                        sig1.messageHash,
+                        sig1.v,
+                        sig1.r,
+                        sig1.s
+                    );
+                console.log('recover:');
+                console.dir(EthereumEncryption.web3.utils.toChecksumAddress(rec));
+
+                console.log('useHash:');
+                console.dir(useHash);
+
+                const signature = EthereumEncryption.signHash(
+                    privateKey,
+                    useHash
+                );
+                assert.ok(signature);
+                console.dir(signature);*/
             });
         });
         describe('negative', () => {

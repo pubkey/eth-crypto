@@ -5,10 +5,13 @@ import * as secp256k1 from 'secp256k1';
 
 import ECIES from './bitcore-ecies/ecies';
 import bitcore from 'bitcore-lib';
+import Web3 from 'web3';
 
 import { sha3_256 } from 'js-sha3';
 
 import { ensureBuffer, formatAddress } from './util';
+
+export var web3 = new Web3();
 
 /**
  * get the ethereum-address by the publicKey
@@ -46,6 +49,13 @@ export function publicKeyFromPrivateKey(privateKey) {
  */
 export function hash(message) {
     return sha3_256(message);
+}
+
+export function soliditySha3() {
+    var _web3$utils;
+
+    var hexHash = (_web3$utils = web3.utils).soliditySha3.apply(_web3$utils, arguments);
+    return hexHash;
 }
 
 /**

@@ -70,16 +70,18 @@
     "node": "9.5.0",
     "rimraf": "2.6.2",
     "solc": "0.4.19",
-    "solhint": "1.1.10",
-    "web3": "1.0.0-beta.30"
+    "solhint": "1.1.10"
   },
   "dependencies": {
     "aes": "0.1.0",
     "babel-runtime": "6.26.0",
+    "base58": "^1.0.1",
+    "bitcore-ecies": "^1.0.3",
     "bitcore-lib": "0.15.0",
-    "ethereumjs-util": "5.1.4",
+    "ethereumjs-util": "^5.1.4",
     "js-sha3": "0.7.0",
     "randombytes": "2.0.6",
-    "secp256k1": "3.5.0"
+    "secp256k1": "3.5.0",
+    "web3": "1.0.0-beta.30"
   }
 }

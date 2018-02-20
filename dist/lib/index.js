@@ -3,6 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.web3 = undefined;
 
 var _map = require('babel-runtime/core-js/map');
 
@@ -12,6 +13,7 @@ exports.publicKeyToAddress = publicKeyToAddress;
 exports.createPrivateKey = createPrivateKey;
 exports.publicKeyFromPrivateKey = publicKeyFromPrivateKey;
 exports.hash = hash;
+exports.soliditySha3 = soliditySha3;
 exports.signHash = signHash;
 exports.verifyHashSignature = verifyHashSignature;
 exports.encryptWithPublicKey = encryptWithPublicKey;
@@ -37,6 +39,10 @@ var _bitcoreLib = require('bitcore-lib');
 
 var _bitcoreLib2 = _interopRequireDefault(_bitcoreLib);
 
+var _web = require('web3');
+
+var _web2 = _interopRequireDefault(_web);
+
 var _jsSha = require('js-sha3');
 
 var _util = require('./util');
@@ -44,6 +50,8 @@ var _util = require('./util');
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var web3 = exports.web3 = new _web2['default']();
 
 /**
  * get the ethereum-address by the publicKey
@@ -81,6 +89,13 @@ function publicKeyFromPrivateKey(privateKey) {
  */
 function hash(message) {
     return (0, _jsSha.sha3_256)(message);
+}
+
+function soliditySha3() {
+    var _web3$utils;
+
+    var hexHash = (_web3$utils = web3.utils).soliditySha3.apply(_web3$utils, arguments);
+    return hexHash;
 }
 
 /**
