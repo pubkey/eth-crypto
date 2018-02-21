@@ -1,29 +1,14 @@
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
-exports.ensureBuffer = ensureBuffer;
-exports.formatAddress = formatAddress;
-/**
- * make sure that the given obj is a buffer
- * @param {string|Buffer} bufferOrString
- * @return {Buffer}
- */
-function ensureBuffer(bufferOrString) {
-    //make sure its a buffer
-    if (typeof bufferOrString === 'string') return new Buffer(bufferOrString, 'hex');else return bufferOrString;
-};
+exports.web3 = undefined;
 
-/**
- * Prepair Ethereum address for either raw transactions or browser storage.
- */
-function formatAddress(addr) {
-    var format = 'hex';
-    /*        if (addr.substr(0, 2) == '0x' && format == 'raw') {
-                addr = addr.substr(2);
-            }*/
-    if (addr.substr(0, 2) !== '0x' && format === 'hex') addr = '0x' + addr;
+var _web = require('web3');
 
-    return addr;
-};
+var _web2 = _interopRequireDefault(_web);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var web3 = exports.web3 = new _web2['default']();
