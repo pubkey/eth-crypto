@@ -81,7 +81,7 @@ describe('integration.test.js', () => {
             const web3 = new Web3();
             web3.setProvider(ganache.provider({
                 accounts: [{
-                    secretKey:new Buffer(identity.privateKey.replace(/^.{2}/g, ''), 'hex'),
+                    secretKey: new Buffer(identity.privateKey.replace(/^.{2}/g, ''), 'hex'),
                     balance: web3.utils.toWei('100', 'ether')
                 }]
             }));
@@ -104,38 +104,46 @@ describe('integration.test.js', () => {
     });
     describe('hash', () => {
         it('number: should create the same hash as solidity', async () => {
-            return; // TODO
             const nr = 1337;
-            console.log('nr:');
-            console.dir(nr);
-
-            const web3Hash = state.web3.utils.soliditySha3(nr);
-            console.log('web3Hash:');
-            console.dir(web3Hash);
-
             const solHash = await state.contract
                 .methods.hashNumber(nr)
                 .call();
-            console.log('solHash:');
-            console.dir(solHash);
 
-            assert.equal(web3Hash, solHash);
+            const jsHash = EthereumEncryption.hash(nr);
+            assert.equal(solHash, jsHash);
         });
         it('string: should create the same hash as solidity', async () => {
-            return; // TODO
             const str = 'foobar';
             const jsHash = EthereumEncryption.hash(str);
-            const web3Hash = state.web3.utils.soliditySha3(str);
-            console.log('web3Hash:');
-            console.dir(web3Hash);
-            console.log('str:');
-            console.dir(str);
             const solHash = await state.contract
                 .methods.hashString(str)
                 .call();
-            console.log('solHash:');
-            console.dir(solHash);
             assert.equal(jsHash, solHash);
+        });
+    });
+    describe('sign', () => {
+        it('should validate the signature on solidity', async () => {
+            const ident = EthereumEncryption.createIdentity();
+            const message = AsyncTestUtil.randomString(12);
+            const messageHex = EthereumEncryption.util.web3.utils.toHex(message);
+            const signature = await EthereumEncryption.sign(
+                ident.privateKey,
+                messageHex
+            );
+            console.dir(signature);
+
+            const solSigner = await state.contract
+                .methods.recoverSignature(
+                    messageHex,
+                    signature.v,
+                    signature.r,
+                    signature.s
+                )
+                .call();
+
+            assert.equal(solSigner, ident.address);
+
+            process.exit();
         });
     });
 });

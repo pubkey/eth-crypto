@@ -6,6 +6,7 @@ import publicKeyByPrivateKey from './public-key-by-private-key';
 import recover from './recover';
 import sign from './sign';
 import hash from './hash';
+import * as util from './util';
 
 export {
     addressByPublicKey,
@@ -15,7 +16,8 @@ export {
     publicKeyByPrivateKey,
     recover,
     sign,
-    hash
+    hash,
+    util
 };
 
 export default {
@@ -26,5 +28,6 @@ export default {
     publicKeyByPrivateKey,
     recover,
     sign,
-    hash
+    hash,
+    util
 };

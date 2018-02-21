@@ -24,22 +24,10 @@ contract TestContract {
 
 
     function hashString(
-        bytes32 someString
+        string someString
     ) public constant returns(bytes32) {
         return keccak256(
             someString
-        );
-    }
-
-    function hashSomething(
-        uint someNumber,
-        bytes32 someString,
-        uint[] someNumberArray
-    ) public constant returns(bytes32) {
-        return keccak256(
-            someNumber,
-            someString,
-            someNumberArray
         );
     }
 
@@ -48,16 +36,15 @@ contract TestContract {
      * should be valid for signature created from the sign()-function in js
      */
     function recoverSignature(
-        bytes32 hash,
+        bytes32 msg,
         uint8 v,
         bytes32 r,
-        bytes32 s,
-        address signer
-        ) public constant returns (bool valid) {
-        address isSigner = ecrecover(
-                hash,
+        bytes32 s
+        ) public constant returns (address) {
+        address signer = ecrecover(
+                msg,
                 v, r, s
             );
-        return isSigner == signer;
+        return signer;
     }
 }

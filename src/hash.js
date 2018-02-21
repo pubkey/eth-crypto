@@ -3,5 +3,5 @@ import {
 } from './util';
 
 export default function hash(str) {
-    return web3.eth.accounts.hashMessage(str);
+    return web3.utils.soliditySha3(str);
 }
