@@ -125,7 +125,9 @@ describe('unit.test.js', () => {
                 const web3 = EthereumEncryption.web3;
 
                 console.log('Account:');
-                const account = web3.eth.accounts.create();
+                //                const account = web3.eth.accounts.create();
+                const account = web3.eth.accounts
+                    .privateKeyToAccount('0x107be946709e41b7895eea9f2dacf998a0a9124acbb786f0fd1a826101581a07');
                 console.dir(account);
 
                 console.log('account2:');
@@ -140,6 +142,9 @@ describe('unit.test.js', () => {
                 console.log('## address:');
                 const address = ethUtil.pubToAddress(publicKey);
                 console.dir(address.toString('hex'));
+                const checkSumAdress = web3.utils.toChecksumAddress(address.toString('hex'));
+                console.log('checkSumAdress: ');
+                console.dir(checkSumAdress);
 
                 console.log('## sign:');
                 const sig1 = account.sign('foobar');
@@ -158,7 +163,7 @@ describe('unit.test.js', () => {
 
 
                 console.log('## encrypt:');
-                const message = 'foobar';
+                const message = AsyncTestUtil.randomString(12);
                 const pubString = '04' + publicKey.toString('hex');
 
                 console.dir('pubString: ' + pubString);
@@ -180,52 +185,36 @@ describe('unit.test.js', () => {
                 console.log('privKeyString: ' + privBuffer.toString());
                 console.dir(ethUtil.toBuffer(account.privateKey).toString('hex'));
 
+
+                console.log('THIS WORKS !!!!');
                 console.log('::::::::::::::::::' + account.privateKey);
-                const buf = Buffer('msg to b');
+                const buf = Buffer(message);
+
+                // TODO perfomrance test if this is faster
                 const publicKeyA = eccrypto.getPublic(new Buffer(twoStripped, 'hex'));
-                console.log('publicKeyA: ' + publicKeyA);
+
+                console.log('publicKeyA:');
+                console.dir(publicKeyA.toString('hex'));
                 console.log('_');
-                const enc = await eccrypto.encrypt(publicKeyA, buf);
+                const enc = await eccrypto.encrypt(new Buffer(pubString, 'hex'), buf);
+                const t = {
+                    iv: enc.iv.toString('hex'),
+                    ephemPublicKey: enc.ephemPublicKey.toString('hex'),
+                    ciphertext: enc.ciphertext.toString('hex'),
+                    mac: enc.mac.toString('hex')
+                };
+                const t2 = {
+                    iv: new Buffer( t.iv, 'hex'),
+                    ephemPublicKey: new Buffer(t.ephemPublicKey, 'hex'),
+                    ciphertext: new Buffer(t.ciphertext, 'hex'),
+                    mac: new Buffer(t.mac, 'hex')
+                };
+                console.dir(t);
                 console.log('....');
-                const dec = await eccrypto.decrypt(new Buffer(twoStripped, 'hex'), enc);
+                const dec = await eccrypto.decrypt(new Buffer(twoStripped, 'hex'), t2);
                 console.dir(dec.toString());
-
-                console.log('--------------------');
-                const p = new bitcore.PrivateKey(twoStripped);
-                const pub = p.toPublicKey();
-                console.log('pub: ' + pub);
-                const compressedPK = bitcore.PublicKey(pub);
-                console.log('compressedPK: ' + compressedPK);
-
-                const encrypted2 = EthereumEncryption.encryptWithPublicKey(
-                    pub,
-                    'foobar'
-                );
-                console.log('encryption with compressed key worked!');
-
-                const aliceDec2 = ECIES()
-                    .privateKey(twoStripped)
-                    .publicKey(pubString);
-                console.dir(aliceDec2);
-
-                console.log('ECIES with own private key workd!');
-
-                const decrypted2 = aliceDec2.decrypt(
-                    new Buffer(encrypted2, 'hex')
-                );
-                console.log('decrypted2:');
-                console.dir(decrypted2.toString());
-
-                console.log('aliceDec:');
-                const aliceDec = ECIES().privateKey('03' + twoStripped);
-                console.log('decryptMe');
-                const decryptMe = new Buffer(encrypted, 'hex');
-                console.log('decryptedBuffer');
-                const decryptedBuffer = aliceDec.decrypt(decryptMe);
-                console.log('decrypted:');
-                const decrypted = decryptedBuffer.toString();
-
-                console.dir(decrypted);
+                console.dir(dec.toString());
+                assert.equal(dec.toString(), message);
 
                 process.exit();
                 /*

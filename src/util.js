@@ -1,3 +1,7 @@
+import Web3 from 'web3';
+
+export const web3 = new Web3();
+
 /**
  * make sure that the given obj is a buffer
  * @param {string|Buffer} bufferOrString
