@@ -1,21 +1,19 @@
 import {
     web3
 } from './util';
-import VRSBySignature from './v-r-s-by-signature';
 
 /**
  * returns the adress with which the messageHash was signed
- * @param  {string} signature
- * @param  {string} messageHash
+ * @param  {{v: string, r: string, s: string}} signature
+ * @param  {string} message
  * @return {string} address
  */
-export default function recover(signature, messageHash) {
-    const vrs = VRSBySignature(signature);
+export default function recover(signature, message) {
     const address = web3.eth.accounts.recover(
-        messageHash,
-        vrs.v,
-        vrs.r,
-        vrs.s
+        message,
+        signature.v,
+        signature.r,
+        signature.s
     );
     return address;
 }

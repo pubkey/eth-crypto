@@ -10,7 +10,7 @@ const compiled = require('../gen/TestContract.json');
 describe('integration.test.js', () => {
     const state = {
         web3: null,
-        privateKeys: []
+        accounts: []
     };
     describe('init', () => {
         it('create web3', () => {
@@ -20,11 +20,12 @@ describe('integration.test.js', () => {
             // create accounts
             const ganacheAccounts = new Array(20)
                 .fill(0)
-                .map(() => EthereumEncryption.createPrivateKey())
-                .map(privateKey => {
-                    state.privateKeys.push(privateKey);
+                .map(() => EthereumEncryption.createIdentity())
+                .map(identity => {
+                    state.accounts.push(identity);
+                    const twoStripped = identity.privateKey.replace(/^.{2}/g, '');
                     return {
-                        secretKey: new Buffer(privateKey, 'hex'),
+                        secretKey: new Buffer(twoStripped, 'hex'),
                         balance: state.web3.utils.toWei('100', 'ether')
                     };
                 });
@@ -33,13 +34,11 @@ describe('integration.test.js', () => {
             }));
         });
         it('deploy test-contract', async () => {
-            const privateKey = state.privateKeys.pop();
-            const publicKey = EthereumEncryption.publicKeyFromPrivateKey(privateKey);
-            const address = EthereumEncryption.publicKeyToAddress(publicKey);
+            const account = state.accounts.pop();
             const gasPrice = await state.web3.eth.getGasPrice();
 
             const rawTx = {
-                from: address,
+                from: account.address,
                 gasPrice: parseInt(gasPrice),
                 data: compiled.code
             };
@@ -67,9 +66,9 @@ describe('integration.test.js', () => {
             const web3 = new Web3();
             const ganacheAccounts = new Array(10)
                 .fill(0)
-                .map(() => EthereumEncryption.createPrivateKey())
-                .map(privateKey => ({
-                    secretKey: new Buffer(privateKey, 'hex'),
+                .map(() => EthereumEncryption.createIdentity())
+                .map(identity => ({
+                    secretKey: new Buffer(identity.privateKey.replace(/^.{2}/g, ''), 'hex'),
                     balance: web3.utils.toWei('100', 'ether')
                 }));
             web3.setProvider(ganache.provider({
@@ -77,19 +76,18 @@ describe('integration.test.js', () => {
             }));
         });
         it('should be possible to sign transaction with the key', async () => {
-            const privateKey = EthereumEncryption.createPrivateKey();
-            const publicKey = EthereumEncryption.publicKeyFromPrivateKey(privateKey);
-            const address = EthereumEncryption.publicKeyToAddress(publicKey);
+            const identity = EthereumEncryption.createIdentity();
+
             const web3 = new Web3();
             web3.setProvider(ganache.provider({
                 accounts: [{
-                    secretKey: new Buffer(privateKey, 'hex'),
+                    secretKey:new Buffer(identity.privateKey.replace(/^.{2}/g, ''), 'hex'),
                     balance: web3.utils.toWei('100', 'ether')
                 }]
             }));
             const gasPrice = await web3.eth.getGasPrice();
             const rawTx = {
-                from: address,
+                from: identity.address,
                 to: '0x63dcee1fd1d814858acd4172bb20e1aa0c947c0a',
                 value: parseInt(web3.utils.toWei('1', 'ether')),
                 nonce: 0,
@@ -97,7 +95,7 @@ describe('integration.test.js', () => {
                 gasPrice: parseInt(gasPrice)
             };
             const tx = new Tx(rawTx);
-            tx.sign(new Buffer(privateKey, 'hex'));
+            tx.sign(new Buffer(identity.privateKey.replace(/^.{2}/g, ''), 'hex'));
             const serializedTx = tx.serialize().toString('hex');
             const receipt = await web3.eth.sendSignedTransaction(serializedTx);
             assert.equal(receipt.blockNumber, 1);

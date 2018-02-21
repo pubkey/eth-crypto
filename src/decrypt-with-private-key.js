@@ -1,3 +1,5 @@
+import eccrypto from 'eccrypto';
+
 export default async function decryptWithPrivateKey(privateKey, encrypted) {
 
     // remove trailing '0x' from privateKey

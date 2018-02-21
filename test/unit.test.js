@@ -1,408 +1,135 @@
 const AsyncTestUtil = require('async-test-util');
 const assert = require('assert');
 const EthereumEncryption = require('../dist/lib/index');
-const ethUtil = require('ethereumjs-util');
-// const ECIES = require('../dist/lib/bitcore-ecies/ecies').default;
-const ECIES = require('bitcore-ecies');
-const bitcore = require('bitcore-lib');
-const Base58 = require('base58');
 const eccrypto = require('eccrypto');
 
-const testData = {
-    address: '0x63dcee1fd1d814858acd4172bb20e1aa0c947c0a',
-    privateKey: '2400238629a674a372694567f949c94847b76607de151433587c20547aa90460',
-    publicKey: '03a34d6aef3eb42335fb3cacb59478c0b44c0bbeb8bb4ca427dbc7044157a5d24b'
+const TEST_DATA = {
+    address: '0x3f243FdacE01Cfd9719f7359c94BA11361f32471',
+    privateKey: '0x107be946709e41b7895eea9f2dacf998a0a9124acbb786f0fd1a826101581a07',
+    publicKey: 'bf1cc3154424dc22191941d9f4f50b063a2b663a2337e5548abea633c1d06eceacf2b81dd326d278cd992d5e03b0df140f2df389ac9a1c2415a220a4a9e8c046'
 };
 
 describe('unit.test.js', () => {
-    describe('.publicKeyToAddress()', () => {
+    describe('.createIdentity()', () => {
+        it('should create an identity', () => {
+            const ident = EthereumEncryption.createIdentity();
+            assert.equal(typeof ident.privateKey, 'string');
+            assert.equal(typeof ident.publicKey, 'string');
+            assert.equal(typeof ident.address, 'string');
+        });
+    });
+    describe('.publicKeyByPrivateKey()', () => {
         describe('positive', () => {
-            it('should give the correct address', () => {
-                const address = EthereumEncryption.publicKeyToAddress(testData.publicKey);
-                assert.equal(address, testData.address);
+            it('should give the correct publicKey', () => {
+                const publicKey = EthereumEncryption.publicKeyByPrivateKey(TEST_DATA.privateKey);
+                assert.equal(publicKey, TEST_DATA.publicKey);
             });
         });
         describe('negative', () => {
-            it('should throw when wrong key given', () => {
+            it('should crash when non-key given', () => {
                 assert.throws(
-                    () => EthereumEncryption.publicKeyToAddress('foobar')
-                );
-            });
-        });
-    });
-    describe('.createPrivateKey()', () => {
-        it('should create a valid key', () => {
-            const key = EthereumEncryption.createPrivateKey();
-            assert.equal(typeof key, 'string');
-            assert.ok(key.length > 55);
-            assert.ok(key.length < 90);
-        });
-        it('should have different keys because of randomBytes', () => {
-            const key1 = EthereumEncryption.createPrivateKey();
-            const key2 = EthereumEncryption.createPrivateKey();
-            assert.notEqual(key1, key2);
-        });
-    });
-    describe('.publicKeyFromPrivateKey()', () => {
-        describe('positive', () => {
-            it('should create the correct publicKey', () => {
-                const publicKey = EthereumEncryption.publicKeyFromPrivateKey(
-                    testData.privateKey
-                );
-                assert.equal(publicKey, testData.publicKey);
-            });
-            it('should create a publicKey from generated privateKey', () => {
-                const privateKey = EthereumEncryption.createPrivateKey();
-                const publicKey = EthereumEncryption.publicKeyFromPrivateKey(
-                    privateKey
-                );
-                assert.equal(typeof publicKey, 'string');
-                assert.ok(publicKey.length > 55);
-                assert.ok(publicKey.length < 90);
-            });
-        });
-        describe('negative', () => {
-            it('should throw when non-privateKey given', () => {
-                assert.throws(
-                    () => EthereumEncryption.publicKeyFromPrivateKey(
-                        'foobar'
+                    () => EthereumEncryption.publicKeyByPrivateKey(
+                        AsyncTestUtil.randomString(12)
                     )
                 );
             });
         });
     });
-    describe('.hash()', () => {
+    describe('.addressByPublicKey()', () => {
         describe('positive', () => {
-            it('should create a hash', () => {
-                const hash = EthereumEncryption.hash('foobar');
-                assert.equal('09234807e4af85f17c66b48ee3bca89dffd1f1233659f9f940a2b17b0b8c6bc5', hash);
+            it('should generate the correct address', () => {
+                const address = EthereumEncryption.addressByPublicKey(TEST_DATA.publicKey);
+                assert.equal(address, TEST_DATA.address);
             });
         });
         describe('negative', () => {
-            it('should throw when no string given', () => {
-                assert.throws(
-                    () => EthereumEncryption.hash({
-                        foo: 'bar'
-                    })
-                );
-            });
+            assert.throws(
+                () => EthereumEncryption.addressByPublicKey(
+                    AsyncTestUtil.randomString(12)
+                )
+            );
         });
     });
-    describe('.soliditySha3()', () => {
-        it('should hash the value', () => {
-            const hash = EthereumEncryption.soliditySha3('foobar');
-            assert.equal(hash, '0x38d18acb67d25c8bb9942764b62f18e17054f66a817bd4295423adf9ed98873e');
-        });
-    });
-    describe('.signHash()', () => {
+    describe('.sign()', () => {
         describe('positive', () => {
-            it('should sign the hash', () => {
-                const privateKey = EthereumEncryption.createPrivateKey();
-                const hash = EthereumEncryption.hash('foobar');
-                const signature = EthereumEncryption.signHash(
-                    privateKey,
-                    hash
-                );
-                assert.equal(typeof signature, 'string');
-                assert.ok(signature.length > 100);
-                assert.ok(signature.length < 160);
-            });
-            it('should always create the same signature', () => {
-                const privateKey = EthereumEncryption.createPrivateKey();
-                const hash = EthereumEncryption.hash('foobar');
-                const signature1 = EthereumEncryption.signHash(
-                    privateKey,
-                    hash
-                );
-                const signature2 = EthereumEncryption.signHash(
-                    privateKey,
-                    hash
-                );
-                assert.equal(signature1, signature2);
-            });
-            it('should sign the solidity hash', async () => {
-                // return;
-                const web3 = EthereumEncryption.web3;
-
-                console.log('Account:');
-                //                const account = web3.eth.accounts.create();
-                const account = web3.eth.accounts
-                    .privateKeyToAccount('0x107be946709e41b7895eea9f2dacf998a0a9124acbb786f0fd1a826101581a07');
-                console.dir(account);
-
-                console.log('account2:');
-                const account2 = web3.eth.accounts
-                    .privateKeyToAccount(account.privateKey);
-                console.dir(account2);
-
-                console.log('publicKey:');
-                const publicKey = ethUtil.privateToPublic(account.privateKey);
-                console.dir(publicKey.toString('hex'));
-
-                console.log('## address:');
-                const address = ethUtil.pubToAddress(publicKey);
-                console.dir(address.toString('hex'));
-                const checkSumAdress = web3.utils.toChecksumAddress(address.toString('hex'));
-                console.log('checkSumAdress: ');
-                console.dir(checkSumAdress);
-
-                console.log('## sign:');
-                const sig1 = account.sign('foobar');
-                console.dir(sig1);
-
-                console.log('## recover:');
-                const rec = EthereumEncryption
-                    .web3.eth.accounts
-                    .recover(
-                        sig1.messageHash,
-                        sig1.v,
-                        sig1.r,
-                        sig1.s
-                    );
-                console.dir(rec);
-
-
-                console.log('## encrypt:');
+            it('should sign the data', () => {
                 const message = AsyncTestUtil.randomString(12);
-                const pubString = '04' + publicKey.toString('hex');
-
-                console.dir('pubString: ' + pubString);
-                const encrypted = EthereumEncryption.encryptWithPublicKey(
-                    pubString,
-                    'foobar'
-                );
-                console.log('encrypted:');
-                console.dir(encrypted.toString('hex'));
-
-
-                console.log('## decrypt:');
-
-                console.log('privKey: ' + account.privateKey);
-                const twoStripped = account.privateKey.replace(/^.{2}/g, '');
-                console.log('twoStripped: ' + twoStripped);
-
-                const privBuffer = new Buffer(twoStripped);
-                console.log('privKeyString: ' + privBuffer.toString());
-                console.dir(ethUtil.toBuffer(account.privateKey).toString('hex'));
-
-
-                console.log('THIS WORKS !!!!');
-                console.log('::::::::::::::::::' + account.privateKey);
-                const buf = Buffer(message);
-
-                // TODO perfomrance test if this is faster
-                const publicKeyA = eccrypto.getPublic(new Buffer(twoStripped, 'hex'));
-
-                console.log('publicKeyA:');
-                console.dir(publicKeyA.toString('hex'));
-                console.log('_');
-                const enc = await eccrypto.encrypt(new Buffer(pubString, 'hex'), buf);
-                const t = {
-                    iv: enc.iv.toString('hex'),
-                    ephemPublicKey: enc.ephemPublicKey.toString('hex'),
-                    ciphertext: enc.ciphertext.toString('hex'),
-                    mac: enc.mac.toString('hex')
-                };
-                const t2 = {
-                    iv: new Buffer( t.iv, 'hex'),
-                    ephemPublicKey: new Buffer(t.ephemPublicKey, 'hex'),
-                    ciphertext: new Buffer(t.ciphertext, 'hex'),
-                    mac: new Buffer(t.mac, 'hex')
-                };
-                console.dir(t);
-                console.log('....');
-                const dec = await eccrypto.decrypt(new Buffer(twoStripped, 'hex'), t2);
-                console.dir(dec.toString());
-                console.dir(dec.toString());
-                assert.equal(dec.toString(), message);
-
-                process.exit();
-                /*
-                const privateKey = EthereumEncryption.createPrivateKey();
-                const publicKey = EthereumEncryption.publicKeyFromPrivateKey(privateKey);
-                const address = EthereumEncryption.publicKeyToAddress(publicKey);
-                console.log('address:');
-                console.dir(EthereumEncryption.web3.utils.toChecksumAddress(address));
-
-                const hash = EthereumEncryption.soliditySha3('foobar');
-                console.log('hash:');
-                console.dir(hash);
-                const useHash = hash;
-
-                console.log('privKey:');
-                console.dir(privateKey);
-
-                const sig1 = EthereumEncryption
-                    .web3.eth.accounts
-                    .sign(
-                        'Hello, world!',
-                        new Buffer(privateKey, 'hex')
-                    );
-                console.log('sig1:');
-                console.dir(sig1);
-
-                const rec = EthereumEncryption
-                    .web3.eth.accounts
-                    .recover(
-                        sig1.messageHash,
-                        sig1.v,
-                        sig1.r,
-                        sig1.s
-                    );
-                console.log('recover:');
-                console.dir(EthereumEncryption.web3.utils.toChecksumAddress(rec));
-
-                console.log('useHash:');
-                console.dir(useHash);
-
-                const signature = EthereumEncryption.signHash(
-                    privateKey,
-                    useHash
-                );
+                const signature = EthereumEncryption.sign(TEST_DATA.privateKey, message);
                 assert.ok(signature);
-                console.dir(signature);*/
+                assert.equal(typeof signature.r, 'string');
+                assert.equal(typeof signature.s, 'string');
+                assert.equal(typeof signature.v, 'string');
             });
         });
         describe('negative', () => {
-            it('should throw when non-hash is given', () => {
-                const privateKey = EthereumEncryption.createPrivateKey();
+            it('should not sign with wrong key', () => {
                 assert.throws(
-                    () => EthereumEncryption.signHash(
-                        privateKey,
-                        'foobar'
-                    )
-                );
-            });
-            it('should throw when non-private-key is given', () => {
-                const hash = EthereumEncryption.hash('foobar');
-                assert.throws(
-                    () => EthereumEncryption.signHash(
-                        'foobar',
-                        hash
+                    () => EthereumEncryption.sign(
+                        AsyncTestUtil.randomString(222),
+                        AsyncTestUtil.randomString(12)
                     )
                 );
             });
         });
     });
-    describe('.verifyHashSignature()', () => {
+    describe('.recover()', () => {
         describe('positive', () => {
-            it('should verify the signature', () => {
-                const privateKey = EthereumEncryption.createPrivateKey();
-                const hash = EthereumEncryption.hash('foobar');
-                const signature = EthereumEncryption.signHash(
-                    privateKey,
-                    hash
-                );
-                const publicKey = EthereumEncryption.publicKeyFromPrivateKey(
-                    privateKey
-                );
-                const valid = EthereumEncryption.verifyHashSignature(
-                    publicKey,
-                    hash,
-                    signature
-                );
-                assert.ok(valid);
-            });
-            it('should not verify wrong signature', () => {
-                const privateKey = EthereumEncryption.createPrivateKey();
-                const wrongPrivateKey = EthereumEncryption.createPrivateKey();
-                const hash = EthereumEncryption.hash('foobar');
-                const signature = EthereumEncryption.signHash(
-                    wrongPrivateKey,
-                    hash
-                );
-                const publicKey = EthereumEncryption.publicKeyFromPrivateKey(
-                    privateKey
-                );
-                const valid = EthereumEncryption.verifyHashSignature(
-                    publicKey,
-                    hash,
-                    signature
-                );
-                assert.equal(false, valid);
+            it('should return the correct address', () => {
+                const message = AsyncTestUtil.randomString(12);
+                const signature = EthereumEncryption.sign(TEST_DATA.privateKey, message);
+                const address = EthereumEncryption.recover(signature, message);
+                assert.equal(address, TEST_DATA.address);
             });
         });
-        describe('negative', () => {
-            it('should throw when non publicKey given', () => {
-                const privateKey = EthereumEncryption.createPrivateKey();
-                const hash = EthereumEncryption.hash('foobar');
-                const signature = EthereumEncryption.signHash(
-                    privateKey,
-                    hash
-                );
-                const publicKey = EthereumEncryption.publicKeyFromPrivateKey(
-                    privateKey
-                );
-                assert.throws(
-                    () => EthereumEncryption.verifyHashSignature(
-                        'foobar',
-                        hash,
-                        signature
-                    )
-                );
-            });
-        });
+        describe('negative', () => {});
     });
     describe('.encryptWithPublicKey()', () => {
         describe('positive', () => {
-            it('should encrypt the message', () => {
-                const privateKey = EthereumEncryption.createPrivateKey();
-                const publicKey = EthereumEncryption.publicKeyFromPrivateKey(
-                    privateKey
+            it('should encrypt the data', async () => {
+                const message = AsyncTestUtil.randomString(12);
+                const encrypted = await EthereumEncryption.encryptWithPublicKey(
+                    TEST_DATA.publicKey,
+                    message
                 );
-                const encrypted = EthereumEncryption.encryptWithPublicKey(
-                    publicKey,
-                    'foobar'
-                );
-                assert.equal(typeof encrypted, 'string');
+                assert.equal(typeof encrypted.iv, 'string');
+                assert.equal(typeof encrypted.ephemPublicKey, 'string');
+                assert.equal(typeof encrypted.ciphertext, 'string');
+                assert.equal(typeof encrypted.mac, 'string');
             });
         });
         describe('negative', () => {
-            it('should throw when no publicKey given', () => {
-                assert.throws(
+            it('should throw when non-key given', async () => {
+                const message = AsyncTestUtil.randomString(12);
+                await AsyncTestUtil.assertThrows(
                     () => EthereumEncryption.encryptWithPublicKey(
-                        'foobar',
-                        'foobar'
+                        AsyncTestUtil.randomString(12),
+                        message
                     )
                 );
             });
         });
     });
-    describe('.decryptWithPrivateKey()', () => {
-        describe('positive', () => {
-            it('should decrypt the message', () => {
-                const privateKey = EthereumEncryption.createPrivateKey();
-                const publicKey = EthereumEncryption.publicKeyFromPrivateKey(
-                    privateKey
+    describe('.decryptWithPrivateKey()', ()=> {
+        describe('positive', ()=> {
+            it('should decrypt the data', async () => {
+                const message = AsyncTestUtil.randomString(12);
+                const encrypted = await EthereumEncryption.encryptWithPublicKey(
+                    TEST_DATA.publicKey,
+                    message
                 );
-                const encrypted = EthereumEncryption.encryptWithPublicKey(
-                    publicKey,
-                    'foobar'
-                );
-                const decrypted = EthereumEncryption.decryptWithPrivateKey(
-                    privateKey,
+                const decrypted = await EthereumEncryption.decryptWithPrivateKey(
+                    TEST_DATA.privateKey,
                     encrypted
                 );
-                assert.equal('foobar', decrypted);
+                assert.equal(decrypted, message);
             });
         });
-        describe('negative', () => {
-            it('should throw when no privateKey given', () => {
-                const privateKey = EthereumEncryption.createPrivateKey();
-                const publicKey = EthereumEncryption.publicKeyFromPrivateKey(
-                    privateKey
-                );
-                const encrypted = EthereumEncryption.encryptWithPublicKey(
-                    publicKey,
-                    'foobar'
-                );
-                assert.throws(
-                    () => EthereumEncryption.encryptWithPublicKey(
-                        'foobar',
-                        encrypted
-                    )
-                );
-            });
-        });
+        describe('negative', ()=> {});
     });
+    /*
+        describe('.testBlock()', ()=> {
+            describe('positive', ()=> {});
+            describe('negative', ()=> {});
+        });
+    */
 });

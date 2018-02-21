@@ -7,75 +7,73 @@ const assert = require('assert');
 
 const EthereumEncryption = require('../dist/lib/index');
 
-const testData = {
-    address: '0x63dcee1fd1d814858acd4172bb20e1aa0c947c0a',
-    privateKey: '2400238629a674a372694567f949c94847b76607de151433587c20547aa90460',
-    publicKey: '03a34d6aef3eb42335fb3cacb59478c0b44c0bbeb8bb4ca427dbc7044157a5d24b'
+const TEST_DATA = {
+    address: '0x3f243FdacE01Cfd9719f7359c94BA11361f32471',
+    privateKey: '0x107be946709e41b7895eea9f2dacf998a0a9124acbb786f0fd1a826101581a07',
+    publicKey: 'bf1cc3154424dc22191941d9f4f50b063a2b663a2337e5548abea633c1d06eceacf2b81dd326d278cd992d5e03b0df140f2df389ac9a1c2415a220a4a9e8c046'
 };
 
 const benchmark = {
-    signHash: {},
+    sign: {},
     encryptWithPublicKey: {},
     decryptWithPrivateKey: {}
 };
 
 describe('performance.test.js', () => {
-    describe('.signHash()', () => {
+    describe('.sign()', () => {
         it('sameKey', async () => {
             // prepare
-            const privateKey = EthereumEncryption.createPrivateKey();
-            const runs = 10000;
+            const identity = EthereumEncryption.createIdentity();
+            const runs = 300;
             const hashes = new Array(runs)
                 .fill(0)
                 .map(() => AsyncTestUtil.randomString(12))
-                .map(s => EthereumEncryption.hash(s));
+                .map(s => EthereumEncryption.hash(s).replace(/^.{2}/g, ''));
 
             // run
             const startTime = process.hrtime();
             for (let i = 0; i < runs; i++) {
                 const hash = hashes.pop();
-                EthereumEncryption.signHash(
-                    privateKey,
+                EthereumEncryption.sign(
+                    identity.privateKey,
                     hash
                 );
             }
 
             const elapsed = convertHrtime(process.hrtime(startTime));
-            benchmark.signHash.sameKey = elapsed.milliseconds;
+            benchmark.sign.sameKey = elapsed.milliseconds;
         });
         it('otherKey', async () => {
             // prepare
-            const runs = 10000;
+            const runs = 300;
             const hashes = new Array(runs)
                 .fill(0)
                 .map(() => AsyncTestUtil.randomString(12))
-                .map(s => EthereumEncryption.hash(s));
+                .map(s => EthereumEncryption.hash(s).replace(/^.{2}/g, ''));
             const keys = new Array(runs)
                 .fill(0)
-                .map(() => EthereumEncryption.createPrivateKey());
+                .map(() => EthereumEncryption.createIdentity().privateKey);
 
             // run
             const startTime = process.hrtime();
             for (let i = 0; i < runs; i++) {
                 const hash = hashes.pop();
                 const key = keys.pop();
-                EthereumEncryption.signHash(
+                EthereumEncryption.sign(
                     key,
                     hash
                 );
             }
 
             const elapsed = convertHrtime(process.hrtime(startTime));
-            benchmark.signHash.otherKey = elapsed.milliseconds;
+            benchmark.sign.otherKey = elapsed.milliseconds;
         });
     });
     describe('.encryptWithPublicKey()', () => {
         it('sameKey', async () => {
             // prepare
-            const privateKey = EthereumEncryption.createPrivateKey();
-            const publicKey = EthereumEncryption.publicKeyFromPrivateKey(
-                privateKey
-            );
+            const identity = EthereumEncryption.createIdentity();
+
             const runs = 1000;
             const hashes = new Array(runs)
                 .fill(0)
@@ -84,13 +82,18 @@ describe('performance.test.js', () => {
 
             // run
             const startTime = process.hrtime();
-            for (let i = 0; i < runs; i++) {
-                const hash = hashes.pop();
-                const encrypted = EthereumEncryption.encryptWithPublicKey(
-                    publicKey,
-                    hash
-                );
-            }
+
+            await Promise.all(
+                new Array(runs)
+                .fill(0)
+                .map(async () => {
+                    const hash = hashes.pop();
+                    await EthereumEncryption.encryptWithPublicKey(
+                        identity.publicKey,
+                        hash
+                    );
+                })
+            );
 
             const elapsed = convertHrtime(process.hrtime(startTime));
             benchmark.encryptWithPublicKey.sameKey = elapsed.milliseconds;
@@ -104,23 +107,22 @@ describe('performance.test.js', () => {
                 .map(s => EthereumEncryption.hash(s));
             const keys = new Array(runs)
                 .fill(0)
-                .map(() => {
-                    const privateKey = EthereumEncryption.createPrivateKey();
-                    const publicKey = EthereumEncryption.publicKeyFromPrivateKey(
-                        privateKey
-                    );
-                    return publicKey;
-                });
+                .map(() => EthereumEncryption.createIdentity().publicKey);
+
             // run
             const startTime = process.hrtime();
-            for (let i = 0; i < runs; i++) {
-                const hash = hashes.pop();
-                const publicKey = keys.pop();
-                const encrypted = EthereumEncryption.encryptWithPublicKey(
-                    publicKey,
-                    hash
-                );
-            }
+            await Promise.all(
+                new Array(runs)
+                .fill(0)
+                .map(async () => {
+                    const hash = hashes.pop();
+                    const publicKey = keys.pop();
+                    await EthereumEncryption.encryptWithPublicKey(
+                        publicKey,
+                        hash
+                    );
+                })
+            );
 
             const elapsed = convertHrtime(process.hrtime(startTime));
             benchmark.encryptWithPublicKey.otherKey = elapsed.milliseconds;
@@ -129,29 +131,34 @@ describe('performance.test.js', () => {
     describe('.decryptWithPrivateKey()', () => {
         it('sameKey', async () => {
             // prepare
-            const privateKey = EthereumEncryption.createPrivateKey();
-            const publicKey = EthereumEncryption.publicKeyFromPrivateKey(
-                privateKey
-            );
+            const identity = EthereumEncryption.createIdentity();
+
             const runs = 1000;
-            const hashes = new Array(runs)
+            const hashes = await Promise.all(
+                new Array(runs)
                 .fill(0)
                 .map(() => AsyncTestUtil.randomString(12))
                 .map(s => EthereumEncryption.hash(s))
-                .map(h => EthereumEncryption.encryptWithPublicKey(
-                    publicKey,
+                .map(async (h) => EthereumEncryption.encryptWithPublicKey(
+                    identity.publicKey,
                     h
-                ));
+                ))
+            );
 
             // run
             const startTime = process.hrtime();
-            for (let i = 0; i < runs; i++) {
-                const encrypted = hashes.pop();
-                const decrypted = EthereumEncryption.decryptWithPrivateKey(
-                    privateKey,
-                    encrypted
-                );
-            }
+            await Promise.all(
+                new Array(runs)
+                .fill(0)
+                .map(async () => {
+                    const encrypted = hashes.pop();
+                    await EthereumEncryption.decryptWithPrivateKey(
+                        identity.privateKey,
+                        encrypted
+                    );
+
+                })
+            );
 
             const elapsed = convertHrtime(process.hrtime(startTime));
             benchmark.decryptWithPrivateKey.sameKey = elapsed.milliseconds;

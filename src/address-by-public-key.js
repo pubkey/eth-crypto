@@ -9,7 +9,7 @@ import {
  * @returns {string} address
  */
 export default function addressByPublicKey(publicKey) {
-    const address = EthUtil.pubToAddress(publicKey).toString('hex');
-    const checkSumAdress = web3.utils.toChecksumAddress(address);
+    const addressBuffer = EthUtil.pubToAddress(new Buffer(publicKey, 'hex'));
+    const checkSumAdress = web3.utils.toChecksumAddress(addressBuffer.toString('hex'));
     return checkSumAdress;
 }

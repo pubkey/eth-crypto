@@ -5,7 +5,10 @@ export default async function encryptWithPublicKey(publicKey, message) {
     // re-add the compression-flag
     const pubString = '04' + publicKey;
 
-    const encryptedBuffers = await eccrypto.encrypt(new Buffer(pubString, 'hex'), buf);
+    const encryptedBuffers = await eccrypto.encrypt(
+        new Buffer(pubString, 'hex'),
+        Buffer(message)
+    );
 
     const encrypted = {
         iv: encryptedBuffers.iv.toString('hex'),
