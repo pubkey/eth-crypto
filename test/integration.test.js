@@ -1,6 +1,5 @@
 const ganache = require('ganache-cli');
 const Web3 = require('web3');
-const Tx = require('ethereumjs-tx');
 const AsyncTestUtil = require('async-test-util');
 const assert = require('assert');
 const EthCrypto = require('../dist/lib/index');
@@ -94,9 +93,10 @@ describe('integration.test.js', () => {
                 gasLimit: 60000,
                 gasPrice: parseInt(gasPrice)
             };
-            const tx = new Tx(rawTx);
-            tx.sign(new Buffer(identity.privateKey.replace(/^.{2}/g, ''), 'hex'));
-            const serializedTx = tx.serialize().toString('hex');
+            const serializedTx = EthCrypto.signTransaction(
+                rawTx,
+                identity.privateKey
+            );
             const receipt = await web3.eth.sendSignedTransaction(serializedTx);
             assert.equal(receipt.blockNumber, 1);
             assert.equal(receipt.status, 1);

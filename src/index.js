@@ -5,6 +5,7 @@ import encryptWithPublicKey from './encrypt-with-public-key';
 import publicKeyByPrivateKey from './public-key-by-private-key';
 import recover from './recover';
 import sign from './sign';
+import signTransaction from './sign-transaction';
 import * as hash from './hash';
 import * as util from './util';
 
@@ -16,6 +17,7 @@ export {
     publicKeyByPrivateKey,
     recover,
     sign,
+    signTransaction,
     hash,
     util
 };
@@ -28,6 +30,7 @@ export default {
     publicKeyByPrivateKey,
     recover,
     sign,
+    signTransaction,
     hash,
     util
 };

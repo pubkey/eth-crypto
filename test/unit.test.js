@@ -126,6 +126,45 @@ describe('unit.test.js', () => {
         });
         describe('negative', () => {});
     });
+    describe('.signTransaction()', () => {
+        describe('positive', () => {
+            it('should sign our transaction', () => {
+                const ident = EthCrypto.createIdentity();
+                const rawTx = {
+                    from: ident.address,
+                    to: '0x86Fa049857E0209aa7D9e616F7eb3b3B78ECfdb0',
+                    value: 1000000000000000000,
+                    gasPrice: 5000000000,
+                    gasLimit: 21000
+                };
+                const signed = EthCrypto.signTransaction(
+                    rawTx,
+                    ident.privateKey
+                );
+                assert.equal(typeof signed, 'string');
+            });
+        });
+        describe('negative', () => {
+            it('should throw on non-key', () => {
+                const ident = EthCrypto.createIdentity();
+                const rawTx = {
+                    from: ident.address,
+                    to: '0x86Fa049857E0209aa7D9e616F7eb3b3B78ECfdb0',
+                    value: 1000000000000000000,
+                    gasPrice: 5000000000,
+                    gasLimit: 21000
+                };
+                const ident2 = EthCrypto.createIdentity();
+                assert.throws(
+                    () => EthCrypto.signTransaction(
+                        rawTx,
+                        ident2.privateKey
+                    )
+                );
+            });
+        });
+    });
+
     /*
         describe('.testBlock()', ()=> {
             describe('positive', ()=> {});

@@ -1,3 +1,4 @@
+import { BigNumber } from 'bignumber.js';
 import Web3 from 'web3';
 
 export function createIdentity(): {
@@ -22,11 +23,25 @@ export type Encrypted = {
     mac: string
 };
 
+export type RawTx = {
+    from: string,
+    to: string,
+    value: number | string | BigNumber,
+    gasLimit: number,
+    gasPrice: number,
+    code?: string
+};
+
 export function sign(privateKey: string, message: string): Signature;
 export function recover(sig: Signature, message: string);
 
 export function encryptWithPublicKey(publicKey: string, message: string): Promise<Encrypted>;
 export function decryptWithPrivateKey(privateKey: string, encrypted: Encrypted): Promise<string>;
+
+export function signTransaction(
+    rawTx: RawTx,
+    privateKey: string
+): string;
 
 export type hash = {
     solidityHash(msg: string): string;
@@ -50,6 +65,7 @@ declare const _default: {
     publicKeyByPrivateKey,
     recover,
     sign,
+    signTransaction,
     hash,
     util
 };
