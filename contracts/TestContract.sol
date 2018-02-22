@@ -22,7 +22,6 @@ contract TestContract {
         );
     }
 
-
     function hashString(
         string someString
     ) public constant returns(bytes32) {
