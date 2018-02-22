@@ -3,9 +3,9 @@ const Web3 = require('web3');
 const Tx = require('ethereumjs-tx');
 const AsyncTestUtil = require('async-test-util');
 const assert = require('assert');
-const EthereumEncryption = require('../dist/lib/index');
+const EthCrypto = require('../dist/lib/index');
 const compiled = require('../gen/TestContract.json');
-const web3 = EthereumEncryption.util.web3;
+const web3 = EthCrypto.util.web3;
 
 describe('integration.test.js', () => {
     const state = {
@@ -20,7 +20,7 @@ describe('integration.test.js', () => {
             // create accounts
             const ganacheAccounts = new Array(20)
                 .fill(0)
-                .map(() => EthereumEncryption.createIdentity())
+                .map(() => EthCrypto.createIdentity())
                 .map(identity => {
                     state.accounts.push(identity);
                     const twoStripped = identity.privateKey.replace(/^.{2}/g, '');
@@ -66,7 +66,7 @@ describe('integration.test.js', () => {
             const web3 = new Web3();
             const ganacheAccounts = new Array(10)
                 .fill(0)
-                .map(() => EthereumEncryption.createIdentity())
+                .map(() => EthCrypto.createIdentity())
                 .map(identity => ({
                     secretKey: new Buffer(identity.privateKey.replace(/^.{2}/g, ''), 'hex'),
                     balance: web3.utils.toWei('100', 'ether')
@@ -76,7 +76,7 @@ describe('integration.test.js', () => {
             }));
         });
         it('should be possible to sign transaction with the key', async () => {
-            const identity = EthereumEncryption.createIdentity();
+            const identity = EthCrypto.createIdentity();
 
             const web3 = new Web3();
             web3.setProvider(ganache.provider({
@@ -109,23 +109,23 @@ describe('integration.test.js', () => {
                 .methods.hashNumber(nr)
                 .call();
 
-            const jsHash = EthereumEncryption.hash.solidityHash(nr);
+            const jsHash = EthCrypto.hash.solidityHash(nr);
             assert.equal(solHash, jsHash);
         });
         it('string: should create the same hash as solidity', async () => {
             const str = 'foobar';
-            const jsHash = EthereumEncryption.hash.solidityHash(str);
+            const jsHash = EthCrypto.hash.solidityHash(str);
             const solHash = await state.contract
                 .methods.hashString(str)
                 .call();
             assert.equal(jsHash, solHash);
         });
         it('should create the same hash as web3.accounts.sign()', async () => {
-            const ident = EthereumEncryption.createIdentity();
+            const ident = EthCrypto.createIdentity();
             const str = 'foobar';
             const account = web3.eth.accounts.privateKeyToAccount(ident.privateKey);
             const sig = account.sign(str);
-            const jsHash = EthereumEncryption.hash.signHash(
+            const jsHash = EthCrypto.hash.signHash(
                 str
             );
             assert.equal(jsHash, sig.messageHash);
@@ -133,15 +133,15 @@ describe('integration.test.js', () => {
     });
     describe('sign', () => {
         it('should validate the signature on solidity', async () => {
-            const ident = EthereumEncryption.createIdentity();
+            const ident = EthCrypto.createIdentity();
             const message = AsyncTestUtil.randomString(12);
 
-            const messageHash = EthereumEncryption.hash.signHash(message);
-            const signature = await EthereumEncryption.sign(
+            const messageHash = EthCrypto.hash.signHash(message);
+            const signature = await EthCrypto.sign(
                 ident.privateKey,
                 message
             );
-            const jsSigner = EthereumEncryption.recover(signature, message);
+            const jsSigner = EthCrypto.recover(signature, message);
             assert.equal(jsSigner, ident.address);
             const solSigner = await state.contract
                 .methods.recoverSignature(

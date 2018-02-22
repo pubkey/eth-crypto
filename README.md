@@ -1,124 +1,124 @@
-# ethereum-encryption
+# eth-crypto
 
-A javascript module to encrypt, decrypt, sign and verify data with an ethereum public- or privateKey. This internally uses [bitcore-lib](https://github.com/bitpay/bitcore-lib) and [bitcore-ecies](https://github.com/bitpay/bitcore-ecies).
+Cryptographic functions for ethereum and how to use them together with web3 and solidity.
 
-`Warning: There was no audit on this code. Use this on your own risk.`
+## Tutorials
 
-## Install
+## Functions
+
+### Install
 
 ```bash
-  npm install ethereum-encryption --save
+  npm install eth-crypto --save
 ```
 
 ```javascript
 // es6
-import EthereumEncryption from 'ethereum-encryption';
+import EthCrypto from 'eth-crypto';
 
 // node
-const EthereumEncryption = require('ethereum-encryption');
+const EthCrypto = require('eth-crypto');
 ```
 
 ## API
 
-### createPrivateKey()
+### createIdentity()
 
-Creates a new privateKey from random bytes and returns it as hex-string.
-
-```javascript
-  const privateKey = EthereumEncryption.createPrivateKey();
-  // '2400238629a674a372694567f949c94847b76607de151433587c20547aa90460'
-```
-
-You can then use the created privateKeys together with ganache by transforming them into a buffer.
+Creates a new ethereum-identity with privateKey, publicKey and address as hex-string.
 
 ```javascript
-const ganache = require('ganache-cli');
-const Web3 = require('web3');
-const web3 = new Web3();
-web3.setProvider(ganache.provider({
-    accounts: [{
-        secretKey: new Buffer(privateKey, 'hex'),
-        balance: web3.utils.toWei('100', 'ether')
-    }]
-}));
+  const identity = EthCrypto.createIdentity();
+  /* > {
+      address: '0x3f243FdacE01Cfd9719f7359c94BA11361f32471',
+      privateKey: '0x107be946709e41b7895eea9f2dacf998a0a9124acbb786f0fd1a826101581a07',
+      publicKey: 'bf1cc3154424dc22191941d9f4f50b063a2b663a2337e5548abea633c1d06ece...'
+  } */
 ```
 
-### publicKeyFromPrivateKey()
+### publicKeyByPrivateKey()
 
 Derives the publicKey from a privateKey and returns it as hex-string.
 
 ```javascript
-  const publicKey = EthereumEncryption.publicKeyFromPrivateKey(
-      '2400238629a674a372694567f949c94847b76607de151433587c20547aa90460'
+  const publicKey = EthCrypto.publicKeyByPrivateKey(
+      '0x107be946709e41b7895eea9f2dacf998a0a9124acbb786f0fd1a826101581a07'
   );
-  // '03a34d6aef3eb42335fb3cacb59478c0b44c0bbeb8bb4ca427dbc7044157a5d24b'
+  // > 'bf1cc3154424dc22191941d9f4f50b063a2b663a2337e5548abea633c1d06ece...'
 ```
 
-### publicKeyToAddress()
+### addressByPublicKey()
 
 Derives the ethereum-address from the publicKey.
 
 ```javascript
-  const address = EthereumEncryption.publicKeyToAddress(
-      '03a34d6aef3eb42335fb3cacb59478c0b44c0bbeb8bb4ca427dbc7044157a5d24b'
+  const address = EthCrypto.publicKeyToAddress(
+      'bf1cc3154424dc22191941d9f4f50b063a2b663a2337e5548abea633c1d06ece...'
   );
-  // '0x63dcee1fd1d814858acd4172bb20e1aa0c947c0a'
+  // > '0x3f243FdacE01Cfd9719f7359c94BA11361f32471'
 ```
 
-### hash()
+### sign()
 
-Creates the `sha3_256`-hash of the given string.
+Signs the message with the privateKey. Returns the signature as object with hex-strings.
 
 ```javascript
-  const hash = EthereumEncryption.hash('foobar');
-  // '09234807e4af85f17c66b48ee3bca89dffd1f1233659f9f940a2b17b0b8c6bc5'
+  const signature = EthCrypto.sign(
+      '0x107be946709e41b7895eea9f2dacf998a0a9124acbb786f0fd1a826101581a07', // privateKey
+      'foobar' // message
+  );
+  /* > {
+        v: '0x1b',
+        r: '0xc04b809d8f33c46ff80c44ba58e866ff0d5126d9943b58bee03cc5279450cacc',
+        s: '0x757a3393b695ba83b2aba0c35c150399bf7959493aad80d51d917435b1a7ebda'
+    } */
 ```
 
-### signHash()
+### recover()
 
-Signs the sha3_256-hash with the privateKey. Returns the signature as hex-string.
-
-```javascript
-  const signature = EthereumEncryption.signHash(
-      '2400238629a674a372694567f949c94847b76607de151433587c20547aa90460', // privateKey
-      '09234807e4af85f17c66b48ee3bca89dffd1f1233659f9f940a2b17b0b8c6bc5' // hash
-  );
-  // '40f50efc7aee9d414b5621a5818a6cc8f89bc000087d6a41ed9cc66b605365295279d3bbd7710f9fc4c4d73c39f74a0e5c116168e69d1341c3a5467142f3e63a'
-```
-
-### verifyHashSignature()
-
-Check if signature of the hash was signed by the privateKey of the publicKey. Returns `true` if valid, `false` if not.
+Recovers the signers address from the signature.
 
 ```javascript
-  const valid = verifyHashSignature.verifyHashSignature(
-      '03a34d6aef3eb42335fb3cacb59478c0b44c0bbeb8bb4ca427dbc7044157a5d24b', // publicKey
-      '09234807e4af85f17c66b48ee3bca89dffd1f1233659f9f940a2b17b0b8c6bc5', // hash
-      '40f50efc7aee9d414b5621a5818a6cc8f89bc000087d6a41ed9cc66b605365295279d3bbd7710f9fc4c4d73c39f74a0e5c116168e69d1341c3a5467142f3e63a' // signature
+    const signer = EthCrypto.recover(
+      {
+          v: '0x1b',
+          r: '0xc04b809d8f33c46ff80c44ba58e866ff0d5126d9943b58bee03cc5279450cacc',
+          s: '0x757a3393b695ba83b2aba0c35c150399bf7959493aad80d51d917435b1a7ebda'
+      }, // signature
+      'foobar' // signed message
   );
-  // true
+  // > '0x3f243FdacE01Cfd9719f7359c94BA11361f32471'
 ```
 
 ### encryptWithPublicKey()
 
-Encrypts the message with the publicKey. Returns the encrypted hex-string.
+Encrypts the message with the publicKey so that only the corresponding privateKey can decrypt it. Returns (async) the encrypted data as object with hex-strings.
 
 ```javascript
-    const encrypted = verifyHashSignature.encryptWithPublicKey(
-        '03a34d6aef3eb42335fb3cacb59478c0b44c0bbeb8bb4ca427dbc7044157a5d24b', // publicKey
-        'foobar' // data
+    const encrypted = await EthCrypto.encryptWithPublicKey(
+        'bf1cc3154424dc22191941d9f4f50b063a2b663a2337e5548abea633c1d06ece...', // publicKey
+        'foobar' // message
     );
-    // '0333eec583d04a55ce0aba9dbfb04035e8c6de4f501ecc9b26c08fa501a5ec1507ccd64457ceae9dd4f52abfa673912f2618bfb71392f864465d9bfe996bc0a2acf6133e14a689b7c1299c60eadf43f45adbb8a21543b0c4749aa9bc2a106a0f8e'
+    /* >  {
+            iv: '02aeac54cb45283b427bd1a5028552c1',
+            ephemPublicKey: '044acf39ed83c304f19f41ea66615d7a6c0068d5fc48ee181f2fb1091...',
+            ciphertext: '5fbbcc1a44ee19f7499dbc39cfc4ce96',
+            mac: '96490b293763f49a371d3a2040a2d2cb57f246ee88958009fe3c7ef2a38264a1'
+        } */
 ```
 
 ### decryptWithPrivateKey()
 
-Decrypt the encrypted message with the privateKey. Returns the message as string.
+Decrypts the encrypted data with the privateKey. Returns (async) the message as string.
 
 ```javascript
-    const message = verifyHashSignature.decryptWithPrivateKey(
-        '2400238629a674a372694567f949c94847b76607de151433587c20547aa90460', // privateKey
-        '0333eec583d04a55ce0aba9dbfb04035e8c6de4f501ecc9b26c08fa501a5ec1507ccd64457ceae9dd4f52abfa673912f2618bfb71392f864465d9bfe996bc0a2acf6133e14a689b7c1299c60eadf43f45adbb8a21543b0c4749aa9bc2a106a0f8e' // encrypted-data
+    const message = await EthCrypto.decryptWithPrivateKey(
+        '0x107be946709e41b7895eea9f2dacf998a0a9124acbb786f0fd1a826101581a07', // privateKey
+        {
+            iv: '02aeac54cb45283b427bd1a5028552c1',
+            ephemPublicKey: '044acf39ed83c304f19f41ea66615d7a6c0068d5fc48ee181f2fb1091...',
+            ciphertext: '5fbbcc1a44ee19f7499dbc39cfc4ce96',
+            mac: '96490b293763f49a371d3a2040a2d2cb57f246ee88958009fe3c7ef2a38264a1'
+        } // encrypted-data
     );
     // 'foobar'
 ```

@@ -1,6 +1,6 @@
 const AsyncTestUtil = require('async-test-util');
 const assert = require('assert');
-const EthereumEncryption = require('../dist/lib/index');
+const EthCrypto = require('../dist/lib/index');
 const eccrypto = require('eccrypto');
 
 const TEST_DATA = {
@@ -12,7 +12,7 @@ const TEST_DATA = {
 describe('unit.test.js', () => {
     describe('.createIdentity()', () => {
         it('should create an identity', () => {
-            const ident = EthereumEncryption.createIdentity();
+            const ident = EthCrypto.createIdentity();
             assert.equal(typeof ident.privateKey, 'string');
             assert.equal(typeof ident.publicKey, 'string');
             assert.equal(typeof ident.address, 'string');
@@ -21,14 +21,14 @@ describe('unit.test.js', () => {
     describe('.publicKeyByPrivateKey()', () => {
         describe('positive', () => {
             it('should give the correct publicKey', () => {
-                const publicKey = EthereumEncryption.publicKeyByPrivateKey(TEST_DATA.privateKey);
+                const publicKey = EthCrypto.publicKeyByPrivateKey(TEST_DATA.privateKey);
                 assert.equal(publicKey, TEST_DATA.publicKey);
             });
         });
         describe('negative', () => {
             it('should crash when non-key given', () => {
                 assert.throws(
-                    () => EthereumEncryption.publicKeyByPrivateKey(
+                    () => EthCrypto.publicKeyByPrivateKey(
                         AsyncTestUtil.randomString(12)
                     )
                 );
@@ -38,13 +38,13 @@ describe('unit.test.js', () => {
     describe('.addressByPublicKey()', () => {
         describe('positive', () => {
             it('should generate the correct address', () => {
-                const address = EthereumEncryption.addressByPublicKey(TEST_DATA.publicKey);
+                const address = EthCrypto.addressByPublicKey(TEST_DATA.publicKey);
                 assert.equal(address, TEST_DATA.address);
             });
         });
         describe('negative', () => {
             assert.throws(
-                () => EthereumEncryption.addressByPublicKey(
+                () => EthCrypto.addressByPublicKey(
                     AsyncTestUtil.randomString(12)
                 )
             );
@@ -54,7 +54,7 @@ describe('unit.test.js', () => {
         describe('positive', () => {
             it('should sign the data', () => {
                 const message = AsyncTestUtil.randomString(12);
-                const signature = EthereumEncryption.sign(TEST_DATA.privateKey, message);
+                const signature = EthCrypto.sign(TEST_DATA.privateKey, message);
                 assert.ok(signature);
                 assert.equal(typeof signature.r, 'string');
                 assert.equal(typeof signature.s, 'string');
@@ -64,7 +64,7 @@ describe('unit.test.js', () => {
         describe('negative', () => {
             it('should not sign with wrong key', () => {
                 assert.throws(
-                    () => EthereumEncryption.sign(
+                    () => EthCrypto.sign(
                         AsyncTestUtil.randomString(222),
                         AsyncTestUtil.randomString(12)
                     )
@@ -76,8 +76,8 @@ describe('unit.test.js', () => {
         describe('positive', () => {
             it('should return the correct address', () => {
                 const message = AsyncTestUtil.randomString(12);
-                const signature = EthereumEncryption.sign(TEST_DATA.privateKey, message);
-                const address = EthereumEncryption.recover(signature, message);
+                const signature = EthCrypto.sign(TEST_DATA.privateKey, message);
+                const address = EthCrypto.recover(signature, message);
                 assert.equal(address, TEST_DATA.address);
             });
         });
@@ -87,7 +87,7 @@ describe('unit.test.js', () => {
         describe('positive', () => {
             it('should encrypt the data', async () => {
                 const message = AsyncTestUtil.randomString(12);
-                const encrypted = await EthereumEncryption.encryptWithPublicKey(
+                const encrypted = await EthCrypto.encryptWithPublicKey(
                     TEST_DATA.publicKey,
                     message
                 );
@@ -101,7 +101,7 @@ describe('unit.test.js', () => {
             it('should throw when non-key given', async () => {
                 const message = AsyncTestUtil.randomString(12);
                 await AsyncTestUtil.assertThrows(
-                    () => EthereumEncryption.encryptWithPublicKey(
+                    () => EthCrypto.encryptWithPublicKey(
                         AsyncTestUtil.randomString(12),
                         message
                     )
@@ -109,22 +109,22 @@ describe('unit.test.js', () => {
             });
         });
     });
-    describe('.decryptWithPrivateKey()', ()=> {
-        describe('positive', ()=> {
+    describe('.decryptWithPrivateKey()', () => {
+        describe('positive', () => {
             it('should decrypt the data', async () => {
                 const message = AsyncTestUtil.randomString(12);
-                const encrypted = await EthereumEncryption.encryptWithPublicKey(
+                const encrypted = await EthCrypto.encryptWithPublicKey(
                     TEST_DATA.publicKey,
                     message
                 );
-                const decrypted = await EthereumEncryption.decryptWithPrivateKey(
+                const decrypted = await EthCrypto.decryptWithPrivateKey(
                     TEST_DATA.privateKey,
                     encrypted
                 );
                 assert.equal(decrypted, message);
             });
         });
-        describe('negative', ()=> {});
+        describe('negative', () => {});
     });
     /*
         describe('.testBlock()', ()=> {

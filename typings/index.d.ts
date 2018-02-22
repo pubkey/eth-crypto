@@ -1,11 +1,13 @@
 import Web3 from 'web3';
 
-export function addressByPublicKey(publicKey: string): string;
 export function createIdentity(): {
     privateKey: string,
     publicKey: string,
     address: string
 };
+
+export function publicKeyByPrivateKey(privateKey: string): string;
+export function addressByPublicKey(publicKey: string): string;
 
 export type Signature = {
     v: string,
@@ -20,11 +22,11 @@ export type Encrypted = {
     mac: string
 };
 
-export function decryptWithPrivateKey(privateKey: string, encrypted: Encrypted): Promise<string>;
-export function encryptWithPublicKey(publicKey: string, message: string): Promise<Encrypted>;
-export function publicKeyByPrivateKey(privateKey: string): string;
+export function sign(privateKey: string, message: string): Signature;
 export function recover(sig: Signature, message: string);
-export function sign(privateKEy: string, message: string): Signature;
+
+export function encryptWithPublicKey(publicKey: string, message: string): Promise<Encrypted>;
+export function decryptWithPrivateKey(privateKey: string, encrypted: Encrypted): Promise<string>;
 
 export type hash = {
     solidityHash(msg: string): string;

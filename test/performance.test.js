@@ -5,7 +5,7 @@ const convertHrtime = require('convert-hrtime');
 const AsyncTestUtil = require('async-test-util');
 const assert = require('assert');
 
-const EthereumEncryption = require('../dist/lib/index');
+const EthCrypto = require('../dist/lib/index');
 
 const TEST_DATA = {
     address: '0x3f243FdacE01Cfd9719f7359c94BA11361f32471',
@@ -23,18 +23,18 @@ describe('performance.test.js', () => {
     describe('.sign()', () => {
         it('sameKey', async () => {
             // prepare
-            const identity = EthereumEncryption.createIdentity();
+            const identity = EthCrypto.createIdentity();
             const runs = 300;
             const hashes = new Array(runs)
                 .fill(0)
                 .map(() => AsyncTestUtil.randomString(12))
-                .map(s => EthereumEncryption.hash.solidityHash(s).replace(/^.{2}/g, ''));
+                .map(s => EthCrypto.hash.solidityHash(s).replace(/^.{2}/g, ''));
 
             // run
             const startTime = process.hrtime();
             for (let i = 0; i < runs; i++) {
                 const hash = hashes.pop();
-                EthereumEncryption.sign(
+                EthCrypto.sign(
                     identity.privateKey,
                     hash
                 );
@@ -49,17 +49,17 @@ describe('performance.test.js', () => {
             const hashes = new Array(runs)
                 .fill(0)
                 .map(() => AsyncTestUtil.randomString(12))
-                .map(s => EthereumEncryption.hash.solidityHash(s).replace(/^.{2}/g, ''));
+                .map(s => EthCrypto.hash.solidityHash(s).replace(/^.{2}/g, ''));
             const keys = new Array(runs)
                 .fill(0)
-                .map(() => EthereumEncryption.createIdentity().privateKey);
+                .map(() => EthCrypto.createIdentity().privateKey);
 
             // run
             const startTime = process.hrtime();
             for (let i = 0; i < runs; i++) {
                 const hash = hashes.pop();
                 const key = keys.pop();
-                EthereumEncryption.sign(
+                EthCrypto.sign(
                     key,
                     hash
                 );
@@ -72,13 +72,13 @@ describe('performance.test.js', () => {
     describe('.encryptWithPublicKey()', () => {
         it('sameKey', async () => {
             // prepare
-            const identity = EthereumEncryption.createIdentity();
+            const identity = EthCrypto.createIdentity();
 
             const runs = 1000;
             const hashes = new Array(runs)
                 .fill(0)
                 .map(() => AsyncTestUtil.randomString(12))
-                .map(s => EthereumEncryption.hash.solidityHash(s));
+                .map(s => EthCrypto.hash.solidityHash(s));
 
             // run
             const startTime = process.hrtime();
@@ -88,7 +88,7 @@ describe('performance.test.js', () => {
                 .fill(0)
                 .map(async () => {
                     const hash = hashes.pop();
-                    await EthereumEncryption.encryptWithPublicKey(
+                    await EthCrypto.encryptWithPublicKey(
                         identity.publicKey,
                         hash
                     );
@@ -104,10 +104,10 @@ describe('performance.test.js', () => {
             const hashes = new Array(runs)
                 .fill(0)
                 .map(() => AsyncTestUtil.randomString(12))
-                .map(s => EthereumEncryption.hash.solidityHash(s));
+                .map(s => EthCrypto.hash.solidityHash(s));
             const keys = new Array(runs)
                 .fill(0)
-                .map(() => EthereumEncryption.createIdentity().publicKey);
+                .map(() => EthCrypto.createIdentity().publicKey);
 
             // run
             const startTime = process.hrtime();
@@ -117,7 +117,7 @@ describe('performance.test.js', () => {
                 .map(async () => {
                     const hash = hashes.pop();
                     const publicKey = keys.pop();
-                    await EthereumEncryption.encryptWithPublicKey(
+                    await EthCrypto.encryptWithPublicKey(
                         publicKey,
                         hash
                     );
@@ -131,15 +131,15 @@ describe('performance.test.js', () => {
     describe('.decryptWithPrivateKey()', () => {
         it('sameKey', async () => {
             // prepare
-            const identity = EthereumEncryption.createIdentity();
+            const identity = EthCrypto.createIdentity();
 
             const runs = 1000;
             const hashes = await Promise.all(
                 new Array(runs)
                 .fill(0)
                 .map(() => AsyncTestUtil.randomString(12))
-                .map(s => EthereumEncryption.hash.solidityHash(s))
-                .map(async (h) => EthereumEncryption.encryptWithPublicKey(
+                .map(s => EthCrypto.hash.solidityHash(s))
+                .map(async (h) => EthCrypto.encryptWithPublicKey(
                     identity.publicKey,
                     h
                 ))
@@ -152,7 +152,7 @@ describe('performance.test.js', () => {
                 .fill(0)
                 .map(async () => {
                     const encrypted = hashes.pop();
-                    await EthereumEncryption.decryptWithPrivateKey(
+                    await EthCrypto.decryptWithPrivateKey(
                         identity.privateKey,
                         encrypted
                     );
