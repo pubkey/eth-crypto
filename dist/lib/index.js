@@ -35,7 +35,7 @@ var _sign2 = _interopRequireDefault(_sign);
 
 var _hash = require('./hash');
 
-var _hash2 = _interopRequireDefault(_hash);
+var hash = _interopRequireWildcard(_hash);
 
 var _util = require('./util');
 
@@ -52,7 +52,7 @@ exports.encryptWithPublicKey = _encryptWithPublicKey2['default'];
 exports.publicKeyByPrivateKey = _publicKeyByPrivateKey2['default'];
 exports.recover = _recover2['default'];
 exports.sign = _sign2['default'];
-exports.hash = _hash2['default'];
+exports.hash = hash;
 exports.util = util;
 exports['default'] = {
     addressByPublicKey: _addressByPublicKey2['default'],
@@ -62,6 +62,6 @@ exports['default'] = {
     publicKeyByPrivateKey: _publicKeyByPrivateKey2['default'],
     recover: _recover2['default'],
     sign: _sign2['default'],
-    hash: _hash2['default'],
+    hash: hash,
     util: util
 };
