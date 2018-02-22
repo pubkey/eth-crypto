@@ -28,7 +28,7 @@ describe('performance.test.js', () => {
             const hashes = new Array(runs)
                 .fill(0)
                 .map(() => AsyncTestUtil.randomString(12))
-                .map(s => EthereumEncryption.hash(s).replace(/^.{2}/g, ''));
+                .map(s => EthereumEncryption.hash.solidityHash(s).replace(/^.{2}/g, ''));
 
             // run
             const startTime = process.hrtime();
@@ -49,7 +49,7 @@ describe('performance.test.js', () => {
             const hashes = new Array(runs)
                 .fill(0)
                 .map(() => AsyncTestUtil.randomString(12))
-                .map(s => EthereumEncryption.hash(s).replace(/^.{2}/g, ''));
+                .map(s => EthereumEncryption.hash.solidityHash(s).replace(/^.{2}/g, ''));
             const keys = new Array(runs)
                 .fill(0)
                 .map(() => EthereumEncryption.createIdentity().privateKey);
@@ -78,7 +78,7 @@ describe('performance.test.js', () => {
             const hashes = new Array(runs)
                 .fill(0)
                 .map(() => AsyncTestUtil.randomString(12))
-                .map(s => EthereumEncryption.hash(s));
+                .map(s => EthereumEncryption.hash.solidityHash(s));
 
             // run
             const startTime = process.hrtime();
@@ -104,7 +104,7 @@ describe('performance.test.js', () => {
             const hashes = new Array(runs)
                 .fill(0)
                 .map(() => AsyncTestUtil.randomString(12))
-                .map(s => EthereumEncryption.hash(s));
+                .map(s => EthereumEncryption.hash.solidityHash(s));
             const keys = new Array(runs)
                 .fill(0)
                 .map(() => EthereumEncryption.createIdentity().publicKey);
@@ -138,7 +138,7 @@ describe('performance.test.js', () => {
                 new Array(runs)
                 .fill(0)
                 .map(() => AsyncTestUtil.randomString(12))
-                .map(s => EthereumEncryption.hash(s))
+                .map(s => EthereumEncryption.hash.solidityHash(s))
                 .map(async (h) => EthereumEncryption.encryptWithPublicKey(
                     identity.publicKey,
                     h

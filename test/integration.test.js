@@ -5,7 +5,7 @@ const AsyncTestUtil = require('async-test-util');
 const assert = require('assert');
 const EthereumEncryption = require('../dist/lib/index');
 const compiled = require('../gen/TestContract.json');
-
+const web3 = EthereumEncryption.util.web3;
 
 describe('integration.test.js', () => {
     const state = {
@@ -109,41 +109,49 @@ describe('integration.test.js', () => {
                 .methods.hashNumber(nr)
                 .call();
 
-            const jsHash = EthereumEncryption.hash(nr);
+            const jsHash = EthereumEncryption.hash.solidityHash(nr);
             assert.equal(solHash, jsHash);
         });
         it('string: should create the same hash as solidity', async () => {
             const str = 'foobar';
-            const jsHash = EthereumEncryption.hash(str);
+            const jsHash = EthereumEncryption.hash.solidityHash(str);
             const solHash = await state.contract
                 .methods.hashString(str)
                 .call();
             assert.equal(jsHash, solHash);
+        });
+        it('should create the same hash as web3.accounts.sign()', async () => {
+            const ident = EthereumEncryption.createIdentity();
+            const str = 'foobar';
+            const account = web3.eth.accounts.privateKeyToAccount(ident.privateKey);
+            const sig = account.sign(str);
+            const jsHash = EthereumEncryption.hash.signHash(
+                str
+            );
+            assert.equal(jsHash, sig.messageHash);
         });
     });
     describe('sign', () => {
         it('should validate the signature on solidity', async () => {
             const ident = EthereumEncryption.createIdentity();
             const message = AsyncTestUtil.randomString(12);
-            const messageHex = EthereumEncryption.util.web3.utils.toHex(message);
+
+            const messageHash = EthereumEncryption.hash.signHash(message);
             const signature = await EthereumEncryption.sign(
                 ident.privateKey,
-                messageHex
+                message
             );
-            console.dir(signature);
-
+            const jsSigner = EthereumEncryption.recover(signature, message);
+            assert.equal(jsSigner, ident.address);
             const solSigner = await state.contract
                 .methods.recoverSignature(
-                    messageHex,
+                    messageHash,
                     signature.v,
                     signature.r,
                     signature.s
                 )
                 .call();
-
             assert.equal(solSigner, ident.address);
-
-            process.exit();
         });
     });
 });

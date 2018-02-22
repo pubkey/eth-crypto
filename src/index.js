@@ -5,7 +5,7 @@ import encryptWithPublicKey from './encrypt-with-public-key';
 import publicKeyByPrivateKey from './public-key-by-private-key';
 import recover from './recover';
 import sign from './sign';
-import hash from './hash';
+import * as hash from './hash';
 import * as util from './util';
 
 export {
