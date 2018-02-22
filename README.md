@@ -1,8 +1,15 @@
 # eth-crypto
 
-Cryptographic functions for ethereum and how to use them together with web3 and solidity.
+Cryptographic js-functions for ethereum and how to use them together with web3 and solidity.
 
 ## Tutorials
+
+### Creating Keys and use them for ethereum-transactions
+
+### Sign data and validate the signature with solidity
+
+### Sending encrypted and signed data to other identites
+
 
 ## Functions
 
