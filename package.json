@@ -1,18 +1,17 @@
 {
-  "name": "ethereum-encryption",
-  "version": "0.0.5",
-  "description": "Use this to encrypt, decrypt, sign and verify data with an ethereum public- or private-key",
+  "name": "eth-crypto",
+  "version": "1.0.0",
+  "description": "Cryptographic functions for ethereum and how to use them with web3 and solidity",
   "keywords": [
     "ethereum",
     "eth",
     "web3",
+    "solidity",
     "encryption",
     "secp256k1",
     "dapp",
     "blockchain",
-    "eth",
     "ecies",
-    "signature",
     "smart-contract"
   ],
   "main": "./dist/lib/index.js",
@@ -30,14 +29,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/pubkey/ethereum-encryption.git"
+    "url": "git+https://github.com/pubkey/eth-crypto.git"
   },
   "author": "pubkey",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/pubkey/ethereum-encryption/issues"
+    "url": "https://github.com/pubkey/eth-crypto/issues"
   },
-  "homepage": "https://github.com/pubkey/ethereum-encryption#readme",
+  "homepage": "https://github.com/pubkey/eth-crypto#readme",
   "devDependencies": {
     "assert": "1.4.1",
     "async-test-util": "1.5.1",
