@@ -1,4 +1,4 @@
-import { BigNumber } from 'bignumber.js';
+import { BigNumber } from 'bn.js';
 import Web3 from 'web3';
 
 export function createIdentity(): {
@@ -43,9 +43,15 @@ export function signTransaction(
     privateKey: string
 ): string;
 
+export type TypedValue = {
+    value: string | Number | BigNumber,
+    type: 'string' | 'uint256' | 'int256' | 'bool' | 'bytes' | 'bytes32' | 'address'
+};
+
 export type hash = {
-    solidityHash(msg: string): string;
-    signHash(msg: string): string;
+    keccak256(params: TypedValue[]): string;
+    prefixedHash(msg: string): string;
+    SIGN_PREFIX: string;
 };
 
 export type util = {

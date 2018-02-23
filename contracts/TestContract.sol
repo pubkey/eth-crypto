@@ -15,7 +15,7 @@ contract TestContract {
      * should be equal to own hash()-function in js
      */
     function hashNumber(
-        uint someNumber
+        uint256 someNumber
     ) public constant returns(bytes32) {
         return keccak256(
             someNumber
@@ -30,14 +30,26 @@ contract TestContract {
         );
     }
 
+    function hashMulti(
+        string someString,
+        uint256 someNumber,
+        bool someBool
+    ) public constant returns(bytes32) {
+        return keccak256(
+            someString,
+            someNumber,
+            someBool
+        );
+    }
+
     /**
      * see https://ethereum.stackexchange.com/a/21037/1375
      */
-    function signHashLikeWeb3(
-        bytes32 _message
+    function signHashLikeWeb3Sign(
+        bytes32 _hash
     ) public constant returns (bytes32) {
         bytes memory prefix = "\x19Ethereum Signed Message:\n32";
-        bytes32 prefixedHash = keccak256(prefix, _message);
+        bytes32 prefixedHash = keccak256(prefix, _hash);
         return prefixedHash;
     }
 
@@ -62,15 +74,14 @@ contract TestContract {
      * recovers the signer from the message instead of the messageHash
      */
     function recoverSignatureFromMessage(
-        bytes32 _message,
+        string _message,
         uint8 v,
         bytes32 r,
         bytes32 s
         ) public constant returns (address) {
-        bytes memory prefix = "\x19Ethereum Signed Message:\n32";
-        bytes32 prefixedHash = keccak256(prefix, _message);
+        bytes32 hash = hashString(_message);
         address signer = ecrecover(
-                prefixedHash,
+                hash,
                 v, r, s
         );
         return signer;

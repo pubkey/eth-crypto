@@ -103,57 +103,118 @@ describe('integration.test.js', () => {
         });
     });
     describe('hash', () => {
-        it('number: should create the same hash as solidity', async () => {
-            const nr = 1337;
-            const solHash = await state.contract
-                .methods.hashNumber(nr)
-                .call();
+        describe('.keccak256()', () => {
+            it('number: should create the same hash as solidity', async () => {
+                const nr = 1337;
+                const solHash = await state.contract
+                    .methods.hashNumber(nr)
+                    .call();
 
-            const jsHash = EthCrypto.hash.solidityHash(nr);
-            assert.equal(solHash, jsHash);
+                const jsHash = EthCrypto.hash.keccak256([{
+                    type: 'uint256',
+                    value: nr
+                }]);
+                assert.equal(solHash, jsHash);
+            });
+            it('string: should create the same hash as solidity', async () => {
+                const str = 'foobar';
+                const jsHash = EthCrypto.hash.keccak256([{
+                    type: 'string',
+                    value: str
+                }]);
+                const solHash = await state.contract
+                    .methods.hashString(str)
+                    .call();
+                assert.equal(jsHash, solHash);
+            });
+            it('multi: shoud create same hash as solidity', async () => {
+                const str = 'foobar';
+                const bool = false;
+                const uint = 23453;
+                const jsHash = EthCrypto.hash
+                    .keccak256([{
+                        type: 'string',
+                        value: str
+                    }, {
+                        type: 'uint256',
+                        value: uint
+                    }, {
+                        type: 'bool',
+                        value: bool
+                    }]);
+                const solHash = await state.contract
+                    .methods.hashMulti(
+                        str,
+                        uint,
+                        bool
+                    )
+                    .call();
+                assert.equal(jsHash, solHash);
+            });
         });
-        it('string: should create the same hash as solidity', async () => {
-            const str = 'foobar';
-            const jsHash = EthCrypto.hash.solidityHash(str);
-            const solHash = await state.contract
-                .methods.hashString(str)
-                .call();
-            assert.equal(jsHash, solHash);
-        });
-        it('should create the same hash as web3.accounts.sign()', async () => {
-            const ident = EthCrypto.createIdentity();
-            const str = 'foobar';
-            const account = web3.eth.accounts.privateKeyToAccount(ident.privateKey);
-            const sig = account.sign(str);
-            const jsHash = EthCrypto.hash.signHash(
-                str
-            );
-            assert.equal(jsHash, sig.messageHash);
-        });
-        it('should be possible to create the same prefixed hash in solidity', async () => {
-            const ident = EthCrypto.createIdentity();
-            const str = EthCrypto.hash.solidityHash('foobar');
-            console.dir(str);
-            const jsHash = EthCrypto.hash.signHash(str);
-            console.log('jsHash: ' + jsHash);
-            const solHash = await state.contract
-                .methods
-                .signHashLikeWeb3(str)
-                .call();
-            assert.equal(jsHash, solHash);
+        describe('.prefixedHash()', () => {
+            return; // TODO
+            it('should create the same hash as web3.accounts.sign()', async () => {
+                const ident = EthCrypto.createIdentity();
+                const str = 'foobar';
+                const hash = EthCrypto.hash.keccak256([{
+                    type: 'string',
+                    value: str
+                }]);
+                console.log('hash: ' + hash);
+                const account = web3.eth.accounts.privateKeyToAccount(ident.privateKey);
+                const sig = account.sign({
+                    type: 'bytes32',
+                    value: hash
+                });
+                const jsHash = EthCrypto.hash.prefixedHash(hash);
+                assert.equal(jsHash, sig.messageHash);
+            });
+            it('should be possible to create the same prefixed hash in solidity', async () => {
+                const ident = EthCrypto.createIdentity();
+                const str = 'foobar';
+                const hash = EthCrypto.hash.keccak256([{
+                    type: 'string',
+                    value: str
+                }]);
+
+                console.log('hash: ' + hash);
+
+                const jsHash = EthCrypto.hash.prefixedHash(hash);
+                console.log('prefixedHash: ' + jsHash);
+
+                const hash2 = EthCrypto.hash.keccak256([{
+                    type: 'string',
+                    value: '\x19Ethereum Signed Message:\n32'
+                }, {
+                    type: 'bytes32',
+                    value: hash
+                }]);
+                console.log('keccak256: ' + hash2);
+
+                const solHash = await state.contract
+                    .methods
+                    .signHashLikeWeb3Sign(hash)
+                    .call();
+                console.log('= solHash: ' + solHash);
+                assert.equal(jsHash, solHash);
+            });
         });
     });
     describe('sign', () => {
         it('should validate the signature on solidity', async () => {
             const ident = EthCrypto.createIdentity();
             const message = AsyncTestUtil.randomString(12);
+            const messageHash = EthCrypto.hash.keccak256([{
+                type: 'string',
+                value: message
+            }]);
 
-            const messageHash = EthCrypto.hash.signHash(message);
             const signature = await EthCrypto.sign(
                 ident.privateKey,
-                message
+                messageHash
             );
-            const jsSigner = EthCrypto.recover(signature, message);
+            const jsSigner = EthCrypto.recover(signature, messageHash);
             assert.equal(jsSigner, ident.address);
             const solSigner = await state.contract
                 .methods.recoverSignature(
@@ -167,52 +228,18 @@ describe('integration.test.js', () => {
         });
         it('should validate with the message instead of the hash', async () => {
             const ident = EthCrypto.createIdentity();
-            //    const message = EthCrypto.hash.solidityHash(AsyncTestUtil.randomString(12));
             const message = 'foobar';
-            const messageHex = web3.utils.utf8ToHex(message);
-            const messageBytes = web3.utils.hexToBytes(messageHex);
-            console.log(111);
-            /*
-                        console.log('message:');
-                        console.dir(message);
-                        console.dir(messageHex);
-
-                        // pretest: hash should be equal to the web3-sign-hash
-                        const signHash1 = web3.eth.accounts.sign(messageHex, ident.privateKey).messageHash;
-                        const fullMessage = '\x19Ethereum Signed Message:\n' + messageHex.length + messageHex;
-                        const ownHash = EthCrypto.hash.solidityHash(fullMessage);
-
-                        const signHash2 = EthCrypto.hash.signHash(message);
-                        console.log('signHash2:' + signHash2);
-
-                        console.log('signHash1:' + signHash1);
-                        console.log('ownHash:' + ownHash);
-                        //            assert.equal(signHash1, ownHash);
-
-                        const solHash = await state.contract
-                            .methods.signHashLikeWeb3(
-                                message
-                            )
-                            .call();
-
-                        console.log('solHash: ' + solHash);
-                        console.log('--------------------------------------');
-                        process.exit();
-
-                        //"\x19Ethereum Signed Message:\n" + message.length + message
-            */
-
+            const messageHash = EthCrypto.hash.keccak256([{
+                type: 'string',
+                value: message
+            }]);
             const signature = await EthCrypto.sign(
                 ident.privateKey,
-                message
+                messageHash
             );
-            console.log(222);
-            const jsSigner = EthCrypto.recover(signature, message);
-            console.log(333);
-            assert.equal(jsSigner, ident.address);
             const solSigner = await state.contract
                 .methods.recoverSignatureFromMessage(
-                    messageHex,
+                    message,
                     signature.v,
                     signature.r,
                     signature.s

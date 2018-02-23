@@ -28,7 +28,7 @@ describe('performance.test.js', () => {
             const hashes = new Array(runs)
                 .fill(0)
                 .map(() => AsyncTestUtil.randomString(12))
-                .map(s => EthCrypto.hash.solidityHash(s).replace(/^.{2}/g, ''));
+                .map(s => EthCrypto.hash.keccak256(s).replace(/^.{2}/g, ''));
 
             // run
             const startTime = process.hrtime();
@@ -49,7 +49,7 @@ describe('performance.test.js', () => {
             const hashes = new Array(runs)
                 .fill(0)
                 .map(() => AsyncTestUtil.randomString(12))
-                .map(s => EthCrypto.hash.solidityHash(s).replace(/^.{2}/g, ''));
+                .map(s => EthCrypto.hash.keccak256(s).replace(/^.{2}/g, ''));
             const keys = new Array(runs)
                 .fill(0)
                 .map(() => EthCrypto.createIdentity().privateKey);
@@ -78,7 +78,7 @@ describe('performance.test.js', () => {
             const hashes = new Array(runs)
                 .fill(0)
                 .map(() => AsyncTestUtil.randomString(12))
-                .map(s => EthCrypto.hash.solidityHash(s));
+                .map(s => EthCrypto.hash.keccak256(s));
 
             // run
             const startTime = process.hrtime();
@@ -104,7 +104,7 @@ describe('performance.test.js', () => {
             const hashes = new Array(runs)
                 .fill(0)
                 .map(() => AsyncTestUtil.randomString(12))
-                .map(s => EthCrypto.hash.solidityHash(s));
+                .map(s => EthCrypto.hash.keccak256(s));
             const keys = new Array(runs)
                 .fill(0)
                 .map(() => EthCrypto.createIdentity().publicKey);
@@ -138,7 +138,7 @@ describe('performance.test.js', () => {
                 new Array(runs)
                 .fill(0)
                 .map(() => AsyncTestUtil.randomString(12))
-                .map(s => EthCrypto.hash.solidityHash(s))
+                .map(s => EthCrypto.hash.keccak256(s))
                 .map(async (h) => EthCrypto.encryptWithPublicKey(
                     identity.publicKey,
                     h
