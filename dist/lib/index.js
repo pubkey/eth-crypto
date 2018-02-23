@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.util = exports.hash = exports.sign = exports.recover = exports.publicKeyByPrivateKey = exports.encryptWithPublicKey = exports.decryptWithPrivateKey = exports.createIdentity = exports.addressByPublicKey = undefined;
+exports.util = exports.hash = exports.signTransaction = exports.sign = exports.recover = exports.publicKeyByPrivateKey = exports.encryptWithPublicKey = exports.decryptWithPrivateKey = exports.createIdentity = exports.addressByPublicKey = undefined;
 
 var _addressByPublicKey = require('./address-by-public-key');
 
@@ -33,6 +33,10 @@ var _sign = require('./sign');
 
 var _sign2 = _interopRequireDefault(_sign);
 
+var _signTransaction = require('./sign-transaction');
+
+var _signTransaction2 = _interopRequireDefault(_signTransaction);
+
 var _hash = require('./hash');
 
 var hash = _interopRequireWildcard(_hash);
@@ -52,6 +56,7 @@ exports.encryptWithPublicKey = _encryptWithPublicKey2['default'];
 exports.publicKeyByPrivateKey = _publicKeyByPrivateKey2['default'];
 exports.recover = _recover2['default'];
 exports.sign = _sign2['default'];
+exports.signTransaction = _signTransaction2['default'];
 exports.hash = hash;
 exports.util = util;
 exports['default'] = {
@@ -62,6 +67,7 @@ exports['default'] = {
     publicKeyByPrivateKey: _publicKeyByPrivateKey2['default'],
     recover: _recover2['default'],
     sign: _sign2['default'],
+    signTransaction: _signTransaction2['default'],
     hash: hash,
     util: util
 };
