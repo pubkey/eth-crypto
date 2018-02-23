@@ -65,7 +65,7 @@ describe('unit.test.js', () => {
             it('should not sign with wrong key', () => {
                 assert.throws(
                     () => EthCrypto.sign(
-                        AsyncTestUtil.randomString(222),
+                        'XXX' + AsyncTestUtil.randomString(222),
                         AsyncTestUtil.randomString(12)
                     )
                 );

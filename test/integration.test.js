@@ -130,6 +130,18 @@ describe('integration.test.js', () => {
             );
             assert.equal(jsHash, sig.messageHash);
         });
+        it('should be possible to create the same prefixed hash in solidity', async () => {
+            const ident = EthCrypto.createIdentity();
+            const str = EthCrypto.hash.solidityHash('foobar');
+            console.dir(str);
+            const jsHash = EthCrypto.hash.signHash(str);
+            console.log('jsHash: ' + jsHash);
+            const solHash = await state.contract
+                .methods
+                .signHashLikeWeb3(str)
+                .call();
+            assert.equal(jsHash, solHash);
+        });
     });
     describe('sign', () => {
         it('should validate the signature on solidity', async () => {
@@ -146,6 +158,61 @@ describe('integration.test.js', () => {
             const solSigner = await state.contract
                 .methods.recoverSignature(
                     messageHash,
+                    signature.v,
+                    signature.r,
+                    signature.s
+                )
+                .call();
+            assert.equal(solSigner, ident.address);
+        });
+        it('should validate with the message instead of the hash', async () => {
+            const ident = EthCrypto.createIdentity();
+            //    const message = EthCrypto.hash.solidityHash(AsyncTestUtil.randomString(12));
+            const message = 'foobar';
+            const messageHex = web3.utils.utf8ToHex(message);
+            const messageBytes = web3.utils.hexToBytes(messageHex);
+            console.log(111);
+            /*
+                        console.log('message:');
+                        console.dir(message);
+                        console.dir(messageHex);
+
+                        // pretest: hash should be equal to the web3-sign-hash
+                        const signHash1 = web3.eth.accounts.sign(messageHex, ident.privateKey).messageHash;
+                        const fullMessage = '\x19Ethereum Signed Message:\n' + messageHex.length + messageHex;
+                        const ownHash = EthCrypto.hash.solidityHash(fullMessage);
+
+                        const signHash2 = EthCrypto.hash.signHash(message);
+                        console.log('signHash2:' + signHash2);
+
+                        console.log('signHash1:' + signHash1);
+                        console.log('ownHash:' + ownHash);
+                        //            assert.equal(signHash1, ownHash);
+
+                        const solHash = await state.contract
+                            .methods.signHashLikeWeb3(
+                                message
+                            )
+                            .call();
+
+                        console.log('solHash: ' + solHash);
+                        console.log('--------------------------------------');
+                        process.exit();
+
+                        //"\x19Ethereum Signed Message:\n" + message.length + message
+            */
+
+            const signature = await EthCrypto.sign(
+                ident.privateKey,
+                message
+            );
+            console.log(222);
+            const jsSigner = EthCrypto.recover(signature, message);
+            console.log(333);
+            assert.equal(jsSigner, ident.address);
+            const solSigner = await state.contract
+                .methods.recoverSignatureFromMessage(
+                    messageHex,
                     signature.v,
                     signature.r,
                     signature.s
