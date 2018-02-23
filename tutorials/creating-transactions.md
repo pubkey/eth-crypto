@@ -95,3 +95,7 @@ To ensure that the transaction worked, check the balance of the receivers addres
     console.log(balance);
     // > '1000000000000000000'
 ```
+
+
+## done
+Awesome! You created your first ethereum-transaction.
