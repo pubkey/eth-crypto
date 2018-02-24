@@ -46,7 +46,7 @@ export function signTransaction(
 export function txDataByCompiled(
     abi: any,
     bytecode: string,
-    args: Array<string | number | BigNumber>
+    args?: Array<string | number | BigNumber>
 ): string;
 
 export type TypedValue = {

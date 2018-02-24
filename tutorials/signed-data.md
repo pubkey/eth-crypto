@@ -103,7 +103,7 @@ console.log(contractAddress);
 // > '0xCF3d784002721227F36575eD051Ea2171a528b7D' <- this is the address of our contract
 ```
 
-Awesome. The contract is now on the blockchain. To check if it is deployed correclty, lets call a function on it.
+Awesome. The contract is now on the blockchain. To check if it is deployed correctly, lets call a function on it.
 
 ```javascript
 
@@ -118,4 +118,4 @@ const owner = await contractInstance.methods.owner().call();
 console.dir(owner); // same as creatorIdentity.address
 ```
 
-Before we can TODO
+Before we can sign donations, we have to send some value to the contract.

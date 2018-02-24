@@ -75,12 +75,27 @@ describe('tutorials.test.js', () => {
         // check owner
         const owner = await contractInstance.methods.owner().call();
         assert.equal(owner, creatorIdentity.address);
-        console.dir(owner);
+
+        // send value
+        const rawTx2 = {
+            from: creatorIdentity.address,
+            to: contractAddress,
+            nonce: 1,
+            value: parseInt(web3.utils.toWei('1', 'ether')),
+            gas: 421000,
+            gasPrice: 50000000000
+        };
+        // TODO this does not work :(
+        console.dir(rawTx2);
+        const serializedTx2 = EthCrypto.signTransaction(
+            rawTx2,
+            creatorIdentity.privateKey
+        );
+        const receipt2 = await web3.eth.sendSignedTransaction(serializedTx2);
 
         // check balance
         const balance = await contractInstance.methods.getBalance().call();
         console.dir(balance);
-
 
     });
 });
