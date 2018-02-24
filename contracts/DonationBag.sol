@@ -74,8 +74,6 @@ contract DonationBag {
         msg.sender.transfer(amountPerDonation);
     }
 
-    // other helper functions
-
     /**
      * returns the current contract-balance
      */
