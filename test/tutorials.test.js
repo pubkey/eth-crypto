@@ -42,8 +42,7 @@ describe('tutorials.test.js', () => {
         const web3Contract = new web3.eth.Contract(
             JSON.parse(compiled.interface),
             null, {
-                data: '0x' + compiled.bytecode,
-                arguments: [creatorIdentity.address]
+                data: '0x' + compiled.bytecode
             }
         );
         console.log('compiled.bytecode: ' + compiled.bytecode);
@@ -83,6 +82,7 @@ describe('tutorials.test.js', () => {
 
         // check owner
         const owner = await contractInstance.methods.owner().call();
+        assert.equal(owner, creatorIdentity.address);
         console.dir(owner);
 
         // check balance

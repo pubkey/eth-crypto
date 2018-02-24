@@ -6,6 +6,7 @@ import publicKeyByPrivateKey from './public-key-by-private-key';
 import recover from './recover';
 import sign from './sign';
 import signTransaction from './sign-transaction';
+import txDataByCompiled from './tx-data-by-compiled';
 import * as hash from './hash';
 import * as util from './util';
 
@@ -18,6 +19,7 @@ export {
     recover,
     sign,
     signTransaction,
+    txDataByCompiled,
     hash,
     util
 };
@@ -31,6 +33,7 @@ export default {
     recover,
     sign,
     signTransaction,
+    txDataByCompiled,
     hash,
     util
 };

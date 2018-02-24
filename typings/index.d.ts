@@ -43,6 +43,12 @@ export function signTransaction(
     privateKey: string
 ): string;
 
+export function txDataByCompiled(
+    abi: any,
+    bytecode: string,
+    args: Array<string | number | BigNumber>
+): string;
+
 export type TypedValue = {
     value: string | Number | BigNumber,
     type: 'string' | 'uint256' | 'int256' | 'bool' | 'bytes' | 'bytes32' | 'address'
@@ -72,6 +78,7 @@ declare const _default: {
     recover,
     sign,
     signTransaction,
+    txDataByCompiled,
     hash,
     util
 };
