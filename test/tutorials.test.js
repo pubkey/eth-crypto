@@ -38,19 +38,11 @@ describe('tutorials.test.js', () => {
         // compile the code into an object
         const compiled = solc.compile(contractCode, 1).contracts[':DonationBag'];
 
-        // create contract-create-code
-        const web3Contract = new web3.eth.Contract(
-            JSON.parse(compiled.interface),
-            null, {
-                data: '0x' + compiled.bytecode
-            }
+        const createCode = EthCrypto.txDataByCompiled(
+            compiled.interface, // abi
+            compiled.bytecode, // bytecode
+            [creatorIdentity.address] // constructor-arguments
         );
-        console.log('compiled.bytecode: ' + compiled.bytecode);
-
-        const createCode = web3Contract.deploy({
-            arguments: [creatorIdentity.address]
-        }).encodeABI();
-        console.log('createCode: ' + createCode);
 
         // create create-tx
         const rawTx = {

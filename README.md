@@ -6,14 +6,11 @@ Cryptographic javascript-functions for ethereum and how to use them together wit
 
 ### Creating Keys and use them for ethereum-transactions
 
-In this tutorial we will create an ethereum-identity and use it so send transactions to the blockchain.
-[Creating transactions](./tutorials/creating-transactions.md).
+In this tutorial we will create an ethereum-identity and use it so send transactions to the blockchain. [Creating transactions](./tutorials/creating-transactions.md).
 
 ### Sign and validate data with solidity
 
-
 ### Sending encrypted and signed data to other identites
-
 
 ## Functions
 
@@ -132,4 +129,62 @@ Decrypts the encrypted data with the privateKey. Returns (async) the message as 
         } // encrypted-data
     );
     // 'foobar'
+```
+
+### signTransaction()
+
+Signs a raw transaction with the privateKey. Returns a serialized tx which can be submitted to the node.
+
+```javascript
+const ident = EthCrypto.createIdentity();
+const rawTx = {
+    from: identity.address,
+    to: '0x86Fa049857E0209aa7D9e616F7eb3b3B78ECfdb0',
+    value: 1000000000000000000,
+    gasPrice: 5000000000,
+    nonce: 0,
+    gasLimit: 21000
+};
+const signedTx = EthCrypto.signTransaction(
+    rawTx,
+    identity.privateKey
+);
+console.log(signedTx);
+// > '071d3a2040a2d2cb...'
+
+// you can now send the tx to the node
+const receipt = await web3.eth.sendSignedTransaction(signedTx);
+```
+
+### txDataByCompiled()
+
+Creates the data-string which must be submitted with an transaction to create a contract-instance.
+
+```javascript
+const solc = require('solc');
+
+// create compiled solidity-code
+const compiled = solc.compile(
+    'contract ExampleContract {...',
+    1
+).contracts[':ExampleContract'];
+
+const createCode = EthCrypto.txDataByCompiled(
+    compiled.interface, // abi
+    compiled.bytecode, // bytecode
+    [identity.address] // constructor-arguments
+);
+
+// now you can submit this to the blockchain
+const serializedTx = EthCrypto.signTransaction(
+    {
+        from: identity.address,
+        nonce: 0,
+        gasLimit: 5000000,
+        gasPrice: 5000000000,
+        data: createCode
+    },
+    identity.privateKey
+);
+const receipt = await web3.eth.sendSignedTransaction(serializedTx);
 ```

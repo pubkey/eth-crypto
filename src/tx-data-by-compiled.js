@@ -2,7 +2,7 @@ import {
     web3
 } from './util';
 
-export function txDataByCompiled(
+export default function txDataByCompiled(
     abi,
     bytecode,
     args

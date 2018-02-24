@@ -76,13 +76,11 @@ Now that we have the bytecode of the contract, we can submit a transaction to cr
 
 ```javascript
 // create contract-create-code
-const web3Contract = new web3.eth.Contract(JSON.parse(compiled.interface), null, {
-    data: '0x' + compiled.bytecode
-});
-const createCode = web3Contract.deploy({
-    arguments: [creatorIdentity.address] // this is the address in the DonationBag-constructor
-}).encodeABI();
-
+const createCode = EthCrypto.txDataByCompiled(
+    compiled.interface, // abi
+    compiled.bytecode, // bytecode
+    [creatorIdentity.address] // constructor-arguments
+);
 
 // create a transaction the deploys the contract
 const rawTx = {

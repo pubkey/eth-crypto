@@ -64,10 +64,7 @@ export type util = {
     web3: Web3
 };
 
-
 export function publicKeyToAddress(publicKey: string): string;
-
-
 
 declare const _default: {
     addressByPublicKey,
