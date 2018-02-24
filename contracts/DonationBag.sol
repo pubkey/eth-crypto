@@ -3,7 +3,7 @@ pragma solidity 0.4.20;
 
 contract DonationBag {
 
-    // dontaion-signatures must be created by the owner
+    // donation-signatures must be created by the owner
     address public owner;
 
     // each donation contains this amount of wei
@@ -72,5 +72,14 @@ contract DonationBag {
 
         // all valid -> send wei
         msg.sender.transfer(amountPerDonation);
+    }
+
+    // other helper functions
+
+    /**
+     * returns the current contract-balance
+     */
+    function getBalance() public constant returns (uint256 balance) {
+        return this.balance;
     }
 }

@@ -21,7 +21,8 @@ describe('tutorials.test.js', () => {
             accounts: [{
                 secretKey: creatorIdentity.privateKey,
                 balance: web3.utils.toWei('10', 'ether')
-            }]
+            }],
+            gasLimit: 60000000
         });
         web3.setProvider(ganacheProvider);
 
@@ -38,19 +39,27 @@ describe('tutorials.test.js', () => {
         const compiled = solc.compile(contractCode, 1).contracts[':DonationBag'];
 
         // create contract-create-code
-        const web3Contract = new web3.eth.Contract(JSON.parse(compiled.interface), null, {
-            data: '0x' + compiled.bytecode
-        });
+        const web3Contract = new web3.eth.Contract(
+            JSON.parse(compiled.interface),
+            null, {
+                data: '0x' + compiled.bytecode,
+                arguments: [creatorIdentity.address]
+            }
+        );
+        console.log('compiled.bytecode: ' + compiled.bytecode);
+
         const createCode = web3Contract.deploy({
             arguments: [creatorIdentity.address]
         }).encodeABI();
+        console.log('createCode: ' + createCode);
 
         // create create-tx
         const rawTx = {
             from: creatorIdentity.address,
             nonce: 0,
             gasLimit: 5000000,
-            gasPrice: 5000000000
+            gasPrice: 5000000000,
+            data: createCode
         };
         const serializedTx = EthCrypto.signTransaction(
             rawTx,
@@ -59,8 +68,27 @@ describe('tutorials.test.js', () => {
 
         // submit
         const receipt = await web3.eth.sendSignedTransaction(serializedTx);
+        const contractAddress = receipt.contractAddress;
+        console.log('contractAddress: ' + contractAddress);
+        console.log('creator address: ' + creatorIdentity.address);
 
         assert.ok(receipt.contractAddress);
         assert.equal(receipt.status, 1);
+
+        // create contract instance
+        const contractInstance = new web3.eth.Contract(
+            JSON.parse(compiled.interface),
+            contractAddress
+        );
+
+        // check owner
+        const owner = await contractInstance.methods.owner().call();
+        console.dir(owner);
+
+        // check balance
+        const balance = await contractInstance.methods.getBalance().call();
+        console.dir(balance);
+
+
     });
 });

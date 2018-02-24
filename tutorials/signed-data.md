@@ -88,9 +88,9 @@ const createCode = web3Contract.deploy({
 const rawTx = {
     from: creatorIdentity.address,
     nonce: 0,
-    value: 1000000000000000000, // on creation we send 1 ether to the contract
     gasLimit: 5000000,
-    gasPrice: 5000000000
+    gasPrice: 5000000000,
+    data: createCode
 };
 const serializedTx = EthCrypto.signTransaction(
     rawTx,
@@ -99,7 +99,25 @@ const serializedTx = EthCrypto.signTransaction(
 
 // submit to local chain
 const receipt = await web3.eth.sendSignedTransaction(serializedTx);
+const contractAddress = receipt.contractAddress;
 
-console.log(receipt.contractAddress);
+console.log(contractAddress);
 // > '0xCF3d784002721227F36575eD051Ea2171a528b7D' <- this is the address of our contract
 ```
+
+Awesome. The contract is now on the blockchain. To check if it is deployed correclty, lets call a function on it.
+
+```javascript
+
+// create contract instance
+const contractInstance = new web3.eth.Contract(
+    JSON.parse(compiled.interface),
+    contractAddress
+);
+
+// check owner
+const owner = await contractInstance.methods.owner().call();
+console.dir(owner); // same as creatorIdentity.address
+```
+
+Before we can TODO
