@@ -1,24 +1,18 @@
-import _Map from 'babel-runtime/core-js/map';
-import { web3 } from './util';
-
-var ACCOUNTS_CACHE = new _Map();
+import Account from 'eth-lib/lib/account';
 
 /**
  * signs the given message
  * @param  {string} privateKey
- * @param  {string} message
+ * @param  {string} hash
  * @return {{v: string, r: string, s: string}} signature
  */
-export default function sign(privateKey, message) {
-    if (!ACCOUNTS_CACHE.has(privateKey)) {
-        ACCOUNTS_CACHE.set(privateKey, web3.eth.accounts.privateKeyToAccount(privateKey));
-    }
-    var account = ACCOUNTS_CACHE.get(privateKey);
-    var sig = account.sign(message);
+export default function sign(privateKey, hash) {
+    var signature = Account.sign(hash, privateKey);
+    var vrs = Account.decodeSignature(signature);
     var ret = {
-        v: sig.v,
-        r: sig.r,
-        s: sig.s
+        v: vrs[0],
+        r: vrs[1],
+        s: vrs[2]
     };
     return ret;
 }

@@ -1,12 +1,12 @@
-import { web3 } from './util';
+import Account from 'eth-lib/lib/account';
 
 /**
  * returns the adress with which the messageHash was signed
  * @param  {{v: string, r: string, s: string}} signature
- * @param  {string} message
+ * @param  {string} hash
  * @return {string} address
  */
-export default function recover(signature, message) {
-    var address = web3.eth.accounts.recover(message, signature.v, signature.r, signature.s);
-    return address;
+export default function recover(signature, hash) {
+    var sig = Account.encodeSignature([signature.v, signature.r, signature.s]);
+    return Account.recover(hash, sig);
 }

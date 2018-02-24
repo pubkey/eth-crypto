@@ -6,10 +6,11 @@ import publicKeyByPrivateKey from './public-key-by-private-key';
 import recover from './recover';
 import sign from './sign';
 import signTransaction from './sign-transaction';
+import txDataByCompiled from './tx-data-by-compiled';
 import * as hash from './hash';
 import * as util from './util';
 
-export { addressByPublicKey, createIdentity, decryptWithPrivateKey, encryptWithPublicKey, publicKeyByPrivateKey, recover, sign, signTransaction, hash, util };
+export { addressByPublicKey, createIdentity, decryptWithPrivateKey, encryptWithPublicKey, publicKeyByPrivateKey, recover, sign, signTransaction, txDataByCompiled, hash, util };
 
 export default {
     addressByPublicKey: addressByPublicKey,
@@ -20,6 +21,7 @@ export default {
     recover: recover,
     sign: sign,
     signTransaction: signTransaction,
+    txDataByCompiled: txDataByCompiled,
     hash: hash,
     util: util
 };
