@@ -1,4 +1,4 @@
-# Creating Keys and use them for ethereum-transactions
+# Tutorial: Creating Keys and use them for ethereum-transactions
 
 In this tutorial we will create an ethereum-identity and use it so send transactions to the blockchain.
 
@@ -37,6 +37,7 @@ An ethereum-transaction is basically a json-object with defined values. Lets cre
         from: identity.address, // sender address
         to: '0x86Fa049857E0209aa7D9e616F7eb3b3B78ECfdb0', // reciever address
         value: 1000000000000000000, // amount of wei we want to send (= 1 ether)
+        nonce: 0, // incremental tx-number. Add +1 for every transaction you do
         gasPrice: 5000000000,
         gasLimit: 21000 // normal gasLimit for code-less transactions
     };
@@ -69,18 +70,17 @@ const web3 = new Web3();
 // create a ganache-provider
 const ganacheProvider = ganache.provider({
     // we preset the balance of our identity to 10 ether
-    accounts: {
-        // we have to remove the trailing '0x' so ganache accepts our key
-        secretKey: identity.privateKey.replace(/^.{2}/g, ''),
+    accounts: [{
+        secretKey: identity.privateKey,
         balance: web3.utils.toWei('10', 'ether')
-    }
+    }]
 });
 
 // set ganache to web3 as provider
 web3.setProvider(ganacheProvider);
 ```
 
-## submitting the transaction
+## Submitting the transaction
 
 Call `sendSignedTransaction` to submit the signed transaction to the testchain. Ganache will instantly mine the transaction and we get a receipt back.
 
@@ -97,5 +97,5 @@ To ensure that the transaction worked, check the balance of the receivers addres
 ```
 
 
-## done
+## Done
 Awesome! You created your first ethereum-transaction.
