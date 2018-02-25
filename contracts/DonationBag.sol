@@ -19,6 +19,17 @@ contract DonationBag {
     }
 
     /**
+     * default function
+     * Whenever ether is send to the contract without
+     * transaction data, the default function is called.
+     * If you do not have a default-function and send ether to this contract,
+     * the transaction will be reverted with 'VM Exception while processing transaction: revert'
+     */
+    function() public payable {
+        // got money
+    }
+
+    /**
      * to ensure the signatures for this contract cannot be
      * replayed somewhere else, we add this prefix to the signed hash
      */
@@ -79,5 +90,9 @@ contract DonationBag {
      */
     function getBalance() public constant returns (uint256 balance) {
         return this.balance;
+    }
+
+    function recieve() public returns (string) {
+        return "thx!";
     }
 }
