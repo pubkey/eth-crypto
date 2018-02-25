@@ -85,8 +85,8 @@ describe('tutorials.test.js', () => {
             to: contractAddress,
             nonce: 1,
             value: parseInt(web3.utils.toWei('1', 'ether')),
-            gas: 921000,
-            gasPrice: 50000000000
+            gas: 600000,
+            gasPrice: 20000000000
         };
         const serializedTx2 = EthCrypto.signTransaction(
             rawTx2,

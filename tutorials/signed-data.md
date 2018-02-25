@@ -45,6 +45,7 @@ Write the contracts code in a file called `DonationBag.sol`. See the content [he
 As you can see, the contract has some methods:
 
 - DonationBag(): The constructor which is called when the contract is created. Here we set the owner of the DonationBag
+- default-function: The default function is called when we send ether to the contract without doing anything. This is needed so the contract can recieve value.
 - isSignatureValid(): checks if a given signature is really signed by the sender and contains the correct content.
 - recieveDonation(): This is called by the receiver when the donation is claimed.
 
@@ -119,3 +120,23 @@ console.dir(owner); // same as creatorIdentity.address
 ```
 
 Before we can sign donations, we have to send some value to the contract.
+
+```javascript
+const rawTx2 = {
+    from: creatorIdentity.address,
+    to: contractAddress,
+    nonce: 1, // increased by one
+    value: parseInt(web3.utils.toWei('1', 'ether')),
+    gas: 600000,
+    gasPrice: 20000000000
+};
+const serializedTx2 = EthCrypto.signTransaction(
+    rawTx2,
+    creatorIdentity.privateKey
+);
+const receipt2 = await web3.eth.sendSignedTransaction(serializedTx2);
+
+// check balance
+const balance = await contractInstance.methods.getBalance().call();
+console.log(balance); // > '1000000000000000000'
+```
