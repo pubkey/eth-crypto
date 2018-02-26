@@ -12,7 +12,7 @@ const creatorIdentity = EthCrypto.createIdentity();
 const recieverIdentity = EthCrypto.createIdentity();
 ```
 
-Then we start a local testnet to use later. At the testnet, we givbe the creatorIdentity a balance of 10 ether.
+Then we start a local testnet to use later. At the testnet, we give the `creatorIdentity` a balance of 10 ether. We also give one ether to the `recieverIdentity` so we have enough gas to send transactions.
 
 ```javascript
 const Web3 = require('web3');
@@ -46,18 +46,19 @@ web3.setProvider(ganacheProvider);
 
 Lets create an example-contract. The contract will be a donation-bag which contains some ether and has an owner. Whenever someone submits a valid donation-signature, he recieves a part of the contracts value. This allows the creator of the contract to give signed data to people **off-chain** which they can later use to claim the value **on-chain**.
 
-Write the contracts code in a file called `DonationBag.sol`. See the content [here](../contracts/DonationBag.sol).
+Write the contracts code in a file called `DonationBag.sol`. **Check out it's content [here](../contracts/DonationBag.sol)**.
 
 As you can see, the contract has some methods:
 
-- DonationBag(): The constructor which is called when the contract is created. Here we set the owner of the DonationBag
-- default-function: The default function is called when we send ether to the contract without doing anything. This is needed so the contract can recieve value.
-- isSignatureValid(): checks if a given signature is really signed by the sender and contains the correct content.
-- recieveDonation(): This is called by the receiver when the donation is claimed.
+- **DonationBag()**: The constructor which is called when the contract is created. Here we set the owner of the DonationBag
+- **default-function**: The default function is called when we send ether to the contract without doing anything. This is needed so the contract can recieve value.
+- **prefixedHash()**: Creates a hash of the data which must be signed by the creator.
+- **isSignatureValid()**: Checks if a given signature is really signed by the sender and contains the correct content.
+- **recieveDonation():** This is called by the receiver when the donation is claimed.
 
 ## Deploy the contract
 
-Before we can put the contract on our local blockchain. We have to compile the solidity-code to bytecode.
+Before we can put the contract on our local blockchain. We have to compile the solidity-code to bytecode. We will do this by using the javascript-version of the `solc` compiler.
 
 ```javascript
 const solc = require('solc');
@@ -79,7 +80,7 @@ console.dir(compiled);
  */
 ```
 
-Now that we have the bytecode of the contract, we can submit a transaction to create a new instance of it at our local blockchain.
+Now that we have the bytecode of the contract, we can submit a transaction to create a new instance of it at our local testchain.
 
 ```javascript
 // create contract-create-code
