@@ -10,6 +10,8 @@ In this tutorial we will create an ethereum-identity and use it so send transact
 
 ### Sign and validate data with solidity
 
+In this tutorial we will sign data in javascript and validate the signature inside of a smart-contract. [Signed Data](./tutorials/signed-data.md).
+
 ### Sending encrypted and signed data to other identites
 
 ## Functions

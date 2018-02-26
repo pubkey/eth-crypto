@@ -29,8 +29,7 @@ describe('signed-data.md', () => {
                     secretKey: recieverIdentity.privateKey,
                     balance: web3.utils.toWei('1', 'ether')
                 }
-            ],
-            gasLimit: 60000000
+            ]
         });
         web3.setProvider(ganacheProvider);
 
@@ -78,26 +77,26 @@ describe('signed-data.md', () => {
         // submit
         const receipt = await web3.eth.sendSignedTransaction(serializedTx);
         const contractAddress = receipt.contractAddress;
-        console.log('contractAddress: ' + contractAddress);
-        console.log('creator address: ' + creatorIdentity.address);
+        // console.log('contractAddress: ' + contractAddress);
+        // console.log('creator address: ' + creatorIdentity.address);
 
         assert.ok(receipt.contractAddress);
         assert.equal(receipt.status, 1);
 
         // create contract instance
-        console.log('# create contract instance');
+        // console.log('# create contract instance');
         const contractInstance = new web3.eth.Contract(
             JSON.parse(compiled.interface),
             contractAddress
         );
 
         // check owner
-        console.log('# check owner');
+        // console.log('# check owner');
         const owner = await contractInstance.methods.owner().call();
         assert.equal(owner, creatorIdentity.address);
 
         // send value
-        console.log('#send value:');
+        // console.log('#send value:');
         const rawTx2 = {
             from: creatorIdentity.address,
             to: contractAddress,
@@ -110,7 +109,7 @@ describe('signed-data.md', () => {
             rawTx2,
             creatorIdentity.privateKey
         );
-        const receipt2 = await web3.eth.sendSignedTransaction(serializedTx2);
+        await web3.eth.sendSignedTransaction(serializedTx2);
 
         // check balance
         const balance = await contractInstance.methods.getBalance().call();
@@ -121,10 +120,10 @@ describe('signed-data.md', () => {
             .methods
             .prefixedHash(recieverIdentity.address)
             .call();
-        console.log('solHash: ' + solHash);
+        // console.log('solHash: ' + solHash);
 
         // sign message
-        const hashToSign = EthCrypto.hash.keccak256([{
+        const signHash = EthCrypto.hash.keccak256([{
             type: 'string',
             value: 'Signed for DonationBag:'
         }, {
@@ -134,14 +133,13 @@ describe('signed-data.md', () => {
             type: 'address',
             value: recieverIdentity.address
         }]);
-        assert.equal(hashToSign, solHash);
+        assert.equal(signHash, solHash);
 
         const signature = EthCrypto.sign(
             creatorIdentity.privateKey,
-            hashToSign
+            signHash
         );
         const vrs = EthCrypto.vrs.fromString(signature);
-
         const isValid = await contractInstance
             .methods.isSignatureValid(
                 recieverIdentity.address,
@@ -166,11 +164,11 @@ describe('signed-data.md', () => {
             gasPrice: 5000000000,
             data: recieveCode
         };
-        const serializedRecieve = EthCrypto.signTransaction(
+        const serializedRecieveTx = EthCrypto.signTransaction(
             recieveTx,
             recieverIdentity.privateKey
         );
-        const receipt3 = await web3.eth.sendSignedTransaction(serializedRecieve);
+        const receipt3 = await web3.eth.sendSignedTransaction(serializedRecieveTx);
 
         // check receiver-balance
         const receiverBalance = await web3.eth.getBalance(recieverIdentity.address);

@@ -1,7 +1,6 @@
 # Tutorial: Sign and validate data with solidity
 
-In this tutorial we will sign data with javascript and later validate the signatur in a solidity smart-contract.
-
+In this tutorial we will sign data with JavaScript and later validate the signature in a solidity smart-contract.
 
 ## Prerequisites
 
@@ -24,21 +23,28 @@ const web3 = new Web3();
 
 // create a ganache-provider
 const ganacheProvider = ganache.provider({
-    // we preset the balance of our identity to 10 ether
-    accounts: [{
-        secretKey: creatorIdentity.privateKey,
-        balance: web3.utils.toWei('10', 'ether')
-    }]
+    accounts: [
+        // we preset the balance of our creatorIdentity to 10 ether
+        {
+            secretKey: creatorIdentity.privateKey,
+            balance: web3.utils.toWei('10', 'ether')
+        },
+        // we also give some wei to the recieverIdentity
+        // so it can send transaction to the chain
+        {
+            secretKey: recieverIdentity.privateKey,
+            balance: web3.utils.toWei('1', 'ether')
+        }
+    ]
 });
 
 // set ganache to web3 as provider
 web3.setProvider(ganacheProvider);
 ```
 
-
 ## Create a smart-contract that can validate signatures
-Lets create an example-contract. The contract will be a donation-bag which contains some ether and has an owner.
-Whenever someone submits a valid donation-signature, he recieves a part of the contracts value. This allows the creator of the contract to give signed data to people **off-chain** which they can later use to claim the value **on-chain**.
+
+Lets create an example-contract. The contract will be a donation-bag which contains some ether and has an owner. Whenever someone submits a valid donation-signature, he recieves a part of the contracts value. This allows the creator of the contract to give signed data to people **off-chain** which they can later use to claim the value **on-chain**.
 
 Write the contracts code in a file called `DonationBag.sol`. See the content [here](../contracts/DonationBag.sol).
 
@@ -126,7 +132,7 @@ const rawTx2 = {
     from: creatorIdentity.address,
     to: contractAddress,
     nonce: 1, // increased by one
-    value: parseInt(web3.utils.toWei('1', 'ether')),
+    value: parseInt(web3.utils.toWei('3', 'ether')),
     gas: 600000,
     gasPrice: 20000000000
 };
@@ -134,18 +140,88 @@ const serializedTx2 = EthCrypto.signTransaction(
     rawTx2,
     creatorIdentity.privateKey
 );
-const receipt2 = await web3.eth.sendSignedTransaction(serializedTx2);
+await web3.eth.sendSignedTransaction(serializedTx2);
 
 // check balance
 const balance = await contractInstance.methods.getBalance().call();
 console.log(balance); // > '1000000000000000000'
 ```
 
-
 ## Sign the message
 
 Lets sign a message with the `creatorIdentity` where the donator validates a donation to the `recieverIdentity`.
+
+```javascript
+const signHash = EthCrypto.hash.keccak256([
+    { // prefix
+        type: 'string',
+        value: 'Signed for DonationBag:'
+    }, { // contractAddress
+        type: 'address',
+        value: contractAddress
+    }, { // receiverAddress
+        type: 'address',
+        value: recieverIdentity.address
+    }
+]);
+
+const signature = EthCrypto.sign(
+    creatorIdentity.privateKey,
+    signHash
+);
+```
+
+As you can see, we did not sign the reciever-address directly but a hash that was build of some concated data:
+
+- **Prefix:** To ensure the creator cannot be tricked into accidentially singing a valid ethereum-transaction, we prefix the signed data with something unique to our system. In this case lets take the string `Signed for DonationBag:`.
+- **contractAddress:** It might be possible that the creator has more than one instance of the contract deployed to the blockchain. In this case it's signatures might be replayed to other instances. As prevention of this attack, we also add the contracts address to the signed hash.
+- **receiverAddress:** By signing this address, the creator proves that the given address should recieve the donation.
+
+## Recover the signature on the blockchain
+
+The reciever now has a signature from the creator which he can send to the contract to claim the donation.
+
 ```javascript
 
+// we have to split the signature-hex-string into its parts
+const vrs = EthCrypto.vrs.fromString(signature);
+/* > {
+    v: '0x1c',
+    r: '0x525db3ea66...',
+    s: '0x78544aebe6...'
+    }
+*/
 
+// create the transaction-data for the recieveDonation()-call
+const recieveCode = contractInstance
+    .methods.recieveDonation(
+        vrs.v,
+        vrs.r,
+        vrs.s
+    ).encodeABI();
+
+// create+sign the transaction
+const recieveTx = {
+    from: recieverIdentity.address,
+    to: contractAddress,
+    nonce: 0,
+    gasLimit: 5000000,
+    gasPrice: 5000000000,
+    data: recieveCode
+};
+const serializedRecieveTx = EthCrypto.signTransaction(
+    recieveTx,
+    recieverIdentity.privateKey
+);
+
+// submit the tx
+const receipt3 = await web3.eth.sendSignedTransaction(serializedRecieveTx);
+```
+
+If everything has gone right, the receiver should now have more ether then before. Let's check this.
+
+```javascript
+const receiverBalance = await web3.eth.getBalance(recieverIdentity.address);
+console.dir(receiverBalance);
+// '1999802840000000000'
 ```

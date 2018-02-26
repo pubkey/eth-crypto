@@ -94,6 +94,7 @@ contract DonationBag {
         }
 
         // all valid -> send wei
+        alreadyRecieved[msg.sender] = true;
         msg.sender.transfer(amountPerDonation);
     }
 
