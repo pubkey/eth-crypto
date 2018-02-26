@@ -4,3 +4,5 @@
 .eslintrc.json
 .travis.yml
 package-lock.json
+gen/
+scripts/
