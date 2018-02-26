@@ -32,8 +32,13 @@ export type RawTx = {
     code?: string
 };
 
-export function sign(privateKey: string, message: string): Signature;
-export function recover(sig: Signature, message: string);
+export function sign(privateKey: string, message: string): string;
+export function recover(sig: string, message: string);
+
+export type vrs = {
+    fromString(hexString): Signature;
+    toString(sig: Signature): string;
+};
 
 export function encryptWithPublicKey(publicKey: string, message: string): Promise<Encrypted>;
 export function decryptWithPrivateKey(privateKey: string, encrypted: Encrypted): Promise<string>;
@@ -77,6 +82,7 @@ declare const _default: {
     signTransaction,
     txDataByCompiled,
     hash,
+    vrs,
     util
 };
 export default _default;

@@ -1,4 +1,7 @@
-require('./unit.test.js');
-require('./integration.test.js');
-require('./tutorials.test.js');
-require('./performance.test.js');
+require('./unit.test');
+require('./integration.test');
+
+// tutorials
+require('./tutorials/signed-data.test');
+
+require('./performance.test');

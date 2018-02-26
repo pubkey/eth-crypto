@@ -216,12 +216,13 @@ describe('integration.test.js', () => {
             );
             const jsSigner = EthCrypto.recover(signature, messageHash);
             assert.equal(jsSigner, ident.address);
+            const vrs = EthCrypto.vrs.fromString(signature);
             const solSigner = await state.contract
                 .methods.recoverSignature(
                     messageHash,
-                    signature.v,
-                    signature.r,
-                    signature.s
+                    vrs.v,
+                    vrs.r,
+                    vrs.s
                 )
                 .call();
             assert.equal(solSigner, ident.address);
@@ -237,12 +238,13 @@ describe('integration.test.js', () => {
                 ident.privateKey,
                 messageHash
             );
+            const vrs = EthCrypto.vrs.fromString(signature);
             const solSigner = await state.contract
                 .methods.recoverSignatureFromMessage(
                     message,
-                    signature.v,
-                    signature.r,
-                    signature.s
+                    vrs.v,
+                    vrs.r,
+                    vrs.s
                 )
                 .call();
             assert.equal(solSigner, ident.address);

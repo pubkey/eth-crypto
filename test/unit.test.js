@@ -55,10 +55,8 @@ describe('unit.test.js', () => {
             it('should sign the data', () => {
                 const message = AsyncTestUtil.randomString(12);
                 const signature = EthCrypto.sign(TEST_DATA.privateKey, message);
-                assert.ok(signature);
-                assert.equal(typeof signature.r, 'string');
-                assert.equal(typeof signature.s, 'string');
-                assert.equal(typeof signature.v, 'string');
+                assert.equal(typeof signature, 'string');
+                assert.ok(signature.length > 10);
             });
         });
         describe('negative', () => {

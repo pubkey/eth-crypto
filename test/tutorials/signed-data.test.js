@@ -7,11 +7,11 @@ const ganache = require('ganache-cli');
 const Web3 = require('web3');
 const AsyncTestUtil = require('async-test-util');
 const assert = require('assert');
-const EthCrypto = require('../dist/lib/index');
-const compiledDonationBag = require('../gen/DonationBag.json');
+const EthCrypto = require('../../dist/lib/index');
+const compiledDonationBag = require('../../gen/DonationBag.json');
 
-describe('tutorials.test.js', () => {
-    it('signed-data.md', async function() {
+describe('signed-data.md', () => {
+    it('all', async function() {
         this.timeout(12000);
         const creatorIdentity = EthCrypto.createIdentity();
         const recieverIdentity = EthCrypto.createIdentity();
@@ -41,7 +41,7 @@ describe('tutorials.test.js', () => {
             const solc = require('solc');
             const fs = require('fs');
             const path = require('path');
-            const contractPath = path.join(__dirname, '../contracts/DonationBag.sol');
+            const contractPath = path.join(__dirname, '../../contracts/DonationBag.sol');
 
             // read solidity-code from file
             const contractCode = fs.readFileSync(contractPath, 'utf8');
@@ -50,7 +50,7 @@ describe('tutorials.test.js', () => {
             compiled = solc.compile(contractCode, 1).contracts[':DonationBag'];
 
         } else {
-            compiled = require('../gen/DonationBag.json');
+            compiled = require('../../gen/DonationBag.json');
             compiled.bytecode = compiled.code;
             compiled.interface = JSON.stringify(compiled.interface);
         }
@@ -140,22 +140,23 @@ describe('tutorials.test.js', () => {
             creatorIdentity.privateKey,
             hashToSign
         );
+        const vrs = EthCrypto.vrs.fromString(signature);
 
         const isValid = await contractInstance
             .methods.isSignatureValid(
                 recieverIdentity.address,
-                signature.v,
-                signature.r,
-                signature.s
+                vrs.v,
+                vrs.r,
+                vrs.s
             ).call();
         assert.ok(isValid);
 
         // claim donation by receiver
         const recieveCode = contractInstance
             .methods.recieveDonation(
-                signature.v,
-                signature.r,
-                signature.s
+                vrs.v,
+                vrs.r,
+                vrs.s
             ).encodeABI();
         const recieveTx = {
             from: recieverIdentity.address,

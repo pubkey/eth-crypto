@@ -8,6 +8,7 @@ import sign from './sign';
 import signTransaction from './sign-transaction';
 import txDataByCompiled from './tx-data-by-compiled';
 import * as hash from './hash';
+import * as vrs from './vrs';
 import * as util from './util';
 
 export {
@@ -21,6 +22,7 @@ export {
     signTransaction,
     txDataByCompiled,
     hash,
+    vrs,
     util
 };
 
@@ -35,5 +37,6 @@ export default {
     signTransaction,
     txDataByCompiled,
     hash,
+    vrs,
     util
 };
