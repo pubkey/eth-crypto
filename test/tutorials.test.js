@@ -27,22 +27,32 @@ describe('tutorials.test.js', () => {
         web3.setProvider(ganacheProvider);
 
 
-        const solc = require('solc');
-        const fs = require('fs');
-        const path = require('path');
-        const contractPath = path.join(__dirname, '../contracts/DonationBag.sol');
+        let compiled;
+        const fastMode = true; // TODO check in config if really fast-mode
+        if (!fastMode) {
+            const solc = require('solc');
+            const fs = require('fs');
+            const path = require('path');
+            const contractPath = path.join(__dirname, '../contracts/DonationBag.sol');
 
-        // read solidity-code from file
-        const contractCode = fs.readFileSync(contractPath, 'utf8');
+            // read solidity-code from file
+            const contractCode = fs.readFileSync(contractPath, 'utf8');
 
-        // compile the code into an object
-        const compiled = solc.compile(contractCode, 1).contracts[':DonationBag'];
+            // compile the code into an object
+            compiled = solc.compile(contractCode, 1).contracts[':DonationBag'];
+
+        } else {
+            compiled = require('../gen/DonationBag.json');
+            compiled.bytecode = compiled.code;
+            compiled.interface = JSON.stringify(compiled.interface);
+        }
 
         const createCode = EthCrypto.txDataByCompiled(
             compiled.interface, // abi
             compiled.bytecode, // bytecode
             [creatorIdentity.address] // constructor-arguments
         );
+
 
         // create create-tx
         const rawTx = {
@@ -97,6 +107,45 @@ describe('tutorials.test.js', () => {
         // check balance
         const balance = await contractInstance.methods.getBalance().call();
         assert.equal(balance, web3.utils.toWei('1', 'ether'));
+
+        // check prefixedHash
+        const solHash = await contractInstance
+            .methods
+            .prefixedHash(recieverIdentity.address)
+            .call();
+        console.log('solHash: ' + solHash);
+
+
+        // sign message
+        const hashToSign = EthCrypto.hash.keccak256([{
+            type: 'string',
+            value: 'Signed for DonationBag:'
+        }, {
+            type: 'address',
+            value: contractAddress
+        }, {
+            type: 'address',
+            value: recieverIdentity.address
+        }]);
+        console.log('signHash: ' + hashToSign);
+        assert.equal(hashToSign, solHash);
+
+        const signature = EthCrypto.sign(
+            creatorIdentity.privateKey,
+            hashToSign
+        );
+        console.dir(signature);
+
+        const isValid = await contractInstance
+            .methods.isSignatureValid(
+                recieverIdentity.address,
+                signature.v,
+                signature.r,
+                signature.s
+            ).call();
+        assert.ok(isValid);
+
+        // TODO receiveDonation
 
     });
 });

@@ -140,3 +140,12 @@ const receipt2 = await web3.eth.sendSignedTransaction(serializedTx2);
 const balance = await contractInstance.methods.getBalance().call();
 console.log(balance); // > '1000000000000000000'
 ```
+
+
+## Sign the message
+
+Lets sign a message with the `creatorIdentity` where the donator validates a donation to the `recieverIdentity`.
+```javascript
+
+
+```

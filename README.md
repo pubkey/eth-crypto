@@ -136,7 +136,7 @@ Decrypts the encrypted data with the privateKey. Returns (async) the message as 
 Signs a raw transaction with the privateKey. Returns a serialized tx which can be submitted to the node.
 
 ```javascript
-const ident = EthCrypto.createIdentity();
+const identity = EthCrypto.createIdentity();
 const rawTx = {
     from: identity.address,
     to: '0x86Fa049857E0209aa7D9e616F7eb3b3B78ECfdb0',

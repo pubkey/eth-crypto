@@ -36,9 +36,26 @@ contract DonationBag {
     string public signPrefix = "Signed for DonationBag:";
 
     /**
+     * generates a prefixed hash of the address
+     * We hash the following together:
+     * - signPrefix
+     * - address of this contract
+     * - the recievers-address
+     */
+    function prefixedHash(
+        address receiver
+    ) public constant returns(bytes32) {
+        bytes32 hash = keccak256(
+            signPrefix,
+            address(this),
+            receiver
+        );
+        return hash;
+    }
+
+    /**
      * validates if the signature is valid
      * by checking if the correct message was signed
-     * which consists of <signPrefix><contractAddress><receiverAddress>
      */
     function isSignatureValid(
         address receiver,
@@ -46,17 +63,13 @@ contract DonationBag {
         bytes32 r,
         bytes32 s
         ) public constant returns (bool correct) {
-        bytes32 mustBeSigned = keccak256(
-            signPrefix,
-            this,
-            receiver
-        );
+        bytes32 mustBeSigned = prefixedHash(receiver);
         address signer = ecrecover(
             mustBeSigned,
             v, r, s
         );
 
-        return (signer == owner && receiver == msg.sender);
+        return (signer == owner);
     }
 
     /**
@@ -64,7 +77,6 @@ contract DonationBag {
      * if yes we send some wei to the submitter
      */
     function recieveDonation(
-        address receiver,
         uint8 v,
         bytes32 r,
         bytes32 s
@@ -75,7 +87,7 @@ contract DonationBag {
 
         // signature not valid -> revert
         if (isSignatureValid(
-            receiver,
+            msg.sender,
             v, r, s
         ) == false) {
             revert();
@@ -90,9 +102,5 @@ contract DonationBag {
      */
     function getBalance() public constant returns (uint256 balance) {
         return this.balance;
-    }
-
-    function recieve() public returns (string) {
-        return "thx!";
     }
 }
