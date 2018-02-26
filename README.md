@@ -69,18 +69,14 @@ Derives the ethereum-address from the publicKey.
 
 ### sign()
 
-Signs the message with the privateKey. Returns the signature as object with hex-strings.
+Signs the message with the privateKey. Returns the signature as hex-string.
 
 ```javascript
   const signature = EthCrypto.sign(
       '0x107be946709e41b7895eea9f2dacf998a0a9124acbb786f0fd1a826101581a07', // privateKey
       'foobar' // message
   );
-  /* > {
-        v: '0x1b',
-        r: '0xc04b809d8f33c46ff80c44ba58e866ff0d5126d9943b58bee03cc5279450cacc',
-        s: '0x757a3393b695ba83b2aba0c35c150399bf7959493aad80d51d917435b1a7ebda'
-    } */
+  // > '0xc04b809d8f33c46ff80c44ba58e866ff0d5..'
 ```
 
 ### recover()
@@ -89,11 +85,7 @@ Recovers the signers address from the signature.
 
 ```javascript
     const signer = EthCrypto.recover(
-      {
-          v: '0x1b',
-          r: '0xc04b809d8f33c46ff80c44ba58e866ff0d5126d9943b58bee03cc5279450cacc',
-          s: '0x757a3393b695ba83b2aba0c35c150399bf7959493aad80d51d917435b1a7ebda'
-      }, // signature
+      '0xc04b809d8f33c46ff80c44ba58e866ff0d5..',
       'foobar' // signed message
   );
   // > '0x3f243FdacE01Cfd9719f7359c94BA11361f32471'
