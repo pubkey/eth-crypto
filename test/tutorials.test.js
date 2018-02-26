@@ -17,11 +17,19 @@ describe('tutorials.test.js', () => {
         const recieverIdentity = EthCrypto.createIdentity();
         const web3 = new Web3();
         const ganacheProvider = ganache.provider({
-            // we preset the balance of our identity to 10 ether
-            accounts: [{
-                secretKey: creatorIdentity.privateKey,
-                balance: web3.utils.toWei('10', 'ether')
-            }],
+            accounts: [
+                // we preset the balance of our identity to 10 ether
+                {
+                    secretKey: creatorIdentity.privateKey,
+                    balance: web3.utils.toWei('10', 'ether')
+                },
+                // we also give some wei to the recieverIdentity
+                // so it can send transaction to the chain
+                {
+                    secretKey: recieverIdentity.privateKey,
+                    balance: web3.utils.toWei('1', 'ether')
+                }
+            ],
             gasLimit: 60000000
         });
         web3.setProvider(ganacheProvider);
@@ -94,7 +102,7 @@ describe('tutorials.test.js', () => {
             from: creatorIdentity.address,
             to: contractAddress,
             nonce: 1,
-            value: parseInt(web3.utils.toWei('1', 'ether')),
+            value: parseInt(web3.utils.toWei('3', 'ether')),
             gas: 600000,
             gasPrice: 20000000000
         };
@@ -106,7 +114,7 @@ describe('tutorials.test.js', () => {
 
         // check balance
         const balance = await contractInstance.methods.getBalance().call();
-        assert.equal(balance, web3.utils.toWei('1', 'ether'));
+        assert.equal(balance, web3.utils.toWei('3', 'ether'));
 
         // check prefixedHash
         const solHash = await contractInstance
@@ -114,7 +122,6 @@ describe('tutorials.test.js', () => {
             .prefixedHash(recieverIdentity.address)
             .call();
         console.log('solHash: ' + solHash);
-
 
         // sign message
         const hashToSign = EthCrypto.hash.keccak256([{
@@ -127,14 +134,12 @@ describe('tutorials.test.js', () => {
             type: 'address',
             value: recieverIdentity.address
         }]);
-        console.log('signHash: ' + hashToSign);
         assert.equal(hashToSign, solHash);
 
         const signature = EthCrypto.sign(
             creatorIdentity.privateKey,
             hashToSign
         );
-        console.dir(signature);
 
         const isValid = await contractInstance
             .methods.isSignatureValid(
@@ -145,7 +150,30 @@ describe('tutorials.test.js', () => {
             ).call();
         assert.ok(isValid);
 
-        // TODO receiveDonation
+        // claim donation by receiver
+        const recieveCode = contractInstance
+            .methods.recieveDonation(
+                signature.v,
+                signature.r,
+                signature.s
+            ).encodeABI();
+        const recieveTx = {
+            from: recieverIdentity.address,
+            to: contractAddress,
+            nonce: 0,
+            gasLimit: 5000000,
+            gasPrice: 5000000000,
+            data: recieveCode
+        };
+        const serializedRecieve = EthCrypto.signTransaction(
+            recieveTx,
+            recieverIdentity.privateKey
+        );
+        const receipt3 = await web3.eth.sendSignedTransaction(serializedRecieve);
 
+        // check receiver-balance
+        const receiverBalance = await web3.eth.getBalance(recieverIdentity.address);
+        // 1999802840000000000
+        assert.ok(parseInt(receiverBalance) > parseInt(web3.utils.toWei('1', 'ether')));
     });
 });

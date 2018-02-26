@@ -7,7 +7,7 @@ contract DonationBag {
     address public owner;
 
     // each donation contains this amount of wei
-    uint public amountPerDonation = 1000 * 1000;
+    uint public amountPerDonation = 1000000000000000000; // one ether
 
     // one address can recieve only one donation
     // the ones already recieved one, are stored here
