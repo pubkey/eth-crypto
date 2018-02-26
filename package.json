@@ -1,6 +1,6 @@
 {
   "name": "eth-crypto",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Cryptographic functions for ethereum and how to use them with web3 and solidity",
   "keywords": [
     "ethereum",
@@ -43,7 +43,7 @@
     "babel-cli": "6.26.0",
     "babel-core": "6.26.0",
     "babel-eslint": "8.2.2",
-    "babel-loader": "7.1.2",
+    "babel-loader": "7.1.3",
     "babel-plugin-transform-async-to-generator": "6.24.1",
     "babel-plugin-transform-class-properties": "6.24.1",
     "babel-plugin-transform-es2015-block-scoping": "6.26.0",
@@ -76,8 +76,9 @@
     "babel-runtime": "6.26.0",
     "bn.js": "^4.11.8",
     "eccrypto": "1.0.3",
+    "eth-lib": "0.2.7",
     "ethereumjs-tx": "1.3.3",
-    "ethereumjs-util": "5.1.4",
+    "ethereumjs-util": "5.1.5",
     "web3": "1.0.0-beta.30"
   }
 }
