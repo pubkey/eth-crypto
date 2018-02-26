@@ -19,7 +19,6 @@ export var SIGN_PREFIX = '\x19Ethereum Signed Message:\n32';
  * '\x19Ethereum Signed Message:\n32'
  */
 export function prefixedHash(hash) {
-
     if (!web3.utils.isHexStrict(hash)) throw new Error('EthCrypto.hash.prefixedHash(): please insert an hash');
     return web3.eth.accounts.hashMessage({
         type: 'bytes32',

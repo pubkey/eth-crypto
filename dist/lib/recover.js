@@ -1,7 +1,7 @@
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 exports['default'] = recover;
 
@@ -9,15 +9,18 @@ var _account = require('eth-lib/lib/account');
 
 var _account2 = _interopRequireDefault(_account);
 
+var _vrs = require('./vrs');
+
+var _vrs2 = _interopRequireDefault(_vrs);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /**
  * returns the adress with which the messageHash was signed
- * @param  {{v: string, r: string, s: string}} signature
+ * @param  {string} hexString
  * @param  {string} hash
  * @return {string} address
  */
-function recover(signature, hash) {
-    var sig = _account2['default'].encodeSignature([signature.v, signature.r, signature.s]);
-    return _account2['default'].recover(hash, sig);
+function recover(sigString, hash) {
+  return _account2['default'].recover(hash, sigString);
 }
