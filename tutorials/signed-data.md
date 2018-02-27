@@ -8,6 +8,7 @@ First we create two identities, `creator` and `receiver`.
 
 ```javascript
 const EthCrypto = require('eth-crypto');
+
 const creatorIdentity = EthCrypto.createIdentity();
 const recieverIdentity = EthCrypto.createIdentity();
 ```
