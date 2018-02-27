@@ -34,6 +34,8 @@ const EthCrypto = require('eth-crypto');
 
 ## API
 
+- [createIdentity()](#createidentity)
+
 ### createIdentity()
 
 Creates a new ethereum-identity with privateKey, publicKey and address as hex-string.
