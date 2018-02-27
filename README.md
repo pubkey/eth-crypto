@@ -201,7 +201,7 @@ const base64 = EthCrypto.hex.compress(hexString, true); // compress to base64
 EthCrypto.hex.decompress(utf16); // decompress from utf16
 // > '0x107be946709e41b7895eea9f2d...'
 
-EthCrypto.hex.decompress(base64, true); // decompress from utf16
+EthCrypto.hex.decompress(base64, true); // decompress from base64
 // > '0x107be946709e41b7895eea9f2d...'
 
 ```
