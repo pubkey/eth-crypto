@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.util = exports.vrs = exports.hash = exports.txDataByCompiled = exports.signTransaction = exports.sign = exports.recover = exports.publicKeyByPrivateKey = exports.encryptWithPublicKey = exports.decryptWithPrivateKey = exports.createIdentity = exports.addressByPublicKey = undefined;
+exports.util = exports.vrs = exports.hex = exports.hash = exports.txDataByCompiled = exports.signTransaction = exports.sign = exports.recover = exports.publicKeyByPrivateKey = exports.encryptWithPublicKey = exports.decryptWithPrivateKey = exports.createIdentity = exports.addressByPublicKey = undefined;
 
 var _addressByPublicKey = require('./address-by-public-key');
 
@@ -45,6 +45,10 @@ var _hash = require('./hash');
 
 var hash = _interopRequireWildcard(_hash);
 
+var _hex = require('./hex');
+
+var hex = _interopRequireWildcard(_hex);
+
 var _vrs = require('./vrs');
 
 var vrs = _interopRequireWildcard(_vrs);
@@ -67,6 +71,7 @@ exports.sign = _sign2['default'];
 exports.signTransaction = _signTransaction2['default'];
 exports.txDataByCompiled = _txDataByCompiled2['default'];
 exports.hash = hash;
+exports.hex = hex;
 exports.vrs = vrs;
 exports.util = util;
 exports['default'] = {
@@ -80,6 +85,7 @@ exports['default'] = {
     signTransaction: _signTransaction2['default'],
     txDataByCompiled: _txDataByCompiled2['default'],
     hash: hash,
+    hex: hex,
     vrs: vrs,
     util: util
 };
