@@ -28,8 +28,8 @@ describe('encrypted-message.md', () => {
             bob.publicKey,
             JSON.stringify(payload)
         );
-        console.log('encrypted:');
-        console.dir(encrypted);
+        // console.log('encrypted:');
+        // console.dir(encrypted);
 
         // decrypt
         const decrypted = await EthCrypto.decryptWithPrivateKey(
@@ -38,8 +38,8 @@ describe('encrypted-message.md', () => {
         );
         const decryptedPayload = JSON.parse(decrypted);
         const senderAddress = EthCrypto.addressByPublicKey(decryptedPayload.sender);
-        console.log('decryptedPayload:');
-        console.dir(decryptedPayload);
+        // console.log('decryptedPayload:');
+        // console.dir(decryptedPayload);
 
         // check signature
         const signer = EthCrypto.recover(
@@ -49,13 +49,13 @@ describe('encrypted-message.md', () => {
         if (signer !== senderAddress)
             throw new Error('signature not valid');
 
-        console.log(
-            'Got message from ' +
-            senderAddress +
-            ': "' +
-            decryptedPayload.message + '"'
-        );
-
+        /*        console.log(
+                    'Got message from ' +
+                    senderAddress +
+                    ': "' +
+                    decryptedPayload.message + '"'
+                );
+        */
         assert.equal(decryptedPayload.message, secretMessage);
 
 

@@ -16,7 +16,6 @@ In this tutorial we will sign data in javascript and validate the signature insi
 
 In this tutorial we will use the ethereum-identites and asymmetric cryptography to send a encrypted and signed message from alice to bob. [Encrypted Message](./tutorials/encrypted-message.md).
 
-
 ## Functions
 
 ### Install
@@ -184,4 +183,25 @@ const serializedTx = EthCrypto.signTransaction(
     identity.privateKey
 );
 const receipt = await web3.eth.sendSignedTransaction(serializedTx);
+```
+
+### hex compress/decompress
+
+Compress or decompress a hex-string to make it smaller. You can either compress to utf16 which reduces the size to about 1/4, or to base64 which reduces the size to about 4/5.
+
+```javascript
+const hexString = '0x107be946709e41b7895eea9f2dacf998a0a9124acbb786f0fd1a826101581a07';
+
+const utf16 = EthCrypto.hex.compress(hexString); // compress to utf16
+// > 'ၻ炞䆷襞ⶬ輦ꂩቊ쮷蛰ﴚ艡Řᨇ'
+
+const base64 = EthCrypto.hex.compress(hexString, true); // compress to base64
+// > 'EHvpRnCeQbeJXuqfLaz5mKCpEkrLt4bw/RqCYQFYGgc='
+
+EthCrypto.hex.decompress(utf16); // decompress from utf16
+// > '0x107be946709e41b7895eea9f2d...'
+
+EthCrypto.hex.decompress(base64, true); // decompress from utf16
+// > '0x107be946709e41b7895eea9f2d...'
+
 ```

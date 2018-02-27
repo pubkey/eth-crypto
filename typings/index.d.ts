@@ -66,8 +66,16 @@ export type hash = {
 };
 
 export type util = {
-    web3: Web3
+    web3: Web3;
+    removeTrailing0x(str: string): string;
+    addTrailing0x(str: string): string;
 };
+
+export type hex = {
+    compress(hex: string, base64?: boolean): string;
+    decompress(str: string, base64?: boolean): string;
+};
+
 
 export function publicKeyToAddress(publicKey: string): string;
 
@@ -82,6 +90,7 @@ declare const _default: {
     signTransaction,
     txDataByCompiled,
     hash,
+    hex,
     vrs,
     util
 };
