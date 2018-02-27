@@ -7,6 +7,8 @@ With ethereum-keys you cannot only interact with the blockchain, but also use th
 First we create two identities, `Alice` and `Bob`. In our case `Alice` want to send the message `My name is Satoshi Buterin` to `Bob`.
 
 ```javascript
+const EthCrypto = require('eth-crypto');
+
 const alice = EthCrypto.createIdentity();
 const bob = EthCrypto.createIdentity();
 const secretMessage = 'My name is Satoshi Buterin';
