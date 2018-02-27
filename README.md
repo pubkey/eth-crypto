@@ -14,6 +14,9 @@ In this tutorial we will sign data in javascript and validate the signature insi
 
 ### Sending encrypted and signed data to other identites
 
+In this tutorial we will user the ethereum-identites ans asymmetric cryptography to send a encrypted and signed message from alice to bob. [Encrypted Message](./tutorials/encrypted-message.md).
+
+
 ## Functions
 
 ### Install
