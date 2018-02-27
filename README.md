@@ -190,13 +190,13 @@ const receipt = await web3.eth.sendSignedTransaction(serializedTx);
 Compress or decompress a hex-string to make it smaller. You can either compress to utf16 which reduces the size to about 1/4, or to base64 which reduces the size to about 4/5.
 
 ```javascript
-const hexString = '0x107be946709e41b7895eea9f2dacf998a0a9124acbb786f0fd1a826101581a07';
+const hexString = '0x107be946709e41b7895eea9f2dacf998a0a9124acbb786f0fd1a826101581a07'; // 66 chars
 
 const utf16 = EthCrypto.hex.compress(hexString); // compress to utf16
-// > 'ၻ炞䆷襞ⶬ輦ꂩቊ쮷蛰ﴚ艡Řᨇ'
+// > 'ၻ炞䆷襞ⶬ輦ꂩቊ쮷蛰ﴚ艡Řᨇ' // 16 chars
 
 const base64 = EthCrypto.hex.compress(hexString, true); // compress to base64
-// > 'EHvpRnCeQbeJXuqfLaz5mKCpEkrLt4bw/RqCYQFYGgc='
+// > 'EHvpRnCeQbeJXuqfLaz5mKCpEkrLt4bw/RqCYQFYGgc=' // 44 chars
 
 EthCrypto.hex.decompress(utf16); // decompress from utf16
 // > '0x107be946709e41b7895eea9f2d...'
