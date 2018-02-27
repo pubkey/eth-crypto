@@ -1,4 +1,4 @@
-# Tutorial: Encrypt and sing a message
+# Tutorial: Encrypt and sign a message
 
 With ethereum-keys you cannot only interact with the blockchain, but also use them to send message over mutual untrusted channels in a secure way. In this tutorial we will use ethereum-identites to send messages like you would do in an decentralized chat-app.
 
