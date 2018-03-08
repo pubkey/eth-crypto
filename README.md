@@ -73,7 +73,7 @@ Derives the publicKey from a privateKey and returns it as hex-string.
 Derives the ethereum-address from the publicKey.
 
 ```javascript
-  const address = EthCrypto.publicKeyToAddress(
+  const address = EthCrypto.addressByPublicKey(
       'bf1cc3154424dc22191941d9f4f50b063a2b663a2337e5548abea633c1d06ece...'
   );
   // > '0x3f243FdacE01Cfd9719f7359c94BA11361f32471'
