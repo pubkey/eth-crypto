@@ -4,6 +4,7 @@ import decryptWithPrivateKey from './decrypt-with-private-key';
 import encryptWithPublicKey from './encrypt-with-public-key';
 import publicKeyByPrivateKey from './public-key-by-private-key';
 import recover from './recover';
+import recoverPublicKey from './recover-public-key';
 import sign from './sign';
 import signTransaction from './sign-transaction';
 import txDataByCompiled from './tx-data-by-compiled';
@@ -19,6 +20,7 @@ export {
     encryptWithPublicKey,
     publicKeyByPrivateKey,
     recover,
+    recoverPublicKey,
     sign,
     signTransaction,
     txDataByCompiled,
@@ -35,6 +37,7 @@ export default {
     encryptWithPublicKey,
     publicKeyByPrivateKey,
     recover,
+    recoverPublicKey,
     sign,
     signTransaction,
     txDataByCompiled,

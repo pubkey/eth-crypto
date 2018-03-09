@@ -84,6 +84,14 @@ describe('unit.test.js', () => {
         });
         describe('negative', () => {});
     });
+    describe('.recoverPublicKey()', () => {
+        it('should recover the correct key', async () => {
+            const message = AsyncTestUtil.randomString(12);
+            const signature = EthCrypto.sign(TEST_DATA.privateKey, message);
+            const publicKey = EthCrypto.recoverPublicKey(signature, message);
+            assert.equal(publicKey, TEST_DATA.publicKey);
+        });
+    });
     describe('.encryptWithPublicKey()', () => {
         describe('positive', () => {
             it('should encrypt the data', async () => {
