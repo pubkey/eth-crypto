@@ -5,25 +5,19 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports['default'] = recoverPublicKey;
 
-var _account = require('eth-lib/lib/account');
+var _secp256k = require('secp256k1');
 
-var _bytes = require('eth-lib/lib/bytes');
-
-var _bytes2 = _interopRequireDefault(_bytes);
+var secp256k1 = _interopRequireWildcard(_secp256k);
 
 var _vrs = require('./vrs');
 
 var vrs = _interopRequireWildcard(_vrs);
 
-var _elliptic = require('elliptic');
+var _util = require('./util');
 
-var _elliptic2 = _interopRequireDefault(_elliptic);
+var util = _interopRequireWildcard(_util);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-var secp256k1 = new _elliptic2['default'].ec('secp256k1');
 
 /**
  * returns the publicKey for the privateKEy with which the messageHash was signed
@@ -32,17 +26,17 @@ var secp256k1 = new _elliptic2['default'].ec('secp256k1');
  * @return {string} publicKey
  */
 function recoverPublicKey(signature, hash) {
-    // parse signature
     var vals = vrs.fromString(signature);
-    var vrsOfSig = {
-        v: _bytes2['default'].toNumber(vals.v),
-        r: vals.r.slice(2),
-        s: vals.s.slice(2)
-    };
 
-    // because odd vals mean v=0... sadly that means v=0 means v=1... I hate that
-    var ecPublicKey = secp256k1.recoverPubKey(new Buffer(hash.slice(2), 'hex'), vrsOfSig, vrsOfSig.v < 2 ? vrsOfSig.v : 1 - vrsOfSig.v % 2);
+    var sigOnly = signature.substring(0, signature.length - 1);
+    sigOnly = util.removeTrailing0x(sigOnly);
 
-    var publicKey = ecPublicKey.encode('hex', false).slice(2);
-    return publicKey;
+    var recoveryNumber = vals.v === '0x1c' ? 1 : 0;
+
+    var pubKey = secp256k1.recover(new Buffer(util.removeTrailing0x(hash), 'hex'), new Buffer(sigOnly, 'hex'), recoveryNumber, false).toString('hex');
+
+    // remove trailing '04'
+    pubKey = pubKey.slice(2);
+
+    return pubKey;
 }

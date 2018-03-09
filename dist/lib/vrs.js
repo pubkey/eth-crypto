@@ -10,10 +10,6 @@ var _account = require('eth-lib/lib/account');
 
 var _account2 = _interopRequireDefault(_account);
 
-var _bytes = require('eth-lib/lib/bytes');
-
-var _bytes2 = _interopRequireDefault(_bytes);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /**

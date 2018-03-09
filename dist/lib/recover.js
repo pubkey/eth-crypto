@@ -5,22 +5,24 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports['default'] = recover;
 
-var _account = require('eth-lib/lib/account');
+var _recoverPublicKey = require('./recover-public-key');
 
-var _account2 = _interopRequireDefault(_account);
+var _recoverPublicKey2 = _interopRequireDefault(_recoverPublicKey);
 
-var _vrs = require('./vrs');
+var _addressByPublicKey = require('./address-by-public-key');
 
-var _vrs2 = _interopRequireDefault(_vrs);
+var _addressByPublicKey2 = _interopRequireDefault(_addressByPublicKey);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /**
  * returns the adress with which the messageHash was signed
- * @param  {string} hexString
+ * @param  {string} sigString
  * @param  {string} hash
  * @return {string} address
  */
 function recover(sigString, hash) {
-  return _account2['default'].recover(hash, sigString);
+  var pubkey = (0, _recoverPublicKey2['default'])(sigString, hash);
+  var address = (0, _addressByPublicKey2['default'])(pubkey);
+  return address;
 }

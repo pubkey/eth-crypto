@@ -1,9 +1,7 @@
-import { decodeSignature, toChecksum } from 'eth-lib/lib/account';
-import Bytes from 'eth-lib/lib/bytes';
-import * as vrs from './vrs';
+import * as secp256k1 from 'secp256k1';
 
-import elliptic from 'elliptic';
-var secp256k1 = new elliptic.ec('secp256k1');
+import * as vrs from './vrs';
+import * as util from './util';
 
 /**
  * returns the publicKey for the privateKEy with which the messageHash was signed
@@ -12,17 +10,17 @@ var secp256k1 = new elliptic.ec('secp256k1');
  * @return {string} publicKey
  */
 export default function recoverPublicKey(signature, hash) {
-    // parse signature
     var vals = vrs.fromString(signature);
-    var vrsOfSig = {
-        v: Bytes.toNumber(vals.v),
-        r: vals.r.slice(2),
-        s: vals.s.slice(2)
-    };
 
-    // because odd vals mean v=0... sadly that means v=0 means v=1... I hate that
-    var ecPublicKey = secp256k1.recoverPubKey(new Buffer(hash.slice(2), 'hex'), vrsOfSig, vrsOfSig.v < 2 ? vrsOfSig.v : 1 - vrsOfSig.v % 2);
+    var sigOnly = signature.substring(0, signature.length - 1);
+    sigOnly = util.removeTrailing0x(sigOnly);
 
-    var publicKey = ecPublicKey.encode('hex', false).slice(2);
-    return publicKey;
+    var recoveryNumber = vals.v === '0x1c' ? 1 : 0;
+
+    var pubKey = secp256k1.recover(new Buffer(util.removeTrailing0x(hash), 'hex'), new Buffer(sigOnly, 'hex'), recoveryNumber, false).toString('hex');
+
+    // remove trailing '04'
+    pubKey = pubKey.slice(2);
+
+    return pubKey;
 }
