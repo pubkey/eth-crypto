@@ -1,7 +1,6 @@
 const AsyncTestUtil = require('async-test-util');
 const assert = require('assert');
 const EthCrypto = require('../dist/lib/index');
-const eccrypto = require('eccrypto');
 
 const TEST_DATA = {
     address: '0x3f243FdacE01Cfd9719f7359c94BA11361f32471',

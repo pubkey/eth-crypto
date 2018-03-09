@@ -5,10 +5,8 @@
 
 const ganache = require('ganache-cli');
 const Web3 = require('web3');
-const AsyncTestUtil = require('async-test-util');
 const assert = require('assert');
 const EthCrypto = require('../../dist/lib/index');
-const compiledDonationBag = require('../../gen/DonationBag.json');
 
 describe('signed-data.md', () => {
     it('all', async function() {
@@ -168,7 +166,7 @@ describe('signed-data.md', () => {
             recieveTx,
             recieverIdentity.privateKey
         );
-        const receipt3 = await web3.eth.sendSignedTransaction(serializedRecieveTx);
+        await web3.eth.sendSignedTransaction(serializedRecieveTx);
 
         // check receiver-balance
         const receiverBalance = await web3.eth.getBalance(recieverIdentity.address);

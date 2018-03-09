@@ -1,20 +1,11 @@
-const {
-    performance
-} = require('perf_hooks');
 const convertHrtime = require('convert-hrtime');
 const AsyncTestUtil = require('async-test-util');
-const assert = require('assert');
 
 const EthCrypto = require('../dist/lib/index');
 
-const TEST_DATA = {
-    address: '0x3f243FdacE01Cfd9719f7359c94BA11361f32471',
-    privateKey: '0x107be946709e41b7895eea9f2dacf998a0a9124acbb786f0fd1a826101581a07',
-    publicKey: 'bf1cc3154424dc22191941d9f4f50b063a2b663a2337e5548abea633c1d06eceacf2b81dd326d278cd992d5e03b0df140f2df389ac9a1c2415a220a4a9e8c046'
-};
-
 const benchmark = {
     sign: {},
+    recoverPublicKey: {},
     encryptWithPublicKey: {},
     decryptWithPrivateKey: {}
 };
@@ -67,6 +58,36 @@ describe('performance.test.js', () => {
 
             const elapsed = convertHrtime(process.hrtime(startTime));
             benchmark.sign.otherKey = elapsed.milliseconds;
+        });
+    });
+    describe('.recoverPublicKey()', () => {
+        it('run', async () => {
+            // prepare
+            const identity = EthCrypto.createIdentity();
+            const runs = 300;
+            const hashes = new Array(runs)
+                .fill(0)
+                .map(() => AsyncTestUtil.randomString(12))
+                .map(s => EthCrypto.hash.keccak256(s).replace(/^.{2}/g, ''));
+
+            const signatures = hashes.map(hash => EthCrypto.sign(
+                identity.privateKey,
+                hash
+            ));
+
+            // run
+            const startTime = process.hrtime();
+            for (let i = 0; i < runs; i++) {
+                const sig = signatures.pop();
+                const hash = hashes.pop();
+                EthCrypto.recoverPublicKey(
+                    sig,
+                    hash
+                );
+            }
+
+            const elapsed = convertHrtime(process.hrtime(startTime));
+            benchmark.recoverPublicKey.sameKey = elapsed.milliseconds;
         });
     });
     describe('.encryptWithPublicKey()', () => {

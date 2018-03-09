@@ -171,7 +171,6 @@ describe('integration.test.js', () => {
                 assert.equal(jsHash, sig.messageHash);
             });
             it('should be possible to create the same prefixed hash in solidity', async () => {
-                const ident = EthCrypto.createIdentity();
                 const str = 'foobar';
                 const hash = EthCrypto.hash.keccak256([{
                     type: 'string',

@@ -1,5 +1,4 @@
 import Account from 'eth-lib/lib/account';
-import Bytes from 'eth-lib/lib/bytes';
 
 /**
  * split signature-hex into parts
