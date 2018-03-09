@@ -72,7 +72,7 @@ describe('unit.test.js', () => {
                     )
                 );
             });
-            it('should throw when non-hash given', ()=> {
+            it('should throw when non-hash given', () => {
                 assert.throws(
                     () => EthCrypto.sign(
                         TEST_DATA.privateKey,
@@ -90,6 +90,7 @@ describe('unit.test.js', () => {
                 const signature = EthCrypto.sign(TEST_DATA.privateKey, messageHash);
                 const address = EthCrypto.recover(signature, messageHash);
                 assert.equal(address, TEST_DATA.address);
+
             });
         });
         describe('negative', () => {});
