@@ -21,8 +21,7 @@ describe('encrypted-message.md', () => {
 
         const payload = {
             message: secretMessage,
-            signature,
-            sender: alice.publicKey
+            signature
         };
         const encrypted = await EthCrypto.encryptWithPublicKey(
             bob.publicKey,
@@ -37,27 +36,15 @@ describe('encrypted-message.md', () => {
             encrypted
         );
         const decryptedPayload = JSON.parse(decrypted);
-        const senderAddress = EthCrypto.addressByPublicKey(decryptedPayload.sender);
-        // console.log('decryptedPayload:');
-        // console.dir(decryptedPayload);
 
         // check signature
-        const signer = EthCrypto.recover(
+        const senderAddress = EthCrypto.recover(
             decryptedPayload.signature,
             EthCrypto.hash.keccak256(payload.message)
         );
-        if (signer !== senderAddress)
-            throw new Error('signature not valid');
 
-        /*        console.log(
-                    'Got message from ' +
-                    senderAddress +
-                    ': "' +
-                    decryptedPayload.message + '"'
-                );
-        */
+        assert.equal(senderAddress, alice.address);
         assert.equal(decryptedPayload.message, secretMessage);
-
 
         // answer
         const answerMessage = 'Roger dad';
@@ -67,11 +54,18 @@ describe('encrypted-message.md', () => {
         );
         const answerPayload = {
             message: answerMessage,
-            signature: answerSignature,
-            sender: bob.publicKey
+            signature: answerSignature
         };
+
+        const alicePublicKey = EthCrypto.recoverPublicKey(
+            decryptedPayload.signature,
+            EthCrypto.hash.keccak256(payload.message)
+        );
+
+        assert.equal(alicePublicKey, alice.publicKey);
+
         const encryptedAnswer = await EthCrypto.encryptWithPublicKey(
-            decryptedPayload.sender,
+            alicePublicKey,
             JSON.stringify(answerPayload)
         );
         assert.ok(encryptedAnswer);

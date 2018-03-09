@@ -30,8 +30,7 @@ const signature = EthCrypto.sign(
 );
 const payload = {
     message: secretMessage,
-    signature,
-    sender: alice.publicKey
+    signature
 };
 const encrypted = await EthCrypto.encryptWithPublicKey(
     bob.publicKey, // by encryping with bobs publicKey, only bob can decrypt the payload with his privateKey
@@ -57,15 +56,12 @@ const decrypted = await EthCrypto.decryptWithPrivateKey(
     encrypted
 );
 const decryptedPayload = JSON.parse(decrypted);
-const senderAddress = EthCrypto.addressByPublicKey(decryptedPayload.sender);
 
 // check signature
-const signer = EthCrypto.recover(
+const senderAddress = EthCrypto.recover(
     decryptedPayload.signature,
     EthCrypto.hash.keccak256(payload.message)
 );
-if (signer !== senderAddress)
-    throw new Error('signature not valid');
 
 console.log(
     'Got message from ' +
@@ -79,20 +75,26 @@ console.log(
 ## Creating an answer
 
 Now that `Bob` got the message, he can also answer back to alice.
+To to this he has to recover the publicKey of alice with `recoverPublicKey()`.
 
 ```javascript
-const answerMessage = 'Roger dad';
+const answerMessage = 'And I am Bob Kelso';
 const answerSignature = EthCrypto.sign(
     bob.privateKey,
     EthCrypto.hash.keccak256(answerMessage)
 );
 const answerPayload = {
     message: answerMessage,
-    signature: answerSignature,
-    sender: bob.publicKey
+    signature: answerSignature
 };
+
+const alicePublicKey = EthCrypto.recoverPublicKey(
+    decryptedPayload.signature,
+    EthCrypto.hash.keccak256(payload.message)
+);
+
 const encryptedAnswer = await EthCrypto.encryptWithPublicKey(
-    decryptedPayload.sender,
+    alicePublicKey,
     JSON.stringify(answerPayload)
 );
 // now we send the encryptedAnswer to alice over the internet.. *bieb, bieb, blob*
