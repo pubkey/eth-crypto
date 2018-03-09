@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.util = exports.vrs = exports.hex = exports.hash = exports.txDataByCompiled = exports.signTransaction = exports.sign = exports.recover = exports.publicKeyByPrivateKey = exports.encryptWithPublicKey = exports.decryptWithPrivateKey = exports.createIdentity = exports.addressByPublicKey = undefined;
+exports.util = exports.vrs = exports.hex = exports.hash = exports.txDataByCompiled = exports.signTransaction = exports.sign = exports.recoverPublicKey = exports.recover = exports.publicKeyByPrivateKey = exports.encryptWithPublicKey = exports.decryptWithPrivateKey = exports.createIdentity = exports.addressByPublicKey = undefined;
 
 var _addressByPublicKey = require('./address-by-public-key');
 
@@ -28,6 +28,10 @@ var _publicKeyByPrivateKey2 = _interopRequireDefault(_publicKeyByPrivateKey);
 var _recover = require('./recover');
 
 var _recover2 = _interopRequireDefault(_recover);
+
+var _recoverPublicKey = require('./recover-public-key');
+
+var _recoverPublicKey2 = _interopRequireDefault(_recoverPublicKey);
 
 var _sign = require('./sign');
 
@@ -67,6 +71,7 @@ exports.decryptWithPrivateKey = _decryptWithPrivateKey2['default'];
 exports.encryptWithPublicKey = _encryptWithPublicKey2['default'];
 exports.publicKeyByPrivateKey = _publicKeyByPrivateKey2['default'];
 exports.recover = _recover2['default'];
+exports.recoverPublicKey = _recoverPublicKey2['default'];
 exports.sign = _sign2['default'];
 exports.signTransaction = _signTransaction2['default'];
 exports.txDataByCompiled = _txDataByCompiled2['default'];
@@ -81,6 +86,7 @@ exports['default'] = {
     encryptWithPublicKey: _encryptWithPublicKey2['default'],
     publicKeyByPrivateKey: _publicKeyByPrivateKey2['default'],
     recover: _recover2['default'],
+    recoverPublicKey: _recoverPublicKey2['default'],
     sign: _sign2['default'],
     signTransaction: _signTransaction2['default'],
     txDataByCompiled: _txDataByCompiled2['default'],
