@@ -101,7 +101,7 @@ Recovers the signers address from the signature.
 ```javascript
     const signer = EthCrypto.recover(
       '0xc04b809d8f33c46ff80c44ba58e866ff0d5..',
-      'foobar' // signed message
+      EthCrypto.hash.keccak256('foobar') // signed message hash
   );
   // > '0x3f243FdacE01Cfd9719f7359c94BA11361f32471'
 ```
@@ -112,7 +112,7 @@ Recovers the signers `publicKey` from the signature.
 ```javascript
     const signer = EthCrypto.recover(
       '0xc04b809d8f33c46ff80c44ba58e866ff0d5..',
-      'foobar' // signed message
+      EthCrypto.hash.keccak256('foobar') // signed message hash
   );
   // > 'bf1cc3154424dc22191941d9f4f50b063a2b663a2337e5548abea633c1d06ece..'
 ```
