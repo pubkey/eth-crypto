@@ -82,12 +82,14 @@ Derives the ethereum-address from the publicKey.
 
 ### sign()
 
-Signs the message with the privateKey. Returns the signature as hex-string.
+Signs the hash with the privateKey. Returns the signature as hex-string.
 
 ```javascript
+  const message = 'foobar';
+  const messageHash = EthCrypto.hash.keccak256(message);
   const signature = EthCrypto.sign(
       '0x107be946709e41b7895eea9f2dacf998a0a9124acbb786f0fd1a826101581a07', // privateKey
-      'foobar' // message
+      messageHash // hash of message
   );
   // > '0xc04b809d8f33c46ff80c44ba58e866ff0d5..'
 ```

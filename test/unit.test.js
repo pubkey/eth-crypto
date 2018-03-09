@@ -56,7 +56,8 @@ describe('unit.test.js', () => {
         describe('positive', () => {
             it('should sign the data', () => {
                 const message = AsyncTestUtil.randomString(12);
-                const signature = EthCrypto.sign(TEST_DATA.privateKey, message);
+                const messageHash = EthCrypto.hash.keccak256(message);
+                const signature = EthCrypto.sign(TEST_DATA.privateKey, messageHash);
                 assert.equal(typeof signature, 'string');
                 assert.ok(signature.length > 10);
             });
@@ -71,14 +72,23 @@ describe('unit.test.js', () => {
                     )
                 );
             });
+            it('should throw when non-hash given', ()=> {
+                assert.throws(
+                    () => EthCrypto.sign(
+                        TEST_DATA.privateKey,
+                        AsyncTestUtil.randomString(5)
+                    )
+                );
+            });
         });
     });
     describe('.recover()', () => {
         describe('positive', () => {
             it('should return the correct address', () => {
                 const message = AsyncTestUtil.randomString(12);
-                const signature = EthCrypto.sign(TEST_DATA.privateKey, message);
-                const address = EthCrypto.recover(signature, message);
+                const messageHash = EthCrypto.hash.keccak256(message);
+                const signature = EthCrypto.sign(TEST_DATA.privateKey, messageHash);
+                const address = EthCrypto.recover(signature, messageHash);
                 assert.equal(address, TEST_DATA.address);
             });
         });
@@ -87,8 +97,9 @@ describe('unit.test.js', () => {
     describe('.recoverPublicKey()', () => {
         it('should recover the correct key', async () => {
             const message = AsyncTestUtil.randomString(12);
-            const signature = EthCrypto.sign(TEST_DATA.privateKey, message);
-            const publicKey = EthCrypto.recoverPublicKey(signature, message);
+            const messageHash = EthCrypto.hash.keccak256(message);
+            const signature = EthCrypto.sign(TEST_DATA.privateKey, messageHash);
+            const publicKey = EthCrypto.recoverPublicKey(signature, messageHash);
             assert.equal(publicKey, TEST_DATA.publicKey);
         });
     });
