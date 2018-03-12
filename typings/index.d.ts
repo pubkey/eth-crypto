@@ -55,6 +55,11 @@ export function txDataByCompiled(
     args?: Array<string | number | BigNumber>
 ): string;
 
+export function calculateContractAddress(
+    creatorAddress: string,
+    nonce: number
+): string;
+
 export type TypedValue = {
     value: string | Number | BigNumber,
     type: 'string' | 'uint256' | 'int256' | 'bool' | 'bytes' | 'bytes32' | 'address'
@@ -91,6 +96,7 @@ declare const _default: {
     sign,
     signTransaction,
     txDataByCompiled,
+    calculateContractAddress,
     hash,
     hex,
     vrs,

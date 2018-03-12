@@ -44,6 +44,7 @@ const EthCrypto = require('eth-crypto');
 - [decryptWithPrivateKey()](#decryptwithprivatekey)
 - [signTransaction()](#signtransaction)
 - [txDataByCompiled()](#txdatabycompiled)
+- [calculateContractAddress()](#calculatecontractaddress)
 - [hex.compress() hex.decompress()](#hex-compressdecompress)
 ### createIdentity()
 
@@ -208,6 +209,28 @@ const serializedTx = EthCrypto.signTransaction(
     identity.privateKey
 );
 const receipt = await web3.eth.sendSignedTransaction(serializedTx);
+```
+
+### calculateContractAddress()
+Calculates the address for the contract from the senders address and the nonce, without deploying it to the blockchain.
+
+```javascript
+// pre-calculate address
+const calculatedAddress = EthCrypto.calculateContractAddress(
+    account.address, // address of the sender
+    3 // nonce with which the contract will be deployed
+);
+
+const rawTx = {
+    from: account.address,
+    gasPrice: parseInt(gasPrice),
+    nonce: 3,
+    data: compiled.code
+};
+const receipt = await state.web3.eth.sendTransaction(rawTx);
+
+console.log(receipt.contractAddress === calculatedAddress);
+// > true
 ```
 
 ### hex compress/decompress

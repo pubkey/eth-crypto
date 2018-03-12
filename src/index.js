@@ -8,6 +8,7 @@ import recoverPublicKey from './recover-public-key';
 import sign from './sign';
 import signTransaction from './sign-transaction';
 import txDataByCompiled from './tx-data-by-compiled';
+import calculateContractAddress from './calculate-contract-address';
 import * as hash from './hash';
 import * as hex from './hex';
 import * as vrs from './vrs';
@@ -24,6 +25,7 @@ export {
     sign,
     signTransaction,
     txDataByCompiled,
+    calculateContractAddress,
     hash,
     hex,
     vrs,
@@ -41,6 +43,7 @@ export default {
     sign,
     signTransaction,
     txDataByCompiled,
+    calculateContractAddress,
     hash,
     hex,
     vrs,

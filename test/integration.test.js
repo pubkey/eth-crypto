@@ -249,4 +249,65 @@ describe('integration.test.js', () => {
             assert.equal(solSigner, ident.address);
         });
     });
+    describe('.calculateContractAddress()', () => {
+        it('should calculate the correct address', async () => {
+            const account = state.accounts.pop();
+            const gasPrice = await state.web3.eth.getGasPrice();
+
+            const calculatedAddress = EthCrypto.calculateContractAddress(
+                account.address,
+                0
+            );
+
+            const rawTx = {
+                from: account.address,
+                gasPrice: parseInt(gasPrice),
+                data: compiled.code
+            };
+            const estimateGas = await state.web3.eth.estimateGas(rawTx);
+            rawTx.gasLimit = estimateGas * 5;
+
+            const receipt = await state.web3.eth.sendTransaction(rawTx);
+            assert.equal(receipt.contractAddress, calculatedAddress);
+        });
+        it('should also work with higher nonce', async () => {
+            const account = state.accounts.pop();
+            const account2 = state.accounts.pop();
+            const gasPrice = await state.web3.eth.getGasPrice();
+
+            // send 3 transactions
+            await Promise.all(
+                new Array(3)
+                .fill(0)
+                .map(async () => {
+                    const rawTx = {
+                        from: account.address,
+                        to: account2.address,
+                        gasPrice: parseInt(gasPrice),
+                        value: 1
+                    };
+                    const estimateGas = await state.web3.eth.estimateGas(rawTx);
+                    rawTx.gasLimit = estimateGas * 2;
+                    await state.web3.eth.sendTransaction(rawTx);
+                })
+            );
+
+            const calculatedAddress = EthCrypto.calculateContractAddress(
+                account.address,
+                3
+            );
+
+            const rawTx = {
+                from: account.address,
+                gasPrice: parseInt(gasPrice),
+                nonce: 3,
+                data: compiled.code
+            };
+            const estimateGas = await state.web3.eth.estimateGas(rawTx);
+            rawTx.gasLimit = estimateGas * 5;
+
+            const receipt = await state.web3.eth.sendTransaction(rawTx);
+            assert.equal(receipt.contractAddress, calculatedAddress);
+        });
+    });
 });
