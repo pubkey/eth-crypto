@@ -10,19 +10,35 @@ const benchmark = {
     decryptWithPrivateKey: {}
 };
 
+const nowTime = () => {
+    try {
+        return process.hrtime();
+    } catch (err) {
+        return performance.now();
+    }
+};
+
+const elapsedTime = before => {
+    try {
+        return convertHrtime(process.hrtime(before)).milliseconds;
+    } catch (err) {
+        return performance.now() - before;
+    }
+};
+
 describe('performance.test.js', () => {
     describe('.sign()', () => {
         it('sameKey', async () => {
             // prepare
             const identity = EthCrypto.createIdentity();
-            const runs = 300;
+            const runs = 200;
             const hashes = new Array(runs)
                 .fill(0)
                 .map(() => AsyncTestUtil.randomString(12))
                 .map(s => EthCrypto.hash.keccak256(s).replace(/^.{2}/g, ''));
 
             // run
-            const startTime = process.hrtime();
+            const startTime = nowTime();
             for (let i = 0; i < runs; i++) {
                 const hash = hashes.pop();
                 EthCrypto.sign(
@@ -31,8 +47,8 @@ describe('performance.test.js', () => {
                 );
             }
 
-            const elapsed = convertHrtime(process.hrtime(startTime));
-            benchmark.sign.sameKey = elapsed.milliseconds;
+            const elapsed = elapsedTime(startTime);
+            benchmark.sign.sameKey = elapsed;
         });
         it('otherKey', async () => {
             // prepare
@@ -46,7 +62,7 @@ describe('performance.test.js', () => {
                 .map(() => EthCrypto.createIdentity().privateKey);
 
             // run
-            const startTime = process.hrtime();
+            const startTime = nowTime();
             for (let i = 0; i < runs; i++) {
                 const hash = hashes.pop();
                 const key = keys.pop();
@@ -56,15 +72,15 @@ describe('performance.test.js', () => {
                 );
             }
 
-            const elapsed = convertHrtime(process.hrtime(startTime));
-            benchmark.sign.otherKey = elapsed.milliseconds;
+            const elapsed = elapsedTime(startTime);
+            benchmark.sign.otherKey = elapsed;
         });
     });
     describe('.recoverPublicKey()', () => {
         it('run', async () => {
             // prepare
             const identity = EthCrypto.createIdentity();
-            const runs = 300;
+            const runs = 200;
             const hashes = new Array(runs)
                 .fill(0)
                 .map(() => AsyncTestUtil.randomString(12))
@@ -76,7 +92,7 @@ describe('performance.test.js', () => {
             ));
 
             // run
-            const startTime = process.hrtime();
+            const startTime = nowTime();
             for (let i = 0; i < runs; i++) {
                 const sig = signatures.pop();
                 const hash = hashes.pop();
@@ -86,8 +102,8 @@ describe('performance.test.js', () => {
                 );
             }
 
-            const elapsed = convertHrtime(process.hrtime(startTime));
-            benchmark.recoverPublicKey.sameKey = elapsed.milliseconds;
+            const elapsed = elapsedTime(startTime);
+            benchmark.recoverPublicKey.sameKey = elapsed;
         });
     });
     describe('.encryptWithPublicKey()', () => {
@@ -95,14 +111,14 @@ describe('performance.test.js', () => {
             // prepare
             const identity = EthCrypto.createIdentity();
 
-            const runs = 1000;
+            const runs = 200;
             const hashes = new Array(runs)
                 .fill(0)
                 .map(() => AsyncTestUtil.randomString(12))
                 .map(s => EthCrypto.hash.keccak256(s));
 
             // run
-            const startTime = process.hrtime();
+            const startTime = nowTime();
 
             await Promise.all(
                 new Array(runs)
@@ -116,12 +132,12 @@ describe('performance.test.js', () => {
                 })
             );
 
-            const elapsed = convertHrtime(process.hrtime(startTime));
-            benchmark.encryptWithPublicKey.sameKey = elapsed.milliseconds;
+            const elapsed = elapsedTime(startTime);
+            benchmark.encryptWithPublicKey.sameKey = elapsed;
         });
         it('otherKey', async () => {
             // prepare
-            const runs = 1000;
+            const runs = 200;
             const hashes = new Array(runs)
                 .fill(0)
                 .map(() => AsyncTestUtil.randomString(12))
@@ -131,7 +147,7 @@ describe('performance.test.js', () => {
                 .map(() => EthCrypto.createIdentity().publicKey);
 
             // run
-            const startTime = process.hrtime();
+            const startTime = nowTime();
             await Promise.all(
                 new Array(runs)
                 .fill(0)
@@ -145,8 +161,8 @@ describe('performance.test.js', () => {
                 })
             );
 
-            const elapsed = convertHrtime(process.hrtime(startTime));
-            benchmark.encryptWithPublicKey.otherKey = elapsed.milliseconds;
+            const elapsed = elapsedTime(startTime);
+            benchmark.encryptWithPublicKey.otherKey = elapsed;
         });
     });
     describe('.decryptWithPrivateKey()', () => {
@@ -154,7 +170,7 @@ describe('performance.test.js', () => {
             // prepare
             const identity = EthCrypto.createIdentity();
 
-            const runs = 1000;
+            const runs = 200;
             const hashes = await Promise.all(
                 new Array(runs)
                 .fill(0)
@@ -167,7 +183,7 @@ describe('performance.test.js', () => {
             );
 
             // run
-            const startTime = process.hrtime();
+            const startTime = nowTime();
             await Promise.all(
                 new Array(runs)
                 .fill(0)
@@ -181,8 +197,8 @@ describe('performance.test.js', () => {
                 })
             );
 
-            const elapsed = convertHrtime(process.hrtime(startTime));
-            benchmark.decryptWithPrivateKey.sameKey = elapsed.milliseconds;
+            const elapsed = elapsedTime(startTime);
+            benchmark.decryptWithPrivateKey.sameKey = elapsed;
         });
     });
     describe('show', () => {
