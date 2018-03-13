@@ -12,17 +12,17 @@ Cryptographic javascript-functions for ethereum and how to use them together wit
 
 ## Tutorials
 
-### Creating Keys and use them for ethereum-transactions
+- **[Creating Keys and use them for ethereum-transactions](./tutorials/creating-transactions.md)**
+  
+  In this tutorial we will create an ethereum-identity and use it so send transactions to the blockchain.
 
-In this tutorial we will create an ethereum-identity and use it so send transactions to the blockchain. [Creating transactions](./tutorials/creating-transactions.md).
+- **[Sign and validate data with solidity](./tutorials/signed-data.md)**
 
-### Sign and validate data with solidity
+  In this tutorial we will sign data in javascript and validate the signature inside of a smart-contract.
+  
+- **[Sending encrypted and signed data to other identites](./tutorials/encrypted-message.md)**  
 
-In this tutorial we will sign data in javascript and validate the signature inside of a smart-contract. [Signed Data](./tutorials/signed-data.md).
-
-### Sending encrypted and signed data to other identites
-
-In this tutorial we will use the ethereum-identites and asymmetric cryptography to send an encrypted and signed message from alice to bob. [Encrypted Message](./tutorials/encrypted-message.md).
+  In this tutorial we will use the ethereum-identites and asymmetric cryptography to send an encrypted and signed message from Alice to Bob.
 
 ## Functions
 
