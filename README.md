@@ -1,3 +1,11 @@
+<p align="center">
+    <a alt="travis" href="https://travis-ci.org/pubkey/eth-crypto">
+        <img src="https://travis-ci.org/pubkey/eth-crypto.svg?branch=master" /></a>
+    <a href="https://twitter.com/intent/follow?screen_name=pubkeypubkey">
+        <img src="./orga/twitter.svg"
+            alt="follow on Twitter"></a>
+</p>
+
 # eth-crypto
 
 Cryptographic javascript-functions for ethereum and how to use them together with web3 and solidity.
