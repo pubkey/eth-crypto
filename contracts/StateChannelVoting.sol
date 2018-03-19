@@ -21,6 +21,7 @@ contract StateChannelVoting {
      * memberAddress -> registerTime
      */
     mapping (address => uint) public boardMembers;
+    address[] boardMemberList;
 
     modifier onlyBoardMember() {
         require(boardMembers[msg.sender] > 0);
@@ -46,9 +47,6 @@ contract StateChannelVoting {
         // title of the voting so voters can identify it
         string title;
 
-        // time when the voting was created
-        uint time;
-
         /**
          * if the voting is successful
          * this address benefits by becoming boardMember or receiving the donation
@@ -58,16 +56,33 @@ contract StateChannelVoting {
         uint amount;
 
 
-        uint closeTime; // if 0, not closed
-        bool closeOutcome;
+        /**
+         * state of the voting
+         * 0 -> open
+         * 1 -> closed with probably correct result
+         * 2 -> on-chain voting enforced
+         * 3 -> closed with end-result
+         */
+        uint state;
+        // time of the last state-change
+        uint stateChange;
 
-        mapping (address => bool) votes;
+        bool result;
+
+        mapping (address => bool) voters;
+        uint votesTrue;
+        uint votesFalse;
     }
 
     // constructor
     function StateChannelVoting() public {
         // add owner to boardMembers
-        boardMembers[msg.sender] = block.timestamp;
+        addToBoardMember(msg.sender);
+    }
+
+    function addToBoardMember(address member) private {
+        boardMembers[member] = block.timestamp;
+        boardMemberList.push(member);
     }
 
     /**
@@ -91,6 +106,11 @@ contract StateChannelVoting {
         }
     }
 
+    function setVotingState(Voting voting, uint newState) private {
+        voting.state = newState;
+        voting.stateChange = block.timestamp;
+    }
+
     /**
      * creates a new voting
      */
@@ -106,27 +126,89 @@ contract StateChannelVoting {
             votingType: votingType,
             creator: msg.sender,
             title: title,
-            time: block.timestamp,
             beneficiary: beneficiary,
             amount: amount,
-            closeTime: 0,
-            closeOutcome: false
+            state: 0,
+            stateChange: block.timestamp,
+            result: false,
+            votesTrue: 0,
+            votesFalse: 0
         });
     }
 
-    function closeVoting (
+    function submitOffChainResult (
         uint votingId,
         bool outcome // if true, voting succeeded
     ) public onlyBoardMember {
         Voting storage voting = votingById[votingId];
 
         // time not passed
-        if ((voting.time + timeLimit) < block.timestamp) revert();
+        if ((voting.stateChange + timeLimit) < block.timestamp) revert();
 
         // already closed
-        if (voting.closeTime != 0) revert();
+        if (voting.state != 0) revert();
 
-        voting.closeTime = block.timestamp;
-        voting.closeOutcome = outcome;
+        setVotingState(voting, 1);
+
+        voting.result = outcome;
+    }
+
+    function enforceOnChainVoting (
+        uint votingId,
+        bool vote
+    ) public onlyBoardMember {
+        Voting storage voting = votingById[votingId];
+
+        // only from state 1 or 2
+        if (voting.state != 1 && voting.state != 2) revert();
+
+        if (voting.state == 1) {
+            setVotingState(voting, 2);
+        }
+
+        // already voted
+        if (voting.voters[msg.sender] == true) revert();
+
+        // set own voting
+        voting.voters[msg.sender] = true;
+        if (vote == true) voting.votesTrue++;
+        else {
+            voting.votesFalse++;
+        }
+    }
+
+    function endResult (
+        uint votingId
+    ) public onlyBoardMember {
+        Voting storage voting = votingById[votingId];
+
+        // time not passed
+        if ((voting.stateChange + timeLimit) < block.timestamp) revert();
+
+        // only from state 1 or 2
+        if (voting.state != 1 && voting.state != 2) revert();
+
+        setVotingState(voting, 3);
+
+        if (voting.state == 1) {
+            // use off-chain result
+        } else {
+            // use on-chain result
+            if (voting.votesTrue > voting.votesFalse) {
+                voting.result = true;
+            } else {
+                voting.result = false;
+            }
+        }
+
+        if (voting.result == true) {
+            if (voting.votingType == true) {
+                // add to boardMembers
+                addToBoardMember(voting.beneficiary);
+            } else {
+                // send money
+                voting.beneficiary.transfer(voting.amount);
+            }
+        }
     }
 }
