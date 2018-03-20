@@ -24,9 +24,9 @@ Cryptographic javascript-functions for ethereum and how to use them together wit
 
   In this tutorial we will use the ethereum-identites and asymmetric cryptography to send an encrypted and signed message from Alice to Bob.
 
-  - **[Using a state-channel to transaction cost](./tutorials/state-channel.md)**  
+  - **[Using a state-channel to transaction cost](./tutorials/on-chain-judge.md)**  
 
-    In this tutorial we will create a voting where the smart-contract interacts a judge of a state-channel which reduces the gas cost of the voting.
+    In this tutorial we will create a voting where the smart-contract interacts as judge of a voting outcome which reduces the gas cost of the voting.
 
 
 ## Functions

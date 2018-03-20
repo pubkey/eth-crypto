@@ -3,15 +3,15 @@ pragma experimental ABIEncoderV2;
 
 
 /**
- * this contract is used in the state-channel-tutorial under ./tutorials/state-channel.md
+ * this contract is used in the on-chain-judge-tutorial under ./tutorials/on-chain-judge.md
  */
-contract StateChannelVoting {
+contract OnChainJudge {
 
     /**
      * to ensure the signatures for this contract cannot be
      * replayed somewhere else, we add this prefix to the signed hash
      */
-    string public signPrefix = "Signed for StateChannelVoting:";
+    string public signPrefix = "Signed for OnChainJudge:";
 
     // if a voting is older than this limit, it will be closeable
     uint public timeLimit = 60 * 60 * 24; // 1 day
@@ -75,7 +75,7 @@ contract StateChannelVoting {
     }
 
     // constructor
-    function StateChannelVoting() public {
+    function OnChainJudge() public {
         // add owner to boardMembers
         addToBoardMember(msg.sender);
     }
