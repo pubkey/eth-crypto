@@ -21,7 +21,11 @@ contract OnChainJudge {
      * memberAddress -> registerTime
      */
     mapping (address => uint) public boardMembers;
-    address[] boardMemberList;
+    address[] public boardMemberList;
+
+    function getBoardMembers() public constant returns (address[]) {
+        return boardMemberList;
+    }
 
     modifier onlyBoardMember() {
         require(boardMembers[msg.sender] > 0);
@@ -29,7 +33,7 @@ contract OnChainJudge {
     }
 
     uint public lastVotingId = 0;
-    mapping (uint => Voting) votingById;
+    mapping (uint => Voting) public votingById;
 
     struct Voting {
         // id of the voting
@@ -75,9 +79,12 @@ contract OnChainJudge {
     }
 
     // constructor
-    function OnChainJudge() public {
-        // add owner to boardMembers
-        addToBoardMember(msg.sender);
+    function OnChainJudge(address[] initalMembers) public {
+        // add inital to boardMembers
+        uint arrayLength = initalMembers.length;
+        for (uint i=0; i < arrayLength; i++) {
+            addToBoardMember(initalMembers[i]);
+        }
     }
 
     function addToBoardMember(address member) private {
