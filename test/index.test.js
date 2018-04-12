@@ -1,5 +1,6 @@
 require('./unit.test');
 require('./integration.test');
+require('./issues.test');
 
 // tutorials
 require('./tutorials/signed-data.test');

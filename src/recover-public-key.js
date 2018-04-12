@@ -5,13 +5,14 @@ import * as util from './util';
 
 
 /**
- * returns the publicKey for the privateKEy with which the messageHash was signed
+ * returns the publicKey for the privateKey with which the messageHash was signed
  * @param  {string} signature
  * @param  {string} hash
  * @return {string} publicKey
  */
 export default function recoverPublicKey(signature, hash) {
     const vals = vrs.fromString(signature);
+
 
     let sigOnly = signature.substring(0, signature.length - 1);
     sigOnly = util.removeTrailing0x(sigOnly);
