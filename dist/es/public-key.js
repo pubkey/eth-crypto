@@ -1,0 +1,39 @@
+import { publicKeyConvert } from 'secp256k1';
+import ethUtil from 'ethereumjs-util';
+
+export function compress(startsWith04) {
+
+    // add trailing 04 if not done before
+    var testBuffer = new Buffer(startsWith04, 'hex');
+    if (testBuffer.length === 64) startsWith04 = '04' + startsWith04;
+
+    return publicKeyConvert(new Buffer(startsWith04, 'hex'), true).toString('hex');
+};
+
+export function decompress(startsWith02Or03) {
+
+    // if already decompressed an not has trailing 04
+    var testBuffer = new Buffer(startsWith02Or03, 'hex');
+    if (testBuffer.length === 64) startsWith02Or03 = '04' + startsWith02Or03;
+
+    var decompressed = publicKeyConvert(new Buffer(startsWith02Or03, 'hex'), false).toString('hex');
+
+    // remove trailing 04
+    decompressed = decompressed.substring(2);
+    return decompressed;
+};
+
+/**
+ * generates the ethereum-adress of the publicKey
+ * We create the checksum-adress which is case-sensitive
+ * @returns {string} address
+ */
+export function toAddress(publicKey) {
+
+    // normalize key
+    publicKey = decompress(publicKey);
+
+    var addressBuffer = ethUtil.pubToAddress(new Buffer(publicKey, 'hex'));
+    var checkSumAdress = ethUtil.toChecksumAddress(addressBuffer.toString('hex'));
+    return checkSumAdress;
+}

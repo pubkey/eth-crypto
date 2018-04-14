@@ -16,6 +16,8 @@ var _eccrypto = require('eccrypto');
 
 var _eccrypto2 = _interopRequireDefault(_eccrypto);
 
+var _publicKey = require('./public-key');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 exports['default'] = function () {
@@ -26,12 +28,15 @@ exports['default'] = function () {
                 switch (_context.prev = _context.next) {
                     case 0:
 
+                        // ensure its an uncompressed publicKey
+                        publicKey = (0, _publicKey.decompress)(publicKey);
+
                         // re-add the compression-flag
                         pubString = '04' + publicKey;
-                        _context.next = 3;
+                        _context.next = 4;
                         return _eccrypto2['default'].encrypt(new Buffer(pubString, 'hex'), Buffer(message));
 
-                    case 3:
+                    case 4:
                         encryptedBuffers = _context.sent;
                         encrypted = {
                             iv: encryptedBuffers.iv.toString('hex'),
@@ -41,7 +46,7 @@ exports['default'] = function () {
                         };
                         return _context.abrupt('return', encrypted);
 
-                    case 6:
+                    case 7:
                     case 'end':
                         return _context.stop();
                 }

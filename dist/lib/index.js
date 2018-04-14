@@ -3,15 +3,15 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.util = exports.vrs = exports.hex = exports.hash = exports.calculateContractAddress = exports.txDataByCompiled = exports.signTransaction = exports.sign = exports.recoverPublicKey = exports.recover = exports.publicKeyByPrivateKey = exports.encryptWithPublicKey = exports.decryptWithPrivateKey = exports.createIdentity = exports.addressByPublicKey = undefined;
-
-var _addressByPublicKey = require('./address-by-public-key');
-
-var _addressByPublicKey2 = _interopRequireDefault(_addressByPublicKey);
+exports.util = exports.vrs = exports.hex = exports.hash = exports.calculateContractAddress = exports.txDataByCompiled = exports.signTransaction = exports.sign = exports.recoverPublicKey = exports.recover = exports.publicKeyByPrivateKey = exports.encryptWithPublicKey = exports.decryptWithPrivateKey = exports.publicKey = exports.createIdentity = undefined;
 
 var _createIdentity = require('./create-identity');
 
 var _createIdentity2 = _interopRequireDefault(_createIdentity);
+
+var _publicKey = require('./public-key');
+
+var publicKey = _interopRequireWildcard(_publicKey);
 
 var _decryptWithPrivateKey = require('./decrypt-with-private-key');
 
@@ -69,8 +69,8 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-exports.addressByPublicKey = _addressByPublicKey2['default'];
 exports.createIdentity = _createIdentity2['default'];
+exports.publicKey = publicKey;
 exports.decryptWithPrivateKey = _decryptWithPrivateKey2['default'];
 exports.encryptWithPublicKey = _encryptWithPublicKey2['default'];
 exports.publicKeyByPrivateKey = _publicKeyByPrivateKey2['default'];
@@ -85,8 +85,8 @@ exports.hex = hex;
 exports.vrs = vrs;
 exports.util = util;
 exports['default'] = {
-    addressByPublicKey: _addressByPublicKey2['default'],
     createIdentity: _createIdentity2['default'],
+    publicKey: publicKey,
     decryptWithPrivateKey: _decryptWithPrivateKey2['default'],
     encryptWithPublicKey: _encryptWithPublicKey2['default'],
     publicKeyByPrivateKey: _publicKeyByPrivateKey2['default'],

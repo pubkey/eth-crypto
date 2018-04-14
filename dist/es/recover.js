@@ -1,5 +1,5 @@
 import recoverPublicKey from './recover-public-key';
-import addressByPublicKey from './address-by-public-key';
+import { toAddress as addressByPublicKey } from './public-key';
 
 /**
  * returns the adress with which the messageHash was signed
@@ -8,7 +8,7 @@ import addressByPublicKey from './address-by-public-key';
  * @return {string} address
  */
 export default function recover(sigString, hash) {
-  var pubkey = recoverPublicKey(sigString, hash);
-  var address = addressByPublicKey(pubkey);
-  return address;
+    var pubkey = recoverPublicKey(sigString, hash);
+    var address = addressByPublicKey(pubkey);
+    return address;
 }

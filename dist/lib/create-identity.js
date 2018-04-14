@@ -1,15 +1,17 @@
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 exports['default'] = createIdentity;
-
-var _util = require('./util');
 
 var _publicKeyByPrivateKey = require('./public-key-by-private-key');
 
 var _publicKeyByPrivateKey2 = _interopRequireDefault(_publicKeyByPrivateKey);
+
+var _account = require('eth-lib/lib/account');
+
+var _account2 = _interopRequireDefault(_account);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
@@ -18,13 +20,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'd
  * private-, public-Key and address
  */
 function createIdentity() {
-    var account = _util.web3.eth.accounts.create();
-
-    var identity = {
-        address: account.address,
-        privateKey: account.privateKey,
-        publicKey: (0, _publicKeyByPrivateKey2['default'])(account.privateKey)
-    };
-
-    return identity;
+  var identity = _account2['default'].create();
+  identity.publicKey = (0, _publicKeyByPrivateKey2['default'])(identity.privateKey);
+  return identity;
 }

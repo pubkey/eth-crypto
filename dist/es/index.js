@@ -1,5 +1,6 @@
-import addressByPublicKey from './address-by-public-key';
+
 import createIdentity from './create-identity';
+import * as publicKey from './public-key';
 import decryptWithPrivateKey from './decrypt-with-private-key';
 import encryptWithPublicKey from './encrypt-with-public-key';
 import publicKeyByPrivateKey from './public-key-by-private-key';
@@ -14,11 +15,11 @@ import * as hex from './hex';
 import * as vrs from './vrs';
 import * as util from './util';
 
-export { addressByPublicKey, createIdentity, decryptWithPrivateKey, encryptWithPublicKey, publicKeyByPrivateKey, recover, recoverPublicKey, sign, signTransaction, txDataByCompiled, calculateContractAddress, hash, hex, vrs, util };
+export { createIdentity, publicKey, decryptWithPrivateKey, encryptWithPublicKey, publicKeyByPrivateKey, recover, recoverPublicKey, sign, signTransaction, txDataByCompiled, calculateContractAddress, hash, hex, vrs, util };
 
 export default {
-    addressByPublicKey: addressByPublicKey,
     createIdentity: createIdentity,
+    publicKey: publicKey,
     decryptWithPrivateKey: decryptWithPrivateKey,
     encryptWithPublicKey: encryptWithPublicKey,
     publicKeyByPrivateKey: publicKeyByPrivateKey,
