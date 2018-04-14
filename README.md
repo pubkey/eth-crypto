@@ -44,7 +44,7 @@ const EthCrypto = require('eth-crypto');
 
 - [createIdentity()](#createidentity)
 - [publicKeyByPrivateKey()](#publickeybyprivatekey)
-- [addressByPublicKey()](#addressbypublickey)
+- [publicKey.toAddress()](#addressbypublickey)
 - [sign()](#sign)
 - [recover()](#recover)
 - [recoverPublicKey()](#recoverpublickey)
@@ -78,15 +78,37 @@ Derives the publicKey from a privateKey and returns it as hex-string.
   // > 'bf1cc3154424dc22191941d9f4f50b063a2b663a2337e5548abea633c1d06ece...'
 ```
 
-### addressByPublicKey()
+### publicKey.toAddress()
 
 Derives the ethereum-address from the publicKey.
 
 ```javascript
-  const address = EthCrypto.addressByPublicKey(
+  const address = EthCrypto.publicKey.toAddress(
       'bf1cc3154424dc22191941d9f4f50b063a2b663a2337e5548abea633c1d06ece...'
   );
   // > '0x3f243FdacE01Cfd9719f7359c94BA11361f32471'
+```
+
+### publicKey.compress()
+
+Compresses an uncompressed publicKey.
+
+```javascript
+  const address = EthCrypto.publicKey.compress(
+      '04a34d6aef3eb42335fb3cacb59...'
+  );
+  // > '03a34d6aef3eb42335fb3cacb59478c0b44c0bbeb8bb4ca427dbc7044157a5d24b' // compressed keys start with '02' or '03'
+```
+
+### publicKey.decompress()
+
+Decompresses a compressed publicKey.
+
+```javascript
+  const address = EthCrypto.publicKey.decompress(
+      '03a34d6aef3eb42335fb3c...'
+  );
+  // > 'a34d6aef3eb42335fb3cacb5947' // non-compressed keys start with '04' or no prefix
 ```
 
 ### sign()

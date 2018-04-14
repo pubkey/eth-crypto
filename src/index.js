@@ -1,5 +1,6 @@
-import addressByPublicKey from './address-by-public-key';
+
 import createIdentity from './create-identity';
+import * as publicKey from './public-key';
 import decryptWithPrivateKey from './decrypt-with-private-key';
 import encryptWithPublicKey from './encrypt-with-public-key';
 import publicKeyByPrivateKey from './public-key-by-private-key';
@@ -15,8 +16,8 @@ import * as vrs from './vrs';
 import * as util from './util';
 
 export {
-    addressByPublicKey,
     createIdentity,
+    publicKey,
     decryptWithPrivateKey,
     encryptWithPublicKey,
     publicKeyByPrivateKey,
@@ -33,8 +34,8 @@ export {
 };
 
 export default {
-    addressByPublicKey,
     createIdentity,
+    publicKey,
     decryptWithPrivateKey,
     encryptWithPublicKey,
     publicKeyByPrivateKey,

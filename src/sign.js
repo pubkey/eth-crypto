@@ -1,5 +1,10 @@
-import * as secp256k1 from 'secp256k1';
-import * as util from './util';
+import {
+    sign as secp256k1_sign
+} from 'secp256k1';
+import {
+    addTrailing0x,
+    removeTrailing0x
+} from './util';
 
 /**
  * signs the given message
@@ -9,13 +14,13 @@ import * as util from './util';
  * @return {string} hexString
  */
 export default function sign(privateKey, hash) {
-    hash = util.addTrailing0x(hash);
+    hash = addTrailing0x(hash);
     if (hash.length !== 66)
         throw new Error('EthCrypto.sign(): Can only sign hashes, given: ' + hash);
 
-    const sigObj = secp256k1.sign(
-        new Buffer(util.removeTrailing0x(hash), 'hex'),
-        new Buffer(util.removeTrailing0x(privateKey), 'hex')
+    const sigObj = secp256k1_sign(
+        new Buffer(removeTrailing0x(hash), 'hex'),
+        new Buffer(removeTrailing0x(privateKey), 'hex')
     );
 
     const recoveryId = sigObj.recovery === 1 ? '1c' : '1b';

@@ -7,8 +7,13 @@ export function createIdentity(): {
     address: string
 };
 
+export type publicKey = {
+    compress(publicKey: string): string;
+    decompress(publicKey: string): string;
+    toAddress(publicKey: string): string;
+};
+
 export function publicKeyByPrivateKey(privateKey: string): string;
-export function addressByPublicKey(publicKey: string): string;
 
 export type Signature = {
     v: string,
@@ -67,8 +72,6 @@ export type TypedValue = {
 
 export type hash = {
     keccak256(params: TypedValue[]): string;
-    prefixedHash(msg: string): string;
-    SIGN_PREFIX: string;
 };
 
 export type util = {
@@ -86,8 +89,8 @@ export type hex = {
 export function publicKeyToAddress(publicKey: string): string;
 
 declare const _default: {
-    addressByPublicKey,
     createIdentity,
+    publicKey,
     decryptWithPrivateKey,
     encryptWithPublicKey,
     publicKeyByPrivateKey,

@@ -4,10 +4,13 @@
  * @link https://stackoverflow.com/a/40471908/3443137
  */
 
-import * as util from './util';
+import {
+    removeTrailing0x,
+    addTrailing0x
+} from './util';
 
 export function compress(hex, base64 = false) {
-    hex = util.removeTrailing0x(hex);
+    hex = removeTrailing0x(hex);
 
     // if base64:true, we use our own function because it results in a smaller output
     if (base64 === true)
@@ -29,7 +32,7 @@ export function decompress(compressedString, base64 = false) {
     // if base64:true, we use our own function because it results in a smaller output
     if (base64 === true) {
         const ret = new Buffer(compressedString, 'base64').toString('hex');
-        return util.addTrailing0x(ret);
+        return addTrailing0x(ret);
     }
 
     let hex = '';
@@ -38,5 +41,5 @@ export function decompress(compressedString, base64 = false) {
         hex += ((i == 0 ? '' : '000') + compressedString.charCodeAt(i).toString(16)).slice(-4);
     }
     hex = hex.toLowerCase();
-    return util.addTrailing0x(hex);
+    return addTrailing0x(hex);
 }

@@ -1,6 +1,8 @@
 import Tx from 'ethereumjs-tx';
 import publicKeyByPrivateKey from './public-key-by-private-key';
-import addressByPublicKey from './address-by-public-key';
+import {
+    toAddress as addressByPublicKey
+} from './public-key';
 
 export default function signTransaction(
     rawTx,

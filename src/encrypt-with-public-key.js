@@ -1,6 +1,12 @@
 import eccrypto from 'eccrypto';
+import {
+    decompress
+} from './public-key';
 
 export default async function encryptWithPublicKey(publicKey, message) {
+
+    // ensure its an uncompressed publicKey
+    publicKey = decompress(publicKey);
 
     // re-add the compression-flag
     const pubString = '04' + publicKey;

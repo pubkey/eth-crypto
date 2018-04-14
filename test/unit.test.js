@@ -36,21 +36,6 @@ describe('unit.test.js', () => {
             });
         });
     });
-    describe('.addressByPublicKey()', () => {
-        describe('positive', () => {
-            it('should generate the correct address', () => {
-                const address = EthCrypto.addressByPublicKey(TEST_DATA.publicKey);
-                assert.equal(address, TEST_DATA.address);
-            });
-        });
-        describe('negative', () => {
-            assert.throws(
-                () => EthCrypto.addressByPublicKey(
-                    AsyncTestUtil.randomString(12)
-                )
-            );
-        });
-    });
     describe('.sign()', () => {
         describe('positive', () => {
             it('should sign the data', () => {
@@ -116,6 +101,20 @@ describe('unit.test.js', () => {
                 assert.equal(typeof encrypted.ciphertext, 'string');
                 assert.equal(typeof encrypted.mac, 'string');
             });
+            it('should also work with compressed keys', async () => {
+                const message = AsyncTestUtil.randomString(12);
+                const ident = EthCrypto.createIdentity();
+                const compressed = EthCrypto.publicKey.compress(ident.publicKey);
+                const encrypted = await EthCrypto.encryptWithPublicKey(
+                    compressed,
+                    message
+                );
+                const decrypted = await EthCrypto.decryptWithPrivateKey(
+                    ident.privateKey,
+                    encrypted
+                );
+                assert.equal(decrypted, message);
+            });
         });
         describe('negative', () => {
             it('should throw when non-key given', async () => {
@@ -124,7 +123,8 @@ describe('unit.test.js', () => {
                     () => EthCrypto.encryptWithPublicKey(
                         AsyncTestUtil.randomString(12),
                         message
-                    )
+                    ),
+                    'RangeError'
                 );
             });
         });
@@ -145,6 +145,72 @@ describe('unit.test.js', () => {
             });
         });
         describe('negative', () => {});
+    });
+    describe('.publicKey', () => {
+        describe('.compress()', () => {
+            it('should compress the key', () => {
+                const uncompressed = 'a34d6aef3eb42335fb3cacb59478c0b44c0bbeb8bb4ca427dbc7044157a5d24b4adf14868d8449c9b3e50d3d6338f3e5a2d3445abe679cddbe75cb893475806f';
+                const compressed = EthCrypto.publicKey.compress(uncompressed);
+                assert.equal(typeof compressed, 'string');
+                assert.ok(compressed.startsWith('03'));
+            });
+            it('should also work with trailing 04', () => {
+                const uncompressed = '04a34d6aef3eb42335fb3cacb59478c0b44c0bbeb8bb4ca427dbc7044157a5d24b4adf14868d8449c9b3e50d3d6338f3e5a2d3445abe679cddbe75cb893475806f';
+                const compressed = EthCrypto.publicKey.compress(uncompressed);
+                assert.equal(typeof compressed, 'string');
+                assert.ok(compressed.startsWith('03'));
+            });
+            it('should also work when compressed already given', () => {
+                const uncompressed = '03a34d6aef3eb42335fb3cacb59478c0b44c0bbeb8bb4ca427dbc7044157a5d24b';
+                const compressed = EthCrypto.publicKey.compress(uncompressed);
+                assert.equal(typeof compressed, 'string');
+                assert.ok(compressed.startsWith('03'));
+            });
+        });
+        describe('.decompress()', () => {
+            it('should decompress', () => {
+                const compressed = '03a34d6aef3eb42335fb3cacb59478c0b44c0bbeb8bb4ca427dbc7044157a5d24b';
+                const uncompressed = EthCrypto.publicKey.decompress(compressed);
+                assert.equal(typeof uncompressed, 'string');
+                const buf = new Buffer(uncompressed, 'hex');
+                assert.equal(buf.length, 64);
+            });
+            it('should work when already uncompressed', () => {
+                const compressed = '04a34d6aef3eb42335fb3cacb59478c0b44c0bbeb8bb4ca427dbc7044157a5d24b4adf14868d8449c9b3e50d3d6338f3e5a2d3445abe679cddbe75cb893475806f';
+                const uncompressed = EthCrypto.publicKey.decompress(compressed);
+                assert.equal(typeof uncompressed, 'string');
+                const buf = new Buffer(uncompressed, 'hex');
+                assert.equal(buf.length, 64);
+            });
+            it('should work when already uncompressed (no04)', () => {
+                const compressed = 'a34d6aef3eb42335fb3cacb59478c0b44c0bbeb8bb4ca427dbc7044157a5d24b4adf14868d8449c9b3e50d3d6338f3e5a2d3445abe679cddbe75cb893475806f';
+                const uncompressed = EthCrypto.publicKey.decompress(compressed);
+                assert.equal(typeof uncompressed, 'string');
+                const buf = new Buffer(uncompressed, 'hex');
+                assert.equal(buf.length, 64);
+            });
+        });
+        describe('.toAddress()', () => {
+            describe('positive', () => {
+                it('should generate the correct address', () => {
+                    const address = EthCrypto.publicKey.toAddress(TEST_DATA.publicKey);
+                    assert.equal(address, TEST_DATA.address);
+                });
+                it('should work with compressed key', () => {
+                    const ident = EthCrypto.createIdentity();
+                    const compressed = EthCrypto.publicKey.compress(ident.publicKey);
+                    const address = EthCrypto.publicKey.toAddress(compressed);
+                    assert.equal(address, ident.address);
+                });
+            });
+            describe('negative', () => {
+                assert.throws(
+                    () => EthCrypto.publicKey.toAddress(
+                        AsyncTestUtil.randomString(12)
+                    )
+                );
+            });
+        });
     });
     describe('.signTransaction()', () => {
         describe('positive', () => {
