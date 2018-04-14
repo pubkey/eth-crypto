@@ -44,7 +44,9 @@ const EthCrypto = require('eth-crypto');
 
 - [createIdentity()](#createidentity)
 - [publicKeyByPrivateKey()](#publickeybyprivatekey)
-- [publicKey.toAddress()](#addressbypublickey)
+- [publicKey.toAddress()](#publickeytoaddress)
+- [publicKey.compress()](#publickeycompress)
+- [publicKey.decompress()](#publickeydecompress)
 - [sign()](#sign)
 - [recover()](#recover)
 - [recoverPublicKey()](#recoverpublickey)
