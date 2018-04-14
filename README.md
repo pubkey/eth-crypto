@@ -13,13 +13,13 @@ Cryptographic javascript-functions for ethereum and how to use them together wit
 ## Tutorials
 
 - **[Creating Keys and use them for ethereum-transactions](./tutorials/creating-transactions.md)**
-  
+
   In this tutorial we will create an ethereum-identity and use it so send transactions to the blockchain.
 
 - **[Sign and validate data with solidity](./tutorials/signed-data.md)**
 
   In this tutorial we will sign data in javascript and validate the signature inside of a smart-contract.
-  
+
 - **[Sending encrypted and signed data to other identites](./tutorials/encrypted-message.md)**  
 
   In this tutorial we will use the ethereum-identites and asymmetric cryptography to send an encrypted and signed message from Alice to Bob.
@@ -119,9 +119,9 @@ Recovers the signers address from the signature.
 
 Recovers the signers `publicKey` from the signature.
 ```javascript
-    const signer = EthCrypto.recover(
-      '0xc04b809d8f33c46ff80c44ba58e866ff0d5..',
-      EthCrypto.hash.keccak256('foobar') // signed message hash
+    const signer = EthCrypto.recoverPublicKey(
+      '0xc04b809d8f33c46ff80c44ba58e866ff0d5..', // signature
+      EthCrypto.hash.keccak256('foobar') // message hash
   );
   // > 'bf1cc3154424dc22191941d9f4f50b063a2b663a2337e5548abea633c1d06ece..'
 ```
