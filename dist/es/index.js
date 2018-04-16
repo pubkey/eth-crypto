@@ -3,6 +3,7 @@ import createIdentity from './create-identity';
 import * as publicKey from './public-key';
 import decryptWithPrivateKey from './decrypt-with-private-key';
 import encryptWithPublicKey from './encrypt-with-public-key';
+import * as cipher from './cipher';
 import publicKeyByPrivateKey from './public-key-by-private-key';
 import recover from './recover';
 import recoverPublicKey from './recover-public-key';
@@ -15,13 +16,14 @@ import * as hex from './hex';
 import * as vrs from './vrs';
 import * as util from './util';
 
-export { createIdentity, publicKey, decryptWithPrivateKey, encryptWithPublicKey, publicKeyByPrivateKey, recover, recoverPublicKey, sign, signTransaction, txDataByCompiled, calculateContractAddress, hash, hex, vrs, util };
+export { createIdentity, publicKey, decryptWithPrivateKey, encryptWithPublicKey, cipher, publicKeyByPrivateKey, recover, recoverPublicKey, sign, signTransaction, txDataByCompiled, calculateContractAddress, hash, hex, vrs, util };
 
 export default {
     createIdentity: createIdentity,
     publicKey: publicKey,
     decryptWithPrivateKey: decryptWithPrivateKey,
     encryptWithPublicKey: encryptWithPublicKey,
+    cipher: cipher,
     publicKeyByPrivateKey: publicKeyByPrivateKey,
     recover: recover,
     recoverPublicKey: recoverPublicKey,

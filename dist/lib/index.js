@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.util = exports.vrs = exports.hex = exports.hash = exports.calculateContractAddress = exports.txDataByCompiled = exports.signTransaction = exports.sign = exports.recoverPublicKey = exports.recover = exports.publicKeyByPrivateKey = exports.encryptWithPublicKey = exports.decryptWithPrivateKey = exports.publicKey = exports.createIdentity = undefined;
+exports.util = exports.vrs = exports.hex = exports.hash = exports.calculateContractAddress = exports.txDataByCompiled = exports.signTransaction = exports.sign = exports.recoverPublicKey = exports.recover = exports.publicKeyByPrivateKey = exports.cipher = exports.encryptWithPublicKey = exports.decryptWithPrivateKey = exports.publicKey = exports.createIdentity = undefined;
 
 var _createIdentity = require('./create-identity');
 
@@ -20,6 +20,10 @@ var _decryptWithPrivateKey2 = _interopRequireDefault(_decryptWithPrivateKey);
 var _encryptWithPublicKey = require('./encrypt-with-public-key');
 
 var _encryptWithPublicKey2 = _interopRequireDefault(_encryptWithPublicKey);
+
+var _cipher = require('./cipher');
+
+var cipher = _interopRequireWildcard(_cipher);
 
 var _publicKeyByPrivateKey = require('./public-key-by-private-key');
 
@@ -73,6 +77,7 @@ exports.createIdentity = _createIdentity2['default'];
 exports.publicKey = publicKey;
 exports.decryptWithPrivateKey = _decryptWithPrivateKey2['default'];
 exports.encryptWithPublicKey = _encryptWithPublicKey2['default'];
+exports.cipher = cipher;
 exports.publicKeyByPrivateKey = _publicKeyByPrivateKey2['default'];
 exports.recover = _recover2['default'];
 exports.recoverPublicKey = _recoverPublicKey2['default'];
@@ -89,6 +94,7 @@ exports['default'] = {
     publicKey: publicKey,
     decryptWithPrivateKey: _decryptWithPrivateKey2['default'],
     encryptWithPublicKey: _encryptWithPublicKey2['default'],
+    cipher: cipher,
     publicKeyByPrivateKey: _publicKeyByPrivateKey2['default'],
     recover: _recover2['default'],
     recoverPublicKey: _recoverPublicKey2['default'],

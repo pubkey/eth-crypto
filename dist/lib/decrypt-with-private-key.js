@@ -16,6 +16,10 @@ var _eccrypto = require('eccrypto');
 
 var _eccrypto2 = _interopRequireDefault(_eccrypto);
 
+var _cipher = require('./cipher');
+
+var _util = require('./util');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 exports['default'] = function () {
@@ -26,22 +30,24 @@ exports['default'] = function () {
                 switch (_context.prev = _context.next) {
                     case 0:
 
+                        encrypted = (0, _cipher.parse)(encrypted);
+
                         // remove trailing '0x' from privateKey
-                        twoStripped = privateKey.replace(/^.{2}/g, '');
+                        twoStripped = (0, _util.removeTrailing0x)(privateKey);
                         encryptedBuffer = {
                             iv: new Buffer(encrypted.iv, 'hex'),
                             ephemPublicKey: new Buffer(encrypted.ephemPublicKey, 'hex'),
                             ciphertext: new Buffer(encrypted.ciphertext, 'hex'),
                             mac: new Buffer(encrypted.mac, 'hex')
                         };
-                        _context.next = 4;
+                        _context.next = 5;
                         return _eccrypto2['default'].decrypt(new Buffer(twoStripped, 'hex'), encryptedBuffer);
 
-                    case 4:
+                    case 5:
                         decryptedBuffer = _context.sent;
                         return _context.abrupt('return', decryptedBuffer.toString());
 
-                    case 6:
+                    case 7:
                     case 'end':
                         return _context.stop();
                 }

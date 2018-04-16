@@ -1,6 +1,8 @@
 import _regeneratorRuntime from 'babel-runtime/regenerator';
 import _asyncToGenerator from 'babel-runtime/helpers/asyncToGenerator';
 import eccrypto from 'eccrypto';
+import { parse } from './cipher';
+import { removeTrailing0x } from './util';
 
 export default (function () {
     var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee(privateKey, encrypted) {
@@ -10,22 +12,24 @@ export default (function () {
                 switch (_context.prev = _context.next) {
                     case 0:
 
+                        encrypted = parse(encrypted);
+
                         // remove trailing '0x' from privateKey
-                        twoStripped = privateKey.replace(/^.{2}/g, '');
+                        twoStripped = removeTrailing0x(privateKey);
                         encryptedBuffer = {
                             iv: new Buffer(encrypted.iv, 'hex'),
                             ephemPublicKey: new Buffer(encrypted.ephemPublicKey, 'hex'),
                             ciphertext: new Buffer(encrypted.ciphertext, 'hex'),
                             mac: new Buffer(encrypted.mac, 'hex')
                         };
-                        _context.next = 4;
+                        _context.next = 5;
                         return eccrypto.decrypt(new Buffer(twoStripped, 'hex'), encryptedBuffer);
 
-                    case 4:
+                    case 5:
                         decryptedBuffer = _context.sent;
                         return _context.abrupt('return', decryptedBuffer.toString());
 
-                    case 6:
+                    case 7:
                     case 'end':
                         return _context.stop();
                 }
