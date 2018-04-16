@@ -25,6 +25,12 @@ describe('unit.test.js', () => {
                 const publicKey = EthCrypto.publicKeyByPrivateKey(TEST_DATA.privateKey);
                 assert.equal(publicKey, TEST_DATA.publicKey);
             });
+            it('should auto-prefix 0x', () => {
+                const noPrefixPrivate = '43137cdb869f4375abfce46910aa24d528b2152c5a396158550158fbdb160b4f';
+                const publicKey = EthCrypto.publicKeyByPrivateKey(noPrefixPrivate);
+                const publicKey2 = EthCrypto.publicKeyByPrivateKey('0x' + noPrefixPrivate);
+                assert.equal(publicKey, publicKey2);
+            });
         });
         describe('negative', () => {
             it('should crash when non-key given', () => {
