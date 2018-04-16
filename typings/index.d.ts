@@ -49,6 +49,11 @@ export type vrs = {
 export function encryptWithPublicKey(publicKey: string, message: string): Promise<Encrypted>;
 export function decryptWithPrivateKey(privateKey: string, encrypted: Encrypted): Promise<string>;
 
+export type cipher = {
+    stringify(encrypted: Encrypted): string;
+    parse(encrypted: string): Encrypted;
+};
+
 export function signTransaction(
     rawTx: RawTx,
     privateKey: string
@@ -93,6 +98,7 @@ declare const _default: {
     publicKey,
     decryptWithPrivateKey,
     encryptWithPublicKey,
+    cipher,
     publicKeyByPrivateKey,
     recover,
     recoverPublicKey,

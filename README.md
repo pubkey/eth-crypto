@@ -52,6 +52,8 @@ const EthCrypto = require('eth-crypto');
 - [recoverPublicKey()](#recoverpublickey)
 - [encryptWithPublicKey()](#encryptwithpublickey)
 - [decryptWithPrivateKey()](#decryptwithprivatekey)
+- [cipher.stringify()](#cipherstringify)
+- [cipher.parse()](#cipherparse)
 - [signTransaction()](#signtransaction)
 - [txDataByCompiled()](#txdatabycompiled)
 - [calculateContractAddress()](#calculatecontractaddress)
@@ -183,6 +185,34 @@ Decrypts the encrypted data with the privateKey. Returns (async) the message as 
         } // encrypted-data
     );
     // 'foobar'
+```
+
+### cipher.stringify()
+
+Transforms the object with the encrypted data into a smaller string-representation.
+
+```javascript
+const str = EthCrypto.cipher.stringify({
+    iv: '02aeac54cb45283b427bd1a5028552c1',
+    ephemPublicKey: '044acf39ed83c304f19f41ea66615d7a6c0068d5fc48ee181f2fb1091...',
+    ciphertext: '5fbbcc1a44ee19f7499dbc39cfc4ce96',
+    mac: '96490b293763f49a371d3a2040a2d2cb57f246ee88958009fe3c7ef2a38264a1'
+});
+// > '59ab06532fc965b0107977f43e69e5a4038db32099dab281c8f5aece2852...'
+```
+
+### cipher.parse()
+
+Parses the string-representation back into the encrypted object.
+
+```javascript
+const str = EthCrypto.cipher.parse('59ab06532fc965b0107977f43e69e5a4038db32099dab281c8f5aece2852...');
+/* >  {
+        iv: '02aeac54cb45283b427bd1a5028552c1',
+        ephemPublicKey: '044acf39ed83c304f19f41ea66615d7a6c0068d5fc48ee181f2fb1091...',
+        ciphertext: '5fbbcc1a44ee19f7499dbc39cfc4ce96',
+        mac: '96490b293763f49a371d3a2040a2d2cb57f246ee88958009fe3c7ef2a38264a1'
+    } */
 ```
 
 ### signTransaction()

@@ -149,8 +149,74 @@ describe('unit.test.js', () => {
                 );
                 assert.equal(decrypted, message);
             });
+            it('should also decrypt with stringified data', async()=>{
+                const message = AsyncTestUtil.randomString(12);
+                const encrypted = await EthCrypto.encryptWithPublicKey(
+                    TEST_DATA.publicKey,
+                    message
+                );
+                const encryptedString = EthCrypto.cipher.stringify(encrypted);
+                const decrypted = await EthCrypto.decryptWithPrivateKey(
+                    TEST_DATA.privateKey,
+                    encryptedString
+                );
+                assert.equal(decrypted, message);
+            });
         });
         describe('negative', () => {});
+    });
+    describe('.cipher', () => {
+        describe('.stringify()', () => {
+            it('should stringify the cipher', async () => {
+                const ident = EthCrypto.createIdentity();
+                const message = AsyncTestUtil.randomString(12);
+
+                const cipher = await EthCrypto.encryptWithPublicKey(
+                    ident.publicKey,
+                    message
+                );
+                const str = EthCrypto.cipher.stringify(cipher);
+                assert.equal(typeof str, 'string');
+            });
+            it('should not stringify the string', async () => {
+                const ident = EthCrypto.createIdentity();
+                const message = AsyncTestUtil.randomString(12);
+
+                const cipher = await EthCrypto.encryptWithPublicKey(
+                    ident.publicKey,
+                    message
+                );
+                const str = EthCrypto.cipher.stringify(cipher);
+                const str2 = EthCrypto.cipher.stringify(str);
+                assert.equal(str, str2);
+            });
+        });
+        describe('.parse()', () => {
+            it('should parse the equal object', async () => {
+                const ident = EthCrypto.createIdentity();
+                const message = AsyncTestUtil.randomString(12);
+
+                const cipher = await EthCrypto.encryptWithPublicKey(
+                    ident.publicKey,
+                    message
+                );
+                const str = EthCrypto.cipher.stringify(cipher);
+                const cipher2 = EthCrypto.cipher.parse(str);
+                assert.deepEqual(cipher, cipher2);
+            });
+            it('should also work with different message-length', async () => {
+                const ident = EthCrypto.createIdentity();
+                const message = AsyncTestUtil.randomString(120);
+
+                const cipher = await EthCrypto.encryptWithPublicKey(
+                    ident.publicKey,
+                    message
+                );
+                const str = EthCrypto.cipher.stringify(cipher);
+                const cipher2 = EthCrypto.cipher.parse(str);
+                assert.deepEqual(cipher, cipher2);
+            });
+        });
     });
     describe('.publicKey', () => {
         describe('.compress()', () => {

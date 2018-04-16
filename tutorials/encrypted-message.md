@@ -43,7 +43,11 @@ const encrypted = await EthCrypto.encryptWithPublicKey(
     }
 */
 
-// now we send the encrypted object to bob over the internet.. *bieb, bieb, blob*
+// we convert the object into a smaller string-representation
+const encryptedString = EthCrypto.cipher.stringify(encrypted);
+// > '812ee676cf06ba72316862fd3dabe7e403c7395bda62243b7b0eea5eb..'
+
+// now we send the encrypted string to bob over the internet.. *bieb, bieb, blob*
 ```
 
 ## Decrypt and verify the payload
@@ -51,9 +55,13 @@ const encrypted = await EthCrypto.encryptWithPublicKey(
 When bob receives the message, he starts with decrypting it with his privateKey and then verifies the signature.
 
 ```javascript
+
+// we parse the string into the object again
+const encryptedObject = EthCrypto.cipher.parse(encryptedString);
+
 const decrypted = await EthCrypto.decryptWithPrivateKey(
     bob.privateKey,
-    encrypted
+    encryptedObject
 );
 const decryptedPayload = JSON.parse(decrypted);
 

@@ -1,9 +1,17 @@
 import eccrypto from 'eccrypto';
+import {
+    parse
+} from './cipher';
+import {
+    removeTrailing0x
+} from './util';
 
 export default async function decryptWithPrivateKey(privateKey, encrypted) {
 
+    encrypted = parse(encrypted);
+
     // remove trailing '0x' from privateKey
-    const twoStripped = privateKey.replace(/^.{2}/g, '');
+    const twoStripped = removeTrailing0x(privateKey);
 
     const encryptedBuffer = {
         iv: new Buffer(encrypted.iv, 'hex'),

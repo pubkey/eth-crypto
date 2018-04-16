@@ -3,6 +3,7 @@ import createIdentity from './create-identity';
 import * as publicKey from './public-key';
 import decryptWithPrivateKey from './decrypt-with-private-key';
 import encryptWithPublicKey from './encrypt-with-public-key';
+import * as cipher from './cipher';
 import publicKeyByPrivateKey from './public-key-by-private-key';
 import recover from './recover';
 import recoverPublicKey from './recover-public-key';
@@ -20,6 +21,7 @@ export {
     publicKey,
     decryptWithPrivateKey,
     encryptWithPublicKey,
+    cipher,
     publicKeyByPrivateKey,
     recover,
     recoverPublicKey,
@@ -38,6 +40,7 @@ export default {
     publicKey,
     decryptWithPrivateKey,
     encryptWithPublicKey,
+    cipher,
     publicKeyByPrivateKey,
     recover,
     recoverPublicKey,

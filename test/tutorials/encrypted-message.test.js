@@ -27,10 +27,13 @@ describe('encrypted-message.md', () => {
         // console.log('encrypted:');
         // console.dir(encrypted);
 
+        const encryptedString = EthCrypto.cipher.stringify(encrypted);
+
         // decrypt
+        const encryptedObject = EthCrypto.cipher.parse(encryptedString);
         const decrypted = await EthCrypto.decryptWithPrivateKey(
             bob.privateKey,
-            encrypted
+            encryptedObject
         );
         const decryptedPayload = JSON.parse(decrypted);
 
