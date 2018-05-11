@@ -1,6 +1,4 @@
 import { recover } from 'secp256k1';
-
-import * as vrs from './vrs';
 import { removeTrailing0x } from './util';
 
 /**
@@ -10,12 +8,13 @@ import { removeTrailing0x } from './util';
  * @return {string} publicKey
  */
 export default function recoverPublicKey(signature, hash) {
-    var vals = vrs.fromString(signature);
+    signature = removeTrailing0x(signature);
 
-    var sigOnly = signature.substring(0, signature.length - 1);
-    sigOnly = removeTrailing0x(sigOnly);
+    // split into v-value and sig
+    var sigOnly = signature.substring(0, signature.length - 2); // all but last 2 chars
+    var vValue = signature.slice(-2); // last 2 chars
 
-    var recoveryNumber = vals.v === '0x1c' ? 1 : 0;
+    var recoveryNumber = vValue === '1c' ? 1 : 0;
 
     var pubKey = recover(new Buffer(removeTrailing0x(hash), 'hex'), new Buffer(sigOnly, 'hex'), recoveryNumber, false).toString('hex');
 
