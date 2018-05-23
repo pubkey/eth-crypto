@@ -31,32 +31,19 @@ describe('signed-data.md', () => {
         });
         web3.setProvider(ganacheProvider);
 
-
-        let compiled;
-        const fastMode = true; // TODO check in config if really fast-mode
-        if (!fastMode) {
-            const solc = require('solc');
-            const fs = require('fs');
-            const path = require('path');
-            const contractPath = path.join(__dirname, '../../contracts/DonationBag.sol');
-
-            // read solidity-code from file
-            const contractCode = fs.readFileSync(contractPath, 'utf8');
-
-            // compile the code into an object
-            compiled = solc.compile(contractCode, 1).contracts[':DonationBag'];
-
-        } else {
-            compiled = require('../../gen/DonationBag.json');
-            compiled.bytecode = compiled.code;
-            compiled.interface = JSON.stringify(compiled.interface);
-        }
+        const path = require('path');
+        const SolidityCli = require('solidity-cli');
+        const contractPath = path.join(__dirname, '../../contracts/DonationBag.sol');
+        const compiled = await SolidityCli.compileFile(contractPath);
+        const compiledDonationBag = compiled[':DonationBag'];
 
         const createCode = EthCrypto.txDataByCompiled(
-            compiled.interface, // abi
-            compiled.bytecode, // bytecode
+            JSON.parse(compiledDonationBag.interface), // abi
+            compiledDonationBag.bytecode, // bytecode
             [creatorIdentity.address] // constructor-arguments
         );
+
+        console.log('aaaa');
 
 
         // create create-tx
@@ -84,7 +71,7 @@ describe('signed-data.md', () => {
         // create contract instance
         // console.log('# create contract instance');
         const contractInstance = new web3.eth.Contract(
-            JSON.parse(compiled.interface),
+            JSON.parse(compiledDonationBag.interface),
             contractAddress
         );
 

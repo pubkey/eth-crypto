@@ -62,18 +62,19 @@ As you can see, the contract has some methods:
 Before we can put the contract on our local blockchain. We have to compile the solidity-code to bytecode. We will do this by using the javascript-version of the `solc` compiler.
 
 ```javascript
-const solc = require('solc');
-const fs = require('fs');
 const path = require('path');
-const contractPath = path.join(__dirname, '../contracts/DonationBag.sol');
+const SolidityCli = require('solidity-cli');
+const contractPath = path.join(__dirname, '../../contracts/DonationBag.sol');
+const compiled = await SolidityCli.compileFile(contractPath);
+const compiledDonationBag = compiled[':DonationBag'];
 
-// read solidity-code from file
-const contractCode = fs.readFileSync(contractPath, 'utf8');
+const createCode = EthCrypto.txDataByCompiled(
+    JSON.parse(compiledDonationBag.interface), // abi
+    compiledDonationBag.bytecode, // bytecode
+    [creatorIdentity.address] // constructor-arguments
+);
 
-// compile the code into an object
-const compiled = solc.compile(contractCode, 1).contracts[':DonationBag'];
-
-console.dir(compiled);
+console.dir(compiledDonationBag);
 /* > {
     interface: [...],
     bytecode: '10390f35b34156101ef57600...'
@@ -118,7 +119,7 @@ Awesome. The contract is now on the blockchain. To check if it is deployed corre
 
 // create contract instance
 const contractInstance = new web3.eth.Contract(
-    JSON.parse(compiled.interface),
+    JSON.parse(compiledDonationBag.interface),
     contractAddress
 );
 

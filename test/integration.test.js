@@ -1,9 +1,10 @@
 const ganache = require('ganache-cli');
 const Web3 = require('web3');
+const path = require('path');
 const AsyncTestUtil = require('async-test-util');
+const SolidityCli = require('solidity-cli');
 const assert = require('assert');
 const EthCrypto = require('../dist/lib/index');
-const compiled = require('../gen/TestContract.json');
 const web3 = EthCrypto.util.web3;
 
 describe('integration.test.js', () => {
@@ -12,6 +13,12 @@ describe('integration.test.js', () => {
         accounts: []
     };
     describe('init', () => {
+        it('compiled contract', async function() {
+            this.timeout(30 * 1000);
+            const contractPath = path.join(__dirname, '../contracts/TestContract.sol');
+            const compiled = await SolidityCli.compileFile(contractPath);
+            state.compiled = compiled[':TestContract'];
+        });
         it('create web3', () => {
             state.web3 = new Web3();
         });
@@ -39,7 +46,7 @@ describe('integration.test.js', () => {
             const rawTx = {
                 from: account.address,
                 gasPrice: parseInt(gasPrice),
-                data: compiled.code
+                data: state.compiled.bytecode
             };
             const estimateGas = await state.web3.eth.estimateGas(rawTx);
             rawTx.gasLimit = estimateGas * 5;
@@ -50,7 +57,7 @@ describe('integration.test.js', () => {
         });
         it('create contract-instance', async () => {
             state.contract = new state.web3.eth.Contract(
-                compiled.interface,
+                JSON.parse(state.compiled.interface),
                 state.contractAddress
             );
             assert.ok(state.contract);
@@ -262,7 +269,7 @@ describe('integration.test.js', () => {
             const rawTx = {
                 from: account.address,
                 gasPrice: parseInt(gasPrice),
-                data: compiled.code
+                data: state.compiled.bytecode
             };
             const estimateGas = await state.web3.eth.estimateGas(rawTx);
             rawTx.gasLimit = estimateGas * 5;
@@ -301,7 +308,7 @@ describe('integration.test.js', () => {
                 from: account.address,
                 gasPrice: parseInt(gasPrice),
                 nonce: 3,
-                data: compiled.code
+                data: state.compiled.bytecode
             };
             const estimateGas = await state.web3.eth.estimateGas(rawTx);
             rawTx.gasLimit = estimateGas * 5;
