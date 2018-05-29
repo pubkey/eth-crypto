@@ -245,13 +245,12 @@ const receipt = await web3.eth.sendSignedTransaction(signedTx);
 Creates the data-string which must be submitted with an transaction to create a contract-instance.
 
 ```javascript
-const solc = require('solc');
+const SolidityCli = require('solidity-cli');
 
 // create compiled solidity-code
-const compiled = solc.compile(
-    'contract ExampleContract {...',
-    1
-).contracts[':ExampleContract'];
+const compiled = await SolidityCli.compileCode(
+    'contract ExampleContract {...'
+)[':ExampleContract'];
 
 const createCode = EthCrypto.txDataByCompiled(
     compiled.interface, // abi

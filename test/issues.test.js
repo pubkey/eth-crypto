@@ -44,5 +44,13 @@ describe('issues.test.js', () => {
         );
         assert.ok(signer);
     });
+    it('#6 web3 should not set window.Web3', () => {
+        if (typeof window !== 'undefined' && window){
+            const web3 = EthCrypto.util.web3;
+            assert.ok(web3);
+
+            assert.deepEqual(window.Web3, undefined);
+        }
+    });
 
 });

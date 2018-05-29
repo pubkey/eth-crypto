@@ -1,6 +1,4 @@
-import {
-    web3
-} from './util';
+import * as Web3EthContract from 'web3-eth-contract';
 
 export default function txDataByCompiled(
     abi,
@@ -11,7 +9,7 @@ export default function txDataByCompiled(
     // solc returns a string which is often passed instead of the json
     if (typeof abi === 'string') abi = JSON.parse(abi);
 
-    const web3Contract = new web3.eth.Contract(
+    const web3Contract = new Web3EthContract.default(
         abi,
         null, {
             data: '0x' + bytecode

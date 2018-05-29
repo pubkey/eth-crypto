@@ -1,5 +1,4 @@
 import { BigNumber } from 'bn.js';
-import Web3 from 'web3';
 
 export function createIdentity(): {
     privateKey: string,
@@ -80,7 +79,6 @@ export type hash = {
 };
 
 export type util = {
-    web3: Web3;
     removeTrailing0x(str: string): string;
     addTrailing0x(str: string): string;
 };

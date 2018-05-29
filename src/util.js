@@ -1,8 +1,3 @@
-import Web3 from 'web3';
-
-export const web3 = new Web3();
-
-
 export function removeTrailing0x(str) {
     if (str.startsWith('0x'))
         return str.substring(2);

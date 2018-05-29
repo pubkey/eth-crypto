@@ -6,6 +6,7 @@ const configuration = {
     ],
     files: [
         '../test/unit.test.js',
+        '../test/issues.test.js',
         '../test/performance.test.js'
     ],
     port: 9876,
