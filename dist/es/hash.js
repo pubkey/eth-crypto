@@ -1,15 +1,13 @@
-import { web3 } from './util';
+import { soliditySha3 } from 'web3-utils';
 
 export function keccak256(params) {
-    var _web3$utils;
-
     if (!Array.isArray(params)) {
         params = [{
             type: 'string',
             value: params
         }];
     }
-    return (_web3$utils = web3.utils).soliditySha3.apply(_web3$utils, params);
+    return soliditySha3.apply(undefined, params);
 }
 
 export var SIGN_PREFIX = '\x19Ethereum Signed Message:\n32';
