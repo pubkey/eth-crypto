@@ -6,3 +6,4 @@
 package-lock.json
 gen/
 scripts/
+test_tmp/

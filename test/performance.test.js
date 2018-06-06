@@ -1,6 +1,4 @@
-const convertHrtime = require('convert-hrtime');
 const AsyncTestUtil = require('async-test-util');
-
 const EthCrypto = require('../dist/lib/index');
 
 const benchmark = {
@@ -11,19 +9,11 @@ const benchmark = {
 };
 
 const nowTime = () => {
-    try {
-        return process.hrtime();
-    } catch (err) {
-        return performance.now();
-    }
+    return AsyncTestUtil.performanceNow();
 };
 
 const elapsedTime = before => {
-    try {
-        return convertHrtime(process.hrtime(before)).milliseconds;
-    } catch (err) {
-        return performance.now() - before;
-    }
+    return AsyncTestUtil.performanceNow() - before;
 };
 
 describe('performance.test.js', () => {

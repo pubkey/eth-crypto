@@ -4,3 +4,4 @@ core
 log.txt
 package-lock.json
 gen/
+test_tmp/
