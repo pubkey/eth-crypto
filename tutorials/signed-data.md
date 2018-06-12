@@ -68,12 +68,6 @@ const contractPath = path.join(__dirname, '../../contracts/DonationBag.sol');
 const compiled = await SolidityCli.compileFile(contractPath);
 const compiledDonationBag = compiled[':DonationBag'];
 
-const createCode = EthCrypto.txDataByCompiled(
-    JSON.parse(compiledDonationBag.interface), // abi
-    compiledDonationBag.bytecode, // bytecode
-    [creatorIdentity.address] // constructor-arguments
-);
-
 console.dir(compiledDonationBag);
 /* > {
     interface: [...],
@@ -87,8 +81,8 @@ Now that we have the bytecode of the contract, we can submit a transaction to cr
 ```javascript
 // create contract-create-code
 const createCode = EthCrypto.txDataByCompiled(
-    compiled.interface, // abi
-    compiled.bytecode, // bytecode
+    compiledDonationBag.interface, // abi
+    compiledDonationBag.bytecode, // bytecode
     [creatorIdentity.address] // constructor-arguments
 );
 
