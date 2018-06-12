@@ -8,7 +8,7 @@
 
 # eth-crypto
 
-Cryptographic javascript-functions for ethereum and how to use them together with web3 and solidity.
+Cryptographic javascript-functions for ethereum and tutorials on how to use them together with web3js and solidity.
 
 ## Tutorials
 
