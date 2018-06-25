@@ -31,7 +31,8 @@
     "build:es6": "rimraf -rf dist/es && cross-env NODE_ENV=es6 babel src --out-dir dist/es",
     "build:es5": "cross-env NODE_ENV=es5 node node_modules/babel-cli/bin/babel.js src --out-dir dist/lib",
     "build:test": "cross-env NODE_ENV=es5 node node_modules/babel-cli/bin/babel.js test --out-dir test_tmp",
-    "build": "npm run clear && concurrently \"npm run build:es6\" \"npm run build:es5\" \"npm run build:test\" \"npm run build:sol\""
+    "build": "npm run clear && concurrently \"npm run build:es6\" \"npm run build:es5\" \"npm run build:test\" \"npm run build:sol\"",
+    "disc": "npm run build && browserify dist/lib/index.js --no-builtins --full-paths | uglifyjs --compress --mangle | discify --open --full-paths"
   },
   "repository": {
     "type": "git",
@@ -70,9 +71,10 @@
     "concurrently": "3.5.1",
     "convert-hrtime": "2.0.0",
     "cross-env": "5.1.6",
+    "disc": "1.3.3",
     "eslint": "4.19.1",
     "ganache-cli": "6.1.0",
-    "gzip-size-cli": "^2.1.0",
+    "gzip-size-cli": "2.1.0",
     "is-node": "1.0.2",
     "js-sha3": "0.7.0",
     "karma": "2.0.2",

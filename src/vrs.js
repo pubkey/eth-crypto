@@ -1,4 +1,7 @@
-import Account from 'eth-lib/lib/account';
+import {
+    decodeSignature,
+    encodeSignature
+} from 'eth-lib/lib/account';
 
 /**
  * split signature-hex into parts
@@ -6,7 +9,7 @@ import Account from 'eth-lib/lib/account';
  * @return {{v: string, r: string, s: string}}
  */
 export function fromString(hexString) {
-    const arr = Account.decodeSignature(hexString);
+    const arr = decodeSignature(hexString);
     return {
         v: arr[0],
         r: arr[1],
@@ -21,5 +24,5 @@ export function fromString(hexString) {
  */
 export function toString(sig) {
     const partsArray = [sig.v, sig.r, sig.s];
-    return Account.encodeSignature(partsArray);
+    return encodeSignature(partsArray);
 }

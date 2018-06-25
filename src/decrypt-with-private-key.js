@@ -1,4 +1,6 @@
-import eccrypto from 'eccrypto';
+import {
+    decrypt
+} from 'eccrypto';
 import {
     parse
 } from './cipher';
@@ -6,7 +8,7 @@ import {
     removeTrailing0x
 } from './util';
 
-export default async function decryptWithPrivateKey(privateKey, encrypted) {
+export default function decryptWithPrivateKey(privateKey, encrypted) {
 
     encrypted = parse(encrypted);
 
@@ -20,9 +22,9 @@ export default async function decryptWithPrivateKey(privateKey, encrypted) {
         mac: new Buffer(encrypted.mac, 'hex')
     };
 
-    const decryptedBuffer = await eccrypto.decrypt(
+
+    return decrypt(
         new Buffer(twoStripped, 'hex'),
         encryptedBuffer
-    );
-    return decryptedBuffer.toString();
+    ).then(decryptedBuffer => decryptedBuffer.toString());
 }
