@@ -1,7 +1,7 @@
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true
 });
 exports['default'] = createIdentity;
 
@@ -11,8 +11,6 @@ var _publicKeyByPrivateKey2 = _interopRequireDefault(_publicKeyByPrivateKey);
 
 var _account = require('eth-lib/lib/account');
 
-var _account2 = _interopRequireDefault(_account);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /**
@@ -20,7 +18,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'd
  * private-, public-Key and address
  */
 function createIdentity() {
-  var identity = _account2['default'].create();
-  identity.publicKey = (0, _publicKeyByPrivateKey2['default'])(identity.privateKey);
-  return identity;
+    var identity = (0, _account.create)();
+    identity.publicKey = (0, _publicKeyByPrivateKey2['default'])(identity.privateKey);
+    return identity;
 }

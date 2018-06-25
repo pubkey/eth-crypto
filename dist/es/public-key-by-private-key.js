@@ -1,4 +1,4 @@
-import EthUtil from 'ethereumjs-util';
+import { privateToPublic } from 'ethereumjs-util';
 import { addTrailing0x } from './util';
 
 /**
@@ -9,6 +9,6 @@ import { addTrailing0x } from './util';
  */
 export default function publicKeyOfPrivateKey(privateKey) {
     privateKey = addTrailing0x(privateKey);
-    var publicKeyBuffer = EthUtil.privateToPublic(privateKey);
+    var publicKeyBuffer = privateToPublic(privateKey);
     return publicKeyBuffer.toString('hex');
 }

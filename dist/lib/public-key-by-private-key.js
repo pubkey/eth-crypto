@@ -7,11 +7,7 @@ exports['default'] = publicKeyOfPrivateKey;
 
 var _ethereumjsUtil = require('ethereumjs-util');
 
-var _ethereumjsUtil2 = _interopRequireDefault(_ethereumjsUtil);
-
 var _util = require('./util');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /**
  * Generate publicKey from the privateKey.
@@ -21,6 +17,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'd
  */
 function publicKeyOfPrivateKey(privateKey) {
     privateKey = (0, _util.addTrailing0x)(privateKey);
-    var publicKeyBuffer = _ethereumjsUtil2['default'].privateToPublic(privateKey);
+    var publicKeyBuffer = (0, _ethereumjsUtil.privateToPublic)(privateKey);
     return publicKeyBuffer.toString('hex');
 }

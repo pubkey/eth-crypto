@@ -11,10 +11,6 @@ var _secp256k = require('secp256k1');
 
 var _ethereumjsUtil = require('ethereumjs-util');
 
-var _ethereumjsUtil2 = _interopRequireDefault(_ethereumjsUtil);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function compress(startsWith04) {
 
     // add trailing 04 if not done before
@@ -47,7 +43,7 @@ function toAddress(publicKey) {
     // normalize key
     publicKey = decompress(publicKey);
 
-    var addressBuffer = _ethereumjsUtil2['default'].pubToAddress(new Buffer(publicKey, 'hex'));
-    var checkSumAdress = _ethereumjsUtil2['default'].toChecksumAddress(addressBuffer.toString('hex'));
+    var addressBuffer = (0, _ethereumjsUtil.pubToAddress)(new Buffer(publicKey, 'hex'));
+    var checkSumAdress = (0, _ethereumjsUtil.toChecksumAddress)(addressBuffer.toString('hex'));
     return checkSumAdress;
 }
