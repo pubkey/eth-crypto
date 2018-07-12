@@ -3,26 +3,24 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+
+var _toConsumableArray2 = require('babel-runtime/helpers/toConsumableArray');
+
+var _toConsumableArray3 = _interopRequireDefault(_toConsumableArray2);
+
 exports['default'] = txDataByCompiled;
 
-var _web3EthContract = require('web3-eth-contract');
+var _contract = require('ethers/contracts/contract.js');
 
-var Web3EthContract = _interopRequireWildcard(_web3EthContract);
+var _contract2 = _interopRequireDefault(_contract);
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 function txDataByCompiled(abi, bytecode, args) {
-
     // solc returns a string which is often passed instead of the json
     if (typeof abi === 'string') abi = JSON.parse(abi);
 
-    var web3Contract = new Web3EthContract['default'](abi, null, {
-        data: '0x' + bytecode
-    });
+    var deployTransaction = _contract2['default'].getDeployTransaction.apply(_contract2['default'], ['0x' + bytecode, abi].concat((0, _toConsumableArray3['default'])(args)));
 
-    var createCode = web3Contract.deploy({
-        arguments: args
-    }).encodeABI();
-
-    return createCode;
+    return deployTransaction.data;
 }
