@@ -25,7 +25,7 @@
     "test:node": "npm run build && mocha ./test/index.test.js -b --timeout 6000 --exit",
     "test:browser": "npm run build && karma start ./config/karma.conf.js --single-run",
     "test:size": "npm run build && rimraf test_tmp/browserify.js && browserify --no-builtins dist/lib/browserify.index.js > test_tmp/browserify.js && uglifyjs --compress --mangle --output test_tmp/browserify.min.js -- test_tmp/browserify.js && echo \"Build-Size (minified+gzip):\" && gzip-size --raw test_tmp/browserify.min.js",
-    "lint": "eslint --ignore-path ./config/.eslintignore src test config scripts && solhint \"contracts/**/*.sol\"",
+    "lint": "eslint --ignore-path .eslintignore src test config && solhint \"contracts/**/*.sol\"",
     "clear": "rimraf -rf ./dist && rimraf -rf ./gen && rimraf -rf ./test_tmp",
     "build:sol": "solidity-cli -i './contracts/*.sol' -o ./gen",
     "build:es6": "rimraf -rf dist/es && cross-env NODE_ENV=es6 babel src --out-dir dist/es",
