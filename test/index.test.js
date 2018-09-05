@@ -1,5 +1,8 @@
+
 require('./unit.test');
 require('./integration.test');
+
+require('./bug-template.test');
 require('./issues.test');
 
 // tutorials
