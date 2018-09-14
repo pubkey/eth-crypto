@@ -8,6 +8,7 @@
   If you have a common question which cannot be solved with a PR,
   DO NOT CREATE AN ISSUE!
   You can go here these to ask for help:
+  - https://ethereum.stackexchange.com/
   - https://www.reddit.com/r/ethdev/
   - https://gitter.im/ethereum/web3.js
 -->
