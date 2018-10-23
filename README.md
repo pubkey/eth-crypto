@@ -10,7 +10,9 @@
 
 Cryptographic javascript-functions for ethereum and tutorials on how to use them together with web3js and solidity.
 
+<center>
 ![](./tutorials/comment.png)
+</center>
 
 ## Tutorials
 
