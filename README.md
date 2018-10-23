@@ -10,6 +10,8 @@
 
 Cryptographic javascript-functions for ethereum and tutorials on how to use them together with web3js and solidity.
 
+![](./tutorials/comment.png)
+
 ## Tutorials
 
 - **[Creating Keys and use them for ethereum-transactions](./tutorials/creating-transactions.md)**
