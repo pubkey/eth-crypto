@@ -14,4 +14,5 @@ script:
 - npm run build
 - npm run test:node
 - travis_retry npm run test:browser
+- npm run test:typings
 - npm run test:size

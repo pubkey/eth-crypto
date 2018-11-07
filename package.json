@@ -25,6 +25,7 @@
     "test:node": "npm run build && mocha ./test/index.test.js -b --timeout 6000 --exit",
     "test:browser": "npm run build && karma start ./config/karma.conf.js --single-run",
     "test:size": "npm run build && rimraf test_tmp/browserify.js && browserify --no-builtins dist/lib/browserify.index.js > test_tmp/browserify.js && uglifyjs --compress --mangle --output test_tmp/browserify.min.js -- test_tmp/browserify.js && echo \"Build-Size (minified+gzip):\" && gzip-size --raw test_tmp/browserify.min.js",
+    "test:typings": "npm run build && mocha ./test/typings.test.js -b --timeout 12000 --exit",
     "lint": "eslint --ignore-path .eslintignore src test config && solhint \"contracts/**/*.sol\"",
     "clear": "rimraf -rf ./dist && rimraf -rf ./gen && rimraf -rf ./test_tmp",
     "build:sol": "solidity-cli -i './contracts/*.sol' -o ./gen",
@@ -47,6 +48,7 @@
   },
   "homepage": "https://github.com/pubkey/eth-crypto#readme",
   "devDependencies": {
+    "@types/bn.js": "4.11.3",
     "assert": "1.4.1",
     "async-test-util": "1.6.1",
     "babel-cli": "6.26.0",
@@ -96,6 +98,8 @@
     "rimraf": "2.6.2",
     "solhint": "1.4.0",
     "solidity-cli": "1.0.2",
+    "ts-node": "7.0.1",
+    "typescript": "3.1.6",
     "uglify-es": "3.3.9",
     "web3": "1.0.0-beta.34"
   },
