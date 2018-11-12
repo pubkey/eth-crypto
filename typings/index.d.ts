@@ -1,4 +1,4 @@
-import { BigNumber } from 'bn.js';
+import BigNumber = require('bn.js');
 
 type createIdentityType = () => {
     privateKey: string,
