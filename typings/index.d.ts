@@ -49,7 +49,7 @@ type recoverPublicKeyType = (sig: string, message: string) => string;
 export const recoverPublicKey: recoverPublicKeyType;
 
 type vrsType = {
-    fromString(hexString): Signature;
+    fromString(hexString: string): Signature;
     toString(sig: Signature): string;
 };
 export const vrs: vrsType;
