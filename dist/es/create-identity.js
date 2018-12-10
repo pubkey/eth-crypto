@@ -37,6 +37,5 @@ export default function createIdentity(entropy) {
     var privateKey = createPrivateKey(entropy);
     var identity = fromPrivate(privateKey);
     identity.publicKey = publicKeyByPrivateKey(identity.privateKey);
-    console.dir(identity);
     return identity;
 }

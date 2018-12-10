@@ -53,6 +53,5 @@ function createIdentity(entropy) {
     var privateKey = createPrivateKey(entropy);
     var identity = (0, _account.fromPrivate)(privateKey);
     identity.publicKey = (0, _publicKeyByPrivateKey2['default'])(identity.privateKey);
-    console.dir(identity);
     return identity;
 }
