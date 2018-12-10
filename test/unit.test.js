@@ -18,6 +18,47 @@ describe('unit.test.js', () => {
             assert.equal(typeof ident.publicKey, 'string');
             assert.equal(typeof ident.address, 'string');
         });
+        it('2 identities should never be equal', () => {
+            const ident = EthCrypto.createIdentity();
+            const ident2 = EthCrypto.createIdentity();
+            assert.notEqual(ident.privateKey, ident2.privateKey);
+        });
+        it('should create an identity from the buffer', () => {
+            const pseudoRand = Buffer.from(AsyncTestUtil.randomString(128), 'utf-8');
+            const ident = EthCrypto.createIdentity(pseudoRand);
+            assert.equal(typeof ident.privateKey, 'string');
+            assert.equal(typeof ident.publicKey, 'string');
+            assert.equal(typeof ident.address, 'string');
+        });
+        it('two identities from the same buffer should be equal', () => {
+            const pseudoRand = Buffer.from(AsyncTestUtil.randomString(128), 'utf-8');
+            const ident = EthCrypto.createIdentity(pseudoRand);
+            const ident2 = EthCrypto.createIdentity(pseudoRand);
+            assert.equal(ident.privateKey, ident2.privateKey);
+        });
+        it('two identities from a different buffer must not be equal', () => {
+            const pseudoRand = Buffer.from(AsyncTestUtil.randomString(128), 'utf-8');
+            const ident = EthCrypto.createIdentity(pseudoRand);
+            const pseudoRand2 = Buffer.from(AsyncTestUtil.randomString(128), 'utf-8');
+            const ident2 = EthCrypto.createIdentity(pseudoRand2);
+            assert.notEqual(ident.privateKey, ident2.privateKey);
+        });
+        it('should throw when entropy is to small', async () => {
+            const pseudoRand = Buffer.from(AsyncTestUtil.randomString(4), 'utf-8');
+            await AsyncTestUtil.assertThrows(
+                () => EthCrypto.createIdentity(pseudoRand),
+                Error,
+                'Entropy-size must be at least'
+            );
+        });
+        it('should throw when entropy is no buffer', async () => {
+            const pseudoRand = AsyncTestUtil.randomString(128);
+            await AsyncTestUtil.assertThrows(
+                () => EthCrypto.createIdentity(pseudoRand),
+                Error,
+                'is no Buffer'
+            );
+        });
     });
     describe('.publicKeyByPrivateKey()', () => {
         describe('positive', () => {
@@ -149,7 +190,7 @@ describe('unit.test.js', () => {
                 );
                 assert.equal(decrypted, message);
             });
-            it('should also decrypt with stringified data', async()=>{
+            it('should also decrypt with stringified data', async () => {
                 const message = AsyncTestUtil.randomString(12);
                 const encrypted = await EthCrypto.encryptWithPublicKey(
                     TEST_DATA.publicKey,

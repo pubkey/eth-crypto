@@ -1,6 +1,6 @@
 import BigNumber = require('bn.js');
 
-type createIdentityType = () => {
+type createIdentityType = (entropy?: Buffer) => {
     privateKey: string,
     publicKey: string,
     address: string

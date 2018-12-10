@@ -76,6 +76,18 @@ Creates a new ethereum-identity with privateKey, publicKey and address as hex-st
   } */
 ```
 
+You can also create an identity by providing your own entropy-buffer. Use this with caution, a bad entropy can result in an unsecure private key.
+
+```javascript
+  const entropy = Buffer.from('f2dacf...', 'utf-8'); // must contain at least 128 chars
+  const identity = EthCrypto.createIdentity(entropy);
+  /* > {
+      address: '0x59c8d4d645B0a3b230DE368d815ebDE372d37Ea8',
+      privateKey: '0x18cea40e44624867ddfd775b2898cdb2da29b4be92ee072b9eb02d43b6f2473a',
+      publicKey: '991ce4643653ef452327ee3d1a56af19c84599d340ffd427e784...'
+  } */
+```
+
 ### publicKeyByPrivateKey()
 
 Derives the publicKey from a privateKey and returns it as hex-string.
