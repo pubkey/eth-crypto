@@ -91,7 +91,7 @@ export type TypedValue = {
 };
 
 type hashType = {
-    keccak256(params: TypedValue[]): string;
+    keccak256(params: string | TypedValue[]): string;
 };
 export const hash: hashType;
 
