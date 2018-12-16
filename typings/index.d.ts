@@ -107,9 +107,6 @@ type hexType = {
 };
 export const hex: hexType;
 
-
-export function publicKeyToAddress(publicKey: string): string;
-
 declare const _default: {
     createIdentity: createIdentityType,
     publicKey: publicKeyType,
