@@ -31,12 +31,13 @@ export type Encrypted = {
 };
 
 export type RawTx = {
-    from: string,
-    to: string,
-    value: number | string | BigNumber,
-    gasLimit: number,
-    gasPrice: number,
-    code?: string
+    from: string;
+    to: string;
+    value: number | string | BigNumber;
+    gasLimit: number;
+    gasPrice: number;
+    nonce: number;
+    code?: string;
 };
 
 type signType = (privateKey: string, message: string) => string;

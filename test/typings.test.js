@@ -3,6 +3,7 @@
  * run via 'npm run test:typings'
  */
 const assert = require('assert');
+assert.ok(true);
 const path = require('path');
 const AsyncTestUtil = require('async-test-util');
 
@@ -44,13 +45,9 @@ describe('typings.test.ts', () => {
                 let x: string = 'foo';
                 x = 1337;
             `;
-            let thrown = false;
-            try {
-                await transpileCode(brokenCode);
-            } catch (err) {
-                thrown = true;
-            }
-            assert.ok(thrown);
+            await AsyncTestUtil.assertThrows(
+                () => transpileCode(brokenCode)
+            );
         });
     });
     describe('statics', () => {
@@ -100,6 +97,43 @@ describe('typings.test.ts', () => {
                     })();
                 `;
                 await transpileCode(code);
+            });
+        });
+        describe('rawTx', () => {
+            /**
+             * @link https://github.com/pubkey/eth-crypto/issues/20
+             */
+            it('#20 should need a nonce for a RawTx', async () => {
+                const code = `
+                    (async()=>{
+                        const rawTx: EthCryptoAll.RawTx = {
+                            from: '0xfoobar',
+                            to: '0xfoobar',
+                            value: 10,
+                            gasLimit: 10,
+                            gasPrice: 10,
+                            nonce: 20
+                        };
+                    })();
+                `;
+                await transpileCode(code);
+
+                const badCodeWithoutNonce = `
+                    (async()=>{
+                        const rawTx: EthCryptoAll.RawTx = {
+                            from: '0xfoobar',
+                            to: '0xfoobar',
+                            value: 10,
+                            gasLimit: 10,
+                            gasPrice: 10
+                        };
+                    })();
+                `;
+                await AsyncTestUtil.assertThrows(
+                    () => transpileCode(badCodeWithoutNonce),
+                    Error,
+                    'nonce'
+                );
             });
         });
     });
