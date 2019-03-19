@@ -95,7 +95,7 @@
     "mocha": "5.2.0",
     "node": "11.12.0",
     "rimraf": "2.6.3",
-    "solhint": "1.4.0",
+    "solhint": "2.0.0",
     "solidity-cli": "1.0.3",
     "ts-node": "7.0.1",
     "typescript": "3.3.3333",
