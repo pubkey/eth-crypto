@@ -40,7 +40,7 @@ describe('encrypted-message.md', () => {
         // check signature
         const senderAddress = EthCrypto.recover(
             decryptedPayload.signature,
-            EthCrypto.hash.keccak256(payload.message)
+            EthCrypto.hash.keccak256(decryptedPayload.message)
         );
 
         assert.equal(senderAddress, alice.address);
