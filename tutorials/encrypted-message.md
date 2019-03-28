@@ -83,7 +83,7 @@ console.log(
 ## Creating an answer
 
 Now that `Bob` got the message, he can also answer back to alice.
-To to this he has to recover the publicKey of alice with `recoverPublicKey()`.
+To do this he has to recover the publicKey of alice with `recoverPublicKey()`.
 
 ```javascript
 const answerMessage = 'And I am Bob Kelso';
