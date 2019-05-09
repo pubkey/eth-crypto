@@ -111,7 +111,7 @@
   "dependencies": {
     "@types/bn.js": "4.11.5",
     "babel-runtime": "6.26.0",
-    "eccrypto": "1.1.0",
+    "eccrypto": "1.1.1",
     "eth-lib": "0.2.8",
     "ethereumjs-tx": "1.3.7",
     "ethereumjs-util": "6.1.0",
