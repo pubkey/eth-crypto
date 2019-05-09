@@ -19,7 +19,6 @@ const MIN_ENTROPY_SIZE = 128;
  */
 export function createPrivateKey(entropy) {
     if (entropy) {
-
         if (!Buffer.isBuffer(entropy))
             throw new Error('EthCrypto.createPrivateKey(): given entropy is no Buffer');
         if (Buffer.byteLength(entropy, 'utf8') < MIN_ENTROPY_SIZE)

@@ -26,6 +26,7 @@
     "test:browser": "npm run build && karma start ./config/karma.conf.js --single-run",
     "test:size": "npm run build && rimraf test_tmp/browserify.js && browserify --no-builtins dist/lib/browserify.index.js > test_tmp/browserify.js && uglifyjs --compress --mangle --output test_tmp/browserify.min.js -- test_tmp/browserify.js && echo \"Build-Size (minified+gzip):\" && gzip-size --raw test_tmp/browserify.min.js",
     "test:typings": "npm run build && mocha ./test/typings.test.js -b --timeout 12000 --exit",
+    "test:deps": "dependency-check ./package.json --no-dev --unused --ignore-module @types/bn.js",
     "lint": "eslint --ignore-path .eslintignore src test config && solhint \"contracts/**/*.sol\"",
     "clear": "rimraf -rf ./dist && rimraf -rf ./gen && rimraf -rf ./test_tmp",
     "build:sol": "solidity-cli -i './contracts/*.sol' -o ./gen",
@@ -70,10 +71,12 @@
     "babel-preset-es2016": "6.24.1",
     "babel-preset-es2017": "6.24.1",
     "babel-preset-latest": "6.24.1",
+    "bn.js": "4.11.8",
     "browserify": "16.2.3",
     "concurrently": "4.1.0",
     "convert-hrtime": "2.0.0",
     "cross-env": "5.2.0",
+    "dependency-check": "3.3.0",
     "disc": "1.3.3",
     "eslint": "5.15.3",
     "ganache-cli": "6.4.1",
@@ -100,20 +103,19 @@
     "ts-node": "7.0.1",
     "typescript": "3.3.3333",
     "uglify-es": "3.3.9",
-    "web3": "1.0.0-beta.34"
+    "web3": "1.0.0-beta.34",
+    "webpack": "4.29.6",
+    "webpack-bundle-analyzer": "3.3.2",
+    "webpack-cli": "3.3.0"
   },
   "dependencies": {
     "@types/bn.js": "4.11.4",
     "babel-runtime": "6.26.0",
-    "bn.js": "4.11.8",
     "eccrypto": "1.1.0",
     "eth-lib": "0.2.8",
     "ethereumjs-tx": "1.3.7",
     "ethereumjs-util": "6.1.0",
     "ethers": "3.0.27",
-    "secp256k1": "3.6.2",
-    "webpack": "4.29.6",
-    "webpack-bundle-analyzer": "3.3.2",
-    "webpack-cli": "3.3.0"
+    "secp256k1": "3.6.2"
   }
 }
