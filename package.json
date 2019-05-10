@@ -79,7 +79,7 @@
     "dependency-check": "3.3.0",
     "disc": "1.3.3",
     "eslint": "5.16.0",
-    "ganache-cli": "6.4.1",
+    "ganache-cli": "6.4.3",
     "gzip-size-cli": "3.0.0",
     "is-node": "1.0.2",
     "js-sha3": "0.8.0",
