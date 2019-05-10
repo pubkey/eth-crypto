@@ -50,7 +50,7 @@
   "homepage": "https://github.com/pubkey/eth-crypto#readme",
   "devDependencies": {
     "assert": "1.5.0",
-    "async-test-util": "1.7.2",
+    "async-test-util": "1.7.3",
     "babel-cli": "6.26.0",
     "babel-core": "6.26.3",
     "babel-eslint": "10.0.1",
