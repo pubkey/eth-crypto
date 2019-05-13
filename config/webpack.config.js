@@ -1,6 +1,6 @@
 
 const path = require('path');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 
@@ -17,7 +17,10 @@ module.exports = {
     entry: './dist/es/browserify.index.js',
     optimization: {
         minimizer: [
-            new UglifyJsPlugin()
+            new TerserPlugin({
+                cache: true,
+                parallel: true,
+            })
         ]
     },
     plugins,

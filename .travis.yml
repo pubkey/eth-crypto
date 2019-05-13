@@ -17,3 +17,4 @@ script:
 - npm run test:typings
 - npm run test:deps
 - npm run test:size
+- npm run build:size
