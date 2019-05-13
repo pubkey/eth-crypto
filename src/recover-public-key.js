@@ -16,7 +16,7 @@ export default function recoverPublicKey(signature, hash) {
     signature = removeTrailing0x(signature);
 
     // split into v-value and sig
-    const sigOnly =  signature.substring(0, signature.length - 2); // all but last 2 chars
+    const sigOnly = signature.substring(0, signature.length - 2); // all but last 2 chars
     const vValue = signature.slice(-2); // last 2 chars
 
     const recoveryNumber = vValue === '1c' ? 1 : 0;

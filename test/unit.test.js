@@ -95,7 +95,6 @@ describe('unit.test.js', () => {
         });
         describe('negative', () => {
             it('should not sign with wrong key', () => {
-                return; // TODO
                 assert.throws(
                     () => EthCrypto.sign(
                         'XXX' + AsyncTestUtil.randomString(222),

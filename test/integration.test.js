@@ -5,7 +5,7 @@ const AsyncTestUtil = require('async-test-util');
 const SolidityCli = require('solidity-cli');
 const assert = require('assert');
 const EthCrypto = require('../dist/lib/index');
-const web3 = EthCrypto.util.web3;
+// const web3 = EthCrypto.util.web3;
 
 describe('integration.test.js', () => {
     const state = {
@@ -161,7 +161,7 @@ describe('integration.test.js', () => {
         });
         describe('.prefixedHash()', () => {
             return; // TODO
-            it('should create the same hash as web3.accounts.sign()', async () => {
+            /* it('should create the same hash as web3.accounts.sign()', async () => {
                 const ident = EthCrypto.createIdentity();
                 const str = 'foobar';
                 const hash = EthCrypto.hash.keccak256([{
@@ -204,7 +204,7 @@ describe('integration.test.js', () => {
                     .call();
                 console.log('= solHash: ' + solHash);
                 assert.equal(jsHash, solHash);
-            });
+            });*/
         });
     });
     describe('sign', () => {

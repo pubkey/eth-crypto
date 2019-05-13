@@ -17,7 +17,7 @@ export function compress(startsWith04) {
         new Buffer(startsWith04, 'hex'),
         true
     ).toString('hex');
-};
+}
 
 export function decompress(startsWith02Or03) {
 
@@ -33,7 +33,7 @@ export function decompress(startsWith02Or03) {
     // remove trailing 04
     decompressed = decompressed.substring(2);
     return decompressed;
-};
+}
 
 /**
  * generates the ethereum-adress of the publicKey
