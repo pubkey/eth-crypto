@@ -1,6 +1,6 @@
 {
   "name": "eth-crypto",
-  "version": "1.3.3",
+  "version": "1.3.4",
   "description": "Cryptographic functions for ethereum and how to use them with web3 and solidity",
   "keywords": [
     "ethereum",
