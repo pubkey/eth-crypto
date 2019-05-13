@@ -1,0 +1,75 @@
+<!--
+    This is a different readme file which will be published to npm
+    @link https://stackoverflow.com/a/52683086
+
+    The problem was that googled indexed the npm-site instead of the github site
+-->
+
+<p align="center">
+    <a alt="travis" href="https://travis-ci.org/pubkey/eth-crypto">
+        <img src="https://travis-ci.org/pubkey/eth-crypto.svg?branch=master" /></a>
+    <a href="https://twitter.com/pubkeypubkey">
+        <img src="https://img.shields.io/twitter/follow/pubkeypubkey.svg?style=social&logo=twitter"
+            alt="follow on Twitter"></a>
+</p>
+
+# eth-crypto
+
+Cryptographic javascript-functions for ethereum and tutorials on how to use them together with web3js and solidity.
+
+<a href="https://ethereum.stackexchange.com/questions/13652/how-do-you-sign-an-verify-a-message-in-javascript-proving-you-own-an-ethereum-ad/43984#43984">
+    <img src="./tutorials/comment.png" width="600px"/>
+
+</a>
+
+## Tutorials
+
+- **[Creating Keys and use them for ethereum-transactions](./tutorials/creating-transactions.md)**
+
+  In this tutorial we will create an ethereum-identity and use it so send transactions to the blockchain.
+
+- **[Sign and validate data with solidity](./tutorials/signed-data.md)**
+
+  In this tutorial we will sign data in javascript and validate the signature inside of a smart-contract.
+
+- **[Sending encrypted and signed data to other identites](./tutorials/encrypted-message.md)**  
+
+  In this tutorial we will use the ethereum-identites and asymmetric cryptography to send an encrypted and signed message from Alice to Bob.
+
+## Functions
+
+### Install
+
+```bash
+  npm install eth-crypto --save
+```
+
+```javascript
+// es6
+import EthCrypto from 'eth-crypto';
+
+// node
+const EthCrypto = require('eth-crypto');
+```
+
+## API
+
+- [createIdentity()](https://github.com/pubkey/eth-crypto#createidentity)
+- [publicKeyByPrivateKey()](https://github.com/pubkey/eth-crypto#publickeybyprivatekey)
+- [publicKey.toAddress()](https://github.com/pubkey/eth-crypto#publickeytoaddress)
+- [publicKey.compress()](https://github.com/pubkey/eth-crypto#publickeycompress)
+- [publicKey.decompress()](https://github.com/pubkey/eth-crypto#publickeydecompress)
+- [sign()](https://github.com/pubkey/eth-crypto#sign)
+- [recover()](https://github.com/pubkey/eth-crypto#recover)
+- [recoverPublicKey()](https://github.com/pubkey/eth-crypto#recoverpublickey)
+- [encryptWithPublicKey()](https://github.com/pubkey/eth-crypto#encryptwithpublickey)
+- [decryptWithPrivateKey()](https://github.com/pubkey/eth-crypto#decryptwithprivatekey)
+- [cipher.stringify()](https://github.com/pubkey/eth-crypto#cipherstringify)
+- [cipher.parse()](https://github.com/pubkey/eth-crypto#cipherparse)
+- [signTransaction()](https://github.com/pubkey/eth-crypto#signtransaction)
+- [txDataByCompiled()](https://github.com/pubkey/eth-crypto#txdatabycompiled)
+- [calculateContractAddress()](https://github.com/pubkey/eth-crypto#calculatecontractaddress)
+- [hex.compress() hex.decompress()](https://github.com/pubkey/eth-crypto#hex-compressdecompress)
+
+
+# [READ THE FULL DOCUMENTATION ON GITHUB](https://github.com/pubkey/eth-crypto)
