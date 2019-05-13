@@ -8,7 +8,7 @@ export function compress(startsWith04) {
     if (testBuffer.length === 64) startsWith04 = '04' + startsWith04;
 
     return publicKeyConvert(new Buffer(startsWith04, 'hex'), true).toString('hex');
-};
+}
 
 export function decompress(startsWith02Or03) {
 
@@ -21,7 +21,7 @@ export function decompress(startsWith02Or03) {
     // remove trailing 04
     decompressed = decompressed.substring(2);
     return decompressed;
-};
+}
 
 /**
  * generates the ethereum-adress of the publicKey

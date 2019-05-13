@@ -18,7 +18,7 @@ function compress(startsWith04) {
     if (testBuffer.length === 64) startsWith04 = '04' + startsWith04;
 
     return (0, _secp256k.publicKeyConvert)(new Buffer(startsWith04, 'hex'), true).toString('hex');
-};
+}
 
 function decompress(startsWith02Or03) {
 
@@ -31,7 +31,7 @@ function decompress(startsWith02Or03) {
     // remove trailing 04
     decompressed = decompressed.substring(2);
     return decompressed;
-};
+}
 
 /**
  * generates the ethereum-adress of the publicKey
