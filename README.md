@@ -10,11 +10,6 @@
 
 Cryptographic javascript-functions for ethereum and tutorials on how to use them together with web3js and solidity.
 
-<a href="https://ethereum.stackexchange.com/questions/13652/how-do-you-sign-an-verify-a-message-in-javascript-proving-you-own-an-ethereum-ad/43984#43984">
-    <img src="./tutorials/comment.png" width="600px"/>
-
-</a>
-
 ## Tutorials
 
 - **[Creating Keys and use them for ethereum-transactions](./tutorials/creating-transactions.md)**
