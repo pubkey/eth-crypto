@@ -13,7 +13,10 @@ describe('signed-data.md', () => {
         this.timeout(12000);
         const creatorIdentity = EthCrypto.createIdentity();
         const recieverIdentity = EthCrypto.createIdentity();
-        const web3 = new Web3();
+
+        const web3 = new Web3('http://');
+        web3.transactionConfirmationBlocks = 1;
+
         const ganacheProvider = ganache.provider({
             accounts: [
                 // we preset the balance of our identity to 10 ether

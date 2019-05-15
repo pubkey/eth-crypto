@@ -20,7 +20,8 @@ const Web3 = require('web3');
 const ganache = require('ganache-cli');
 
 // create a web3-instance
-const web3 = new Web3();
+const web3 = new Web3('http://'); // set 'http://' because web3 needs a provider
+web3.transactionConfirmationBlocks = 1; // set confirmations-blocks to 1 for fast testing
 
 // create a ganache-provider
 const ganacheProvider = ganache.provider({

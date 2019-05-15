@@ -8,19 +8,31 @@ const EthCrypto = require('../dist/lib/index');
 // const web3 = EthCrypto.util.web3;
 
 describe('integration.test.js', () => {
+    /**
+     * we have to set ''http://'' because:
+     * @link https://github.com/ethereum/web3.js/issues/2786#issuecomment-490161182
+    */
+    const WEB3_DEFAULT_PROVIDER = 'http://';
+    const WEB3_CONFIRMATION_BLOCKS = 1;
+
     const state = {
         web3: null,
         accounts: []
     };
     describe('init', () => {
-        it('compiled contract', async function() {
+        it('compiled contract', async function () {
             this.timeout(30 * 1000);
             const contractPath = path.join(__dirname, '../contracts/TestContract.sol');
             const compiled = await SolidityCli.compileFile(contractPath);
             state.compiled = compiled[':TestContract'];
         });
         it('create web3', () => {
-            state.web3 = new Web3();
+            /**
+             * we have to set ''http://'' because:
+             * @link https://github.com/ethereum/web3.js/issues/2786#issuecomment-490161182
+             */
+            state.web3 = new Web3(WEB3_DEFAULT_PROVIDER);
+            state.web3.transactionConfirmationBlocks = WEB3_CONFIRMATION_BLOCKS;
         });
         it('create testnet', async () => {
             // create accounts
@@ -69,7 +81,8 @@ describe('integration.test.js', () => {
     });
     describe('privateKey', () => {
         it('should be possible to use the keys with ganache', async () => {
-            const web3 = new Web3();
+            const web3 = new Web3(WEB3_DEFAULT_PROVIDER);
+            web3.transactionConfirmationBlocks = WEB3_CONFIRMATION_BLOCKS;
             const ganacheAccounts = new Array(10)
                 .fill(0)
                 .map(() => EthCrypto.createIdentity())
@@ -84,7 +97,8 @@ describe('integration.test.js', () => {
         it('should be possible to sign transaction with the key', async () => {
             const identity = EthCrypto.createIdentity();
 
-            const web3 = new Web3();
+            const web3 = new Web3(WEB3_DEFAULT_PROVIDER);
+            web3.transactionConfirmationBlocks = WEB3_CONFIRMATION_BLOCKS;
             web3.setProvider(ganache.provider({
                 accounts: [{
                     secretKey: new Buffer(identity.privateKey.replace(/^.{2}/g, ''), 'hex'),
@@ -285,18 +299,18 @@ describe('integration.test.js', () => {
             // send 3 transactions
             await Promise.all(
                 new Array(3)
-                .fill(0)
-                .map(async () => {
-                    const rawTx = {
-                        from: account.address,
-                        to: account2.address,
-                        gasPrice: parseInt(gasPrice),
-                        value: 1
-                    };
-                    const estimateGas = await state.web3.eth.estimateGas(rawTx);
-                    rawTx.gasLimit = estimateGas * 2;
-                    await state.web3.eth.sendTransaction(rawTx);
-                })
+                    .fill(0)
+                    .map(async () => {
+                        const rawTx = {
+                            from: account.address,
+                            to: account2.address,
+                            gasPrice: parseInt(gasPrice),
+                            value: 1
+                        };
+                        const estimateGas = await state.web3.eth.estimateGas(rawTx);
+                        rawTx.gasLimit = estimateGas * 2;
+                        await state.web3.eth.sendTransaction(rawTx);
+                    })
             );
 
             const calculatedAddress = EthCrypto.calculateContractAddress(
