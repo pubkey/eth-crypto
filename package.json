@@ -106,7 +106,7 @@
     "web3": "1.0.0-beta.55",
     "webpack": "4.29.6",
     "webpack-bundle-analyzer": "3.3.2",
-    "webpack-cli": "3.3.2"
+    "webpack-cli": "3.3.3"
   },
   "dependencies": {
     "@types/bn.js": "4.11.5",
