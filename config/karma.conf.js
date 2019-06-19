@@ -60,7 +60,7 @@ const configuration = {
     processKillTimeout: 12000,
     customLaunchers: {
         Chrome_travis_ci: {
-            base: 'Chrome',
+            base: 'ChromeHeadless',
             flags: ['--no-sandbox']
         }
     },
