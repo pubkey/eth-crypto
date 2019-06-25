@@ -72,7 +72,7 @@
     "babel-preset-latest": "6.24.1",
     "bn.js": "4.11.8",
     "browserify": "16.2.3",
-    "concurrently": "4.1.0",
+    "concurrently": "4.1.1",
     "convert-hrtime": "3.0.0",
     "cross-env": "5.2.0",
     "dependency-check": "3.3.0",
