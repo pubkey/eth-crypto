@@ -1,4 +1,4 @@
-import Contract from 'ethers/contracts/contract.js';
+import { ContractFactory } from 'ethers/contract.js';
 
 export default function txDataByCompiled(
     abi,
@@ -8,11 +8,10 @@ export default function txDataByCompiled(
     // solc returns a string which is often passed instead of the json
     if (typeof abi === 'string') abi = JSON.parse(abi);
 
-    const deployTransaction = Contract.getDeployTransaction(
-        '0x' + bytecode,
-        abi,
-        ...args
-    );
+    // Construct a Contract Factory
+    const factory = new ContractFactory(abi, '0x' + bytecode);
+
+    const deployTransaction = factory.getDeployTransaction(...args);
 
     return deployTransaction.data;
 }
