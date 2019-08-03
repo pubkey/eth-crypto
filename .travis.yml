@@ -17,7 +17,7 @@ script:
 - echo "versions"
 - openssl version
 - node -v
-- npm install --depth 0 --silent
+- npm install
 - npm run lint
 - npm run build
 - npm run test:node
