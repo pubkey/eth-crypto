@@ -1,6 +1,8 @@
 // const AsyncTestUtil = require('async-test-util');
 const assert = require('assert');
 const EthCrypto = require('../dist/lib/index');
+const AsyncTestUtil = require('async-test-util');
+const crypto = require('crypto');
 
 describe('issues.test.js', () => {
     it('#3 Error in recover', async () => {
@@ -43,5 +45,19 @@ describe('issues.test.js', () => {
             messageHash
         );
         assert.ok(signer);
+    });
+    it('#47 cannot encrypt/decrypt with more then 16 chars message', async () => {
+        const ident = EthCrypto.createIdentity();
+
+        const message = crypto.randomBytes(6).toString('hex');
+        const challenge = await EthCrypto.encryptWithPublicKey(
+            ident.publicKey,
+            Buffer.from(message)
+        );
+        const answer = await EthCrypto.decryptWithPrivateKey(
+            ident.privateKey,
+            challenge
+        );
+        assert.deepEqual(message, answer);
     });
 });
