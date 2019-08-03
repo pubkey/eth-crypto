@@ -1,7 +1,6 @@
 // const AsyncTestUtil = require('async-test-util');
 const assert = require('assert');
 const EthCrypto = require('../dist/lib/index');
-const AsyncTestUtil = require('async-test-util');
 const crypto = require('crypto');
 
 describe('issues.test.js', () => {
