@@ -11,3 +11,8 @@ test_tmp/
 perf.txt
 ISSUE_TEMPLATE.md
 config/
+test/
+.gitattributes
+renovate.json
+tutorials/
+contracts/
