@@ -1,4 +1,4 @@
-import Tx from 'ethereumjs-tx';
+import { Transaction } from 'ethereumjs-tx';
 import publicKeyByPrivateKey from './public-key-by-private-key';
 import {
     toAddress as addressByPublicKey
@@ -16,7 +16,8 @@ export default function signTransaction(
         throw new Error('EthCrypto.signTransaction(): rawTx.from does not match the address of the privateKey');
 
     const privateKeyBuffer = new Buffer(privateKey.replace(/^.{2}/g, ''), 'hex');
-    const tx = new Tx(rawTx);
+
+    const tx = new Transaction(rawTx);
     tx.sign(privateKeyBuffer);
     const serializedTx = tx.serialize().toString('hex');
     return serializedTx;
