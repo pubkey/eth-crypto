@@ -7,8 +7,6 @@ exports['default'] = signTransaction;
 
 var _ethereumjsTx = require('ethereumjs-tx');
 
-var _ethereumjsTx2 = _interopRequireDefault(_ethereumjsTx);
-
 var _publicKeyByPrivateKey = require('./public-key-by-private-key');
 
 var _publicKeyByPrivateKey2 = _interopRequireDefault(_publicKeyByPrivateKey);
@@ -25,7 +23,8 @@ function signTransaction(rawTx, privateKey) {
     if (address != rawTx.from) throw new Error('EthCrypto.signTransaction(): rawTx.from does not match the address of the privateKey');
 
     var privateKeyBuffer = new Buffer(privateKey.replace(/^.{2}/g, ''), 'hex');
-    var tx = new _ethereumjsTx2['default'](rawTx);
+
+    var tx = new _ethereumjsTx.Transaction(rawTx);
     tx.sign(privateKeyBuffer);
     var serializedTx = tx.serialize().toString('hex');
     return serializedTx;
