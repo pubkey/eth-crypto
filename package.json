@@ -112,7 +112,7 @@
     "babel-runtime": "6.26.0",
     "eccrypto": "1.1.1",
     "eth-lib": "0.2.8",
-    "ethereumjs-tx": "2.1.0",
+    "ethereumjs-tx": "2.1.1",
     "ethereumjs-util": "6.1.0",
     "ethers": "4.0.36",
     "secp256k1": "3.7.1"
