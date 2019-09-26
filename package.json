@@ -1,6 +1,6 @@
 {
   "name": "eth-crypto",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "Cryptographic functions for ethereum and how to use them with web3 and solidity",
   "keywords": [
     "ethereum",
@@ -103,7 +103,7 @@
     "typescript": "3.6.3",
     "uglify-es": "3.3.9",
     "web3": "1.2.1",
-    "webpack": "4.29.6",
+    "webpack": "4.41.0",
     "webpack-bundle-analyzer": "3.5.2",
     "webpack-cli": "3.3.9"
   },
