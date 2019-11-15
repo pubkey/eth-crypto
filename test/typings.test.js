@@ -19,7 +19,6 @@ describe('typings.test.ts', () => {
         const stderr = [];
         const promise = spawn('ts-node', [
             '--compiler-options', '{"target":"es6", "strict": true}',
-            '--type-check',
             '-e', codeBase + '\n' + code
         ]);
         const childProcess = promise.childProcess;
