@@ -3,9 +3,10 @@
     "config:base"
   ],
   "ignoreDeps": [
-    "node",
     "webpack"
   ],
   "statusCheckVerify": true,
-  "automerge": true
+  "automerge": true,
+  "rebaseStalePrs": true,
+  "prHourlyLimit": 4
 }
