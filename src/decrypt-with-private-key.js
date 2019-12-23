@@ -8,7 +8,7 @@ import {
     removeTrailing0x
 } from './util';
 
-export default function decryptWithPrivateKey(privateKey, encrypted) {
+export default async function decryptWithPrivateKey(privateKey, encrypted) {
 
     encrypted = parse(encrypted);
 
