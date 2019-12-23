@@ -5,7 +5,7 @@ import {
     decompress
 } from './public-key';
 
-export default function encryptWithPublicKey(publicKey, message) {
+export default async function encryptWithPublicKey(publicKey, message) {
 
     // ensure its an uncompressed publicKey
     publicKey = decompress(publicKey);
