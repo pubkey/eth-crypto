@@ -115,6 +115,6 @@
     "ethereumjs-tx": "2.1.2",
     "ethereumjs-util": "6.2.0",
     "ethers": "4.0.43",
-    "secp256k1": "3.8.0"
+    "secp256k1": "4.0.0"
   }
 }
