@@ -104,7 +104,7 @@
     "uglify-es": "3.3.9",
     "web3": "1.2.6",
     "webpack": "4.41.5",
-    "webpack-bundle-analyzer": "3.6.0",
+    "webpack-bundle-analyzer": "3.6.1",
     "webpack-cli": "3.3.11"
   },
   "dependencies": {
