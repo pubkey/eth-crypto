@@ -15,8 +15,8 @@ export default function encryptWithPublicKey(publicKey, message) {
 
 
     return encrypt(
-        new Buffer(pubString, 'hex'),
-        Buffer(message)
+        Buffer.from(pubString, 'hex'),
+        Buffer.from(message)
     ).then(encryptedBuffers => {
         const encrypted = {
             iv: encryptedBuffers.iv.toString('hex'),

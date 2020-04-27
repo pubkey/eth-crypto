@@ -170,7 +170,7 @@ describe('unit.test.js', () => {
                         AsyncTestUtil.randomString(12),
                         message
                     ),
-                    'RangeError'
+                    'Error'
                 );
             });
         });

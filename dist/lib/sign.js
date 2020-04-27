@@ -20,10 +20,10 @@ function sign(privateKey, hash) {
     hash = (0, _util.addTrailing0x)(hash);
     if (hash.length !== 66) throw new Error('EthCrypto.sign(): Can only sign hashes, given: ' + hash);
 
-    var sigObj = (0, _secp256k.sign)(new Buffer((0, _util.removeTrailing0x)(hash), 'hex'), new Buffer((0, _util.removeTrailing0x)(privateKey), 'hex'));
+    var sigObj = (0, _secp256k.ecdsaSign)(new Uint8Array(Buffer.from((0, _util.removeTrailing0x)(hash), 'hex')), new Uint8Array(Buffer.from((0, _util.removeTrailing0x)(privateKey), 'hex')));
 
-    var recoveryId = sigObj.recovery === 1 ? '1c' : '1b';
+    var recoveryId = sigObj.recid === 1 ? '1c' : '1b';
 
-    var newSignature = '0x' + sigObj.signature.toString('hex') + recoveryId;
+    var newSignature = '0x' + Buffer.from(sigObj.signature).toString('hex') + recoveryId;
     return newSignature;
 }

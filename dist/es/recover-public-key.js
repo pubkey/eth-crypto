@@ -1,5 +1,5 @@
-import { recover } from 'secp256k1';
-import { removeTrailing0x } from './util';
+import { ecdsaRecover } from 'secp256k1';
+import { removeTrailing0x, hexToUnit8Array, uint8ArrayToHex } from './util';
 
 /**
  * returns the publicKey for the privateKey with which the messageHash was signed
@@ -16,7 +16,7 @@ export default function recoverPublicKey(signature, hash) {
 
     var recoveryNumber = vValue === '1c' ? 1 : 0;
 
-    var pubKey = recover(new Buffer(removeTrailing0x(hash), 'hex'), new Buffer(sigOnly, 'hex'), recoveryNumber, false).toString('hex');
+    var pubKey = uint8ArrayToHex(ecdsaRecover(hexToUnit8Array(sigOnly), recoveryNumber, hexToUnit8Array(removeTrailing0x(hash)), false));
 
     // remove trailing '04'
     pubKey = pubKey.slice(2);

@@ -17,7 +17,7 @@ function encryptWithPublicKey(publicKey, message) {
     // re-add the compression-flag
     var pubString = '04' + publicKey;
 
-    return (0, _eccrypto.encrypt)(new Buffer(pubString, 'hex'), Buffer(message)).then(function (encryptedBuffers) {
+    return (0, _eccrypto.encrypt)(Buffer.from(pubString, 'hex'), Buffer.from(message)).then(function (encryptedBuffers) {
         var encrypted = {
             iv: encryptedBuffers.iv.toString('hex'),
             ephemPublicKey: encryptedBuffers.ephemPublicKey.toString('hex'),

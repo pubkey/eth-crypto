@@ -1,4 +1,4 @@
-import { sign as secp256k1_sign } from 'secp256k1';
+import { ecdsaSign as secp256k1_sign } from 'secp256k1';
 import { addTrailing0x, removeTrailing0x } from './util';
 
 /**
@@ -12,10 +12,10 @@ export default function sign(privateKey, hash) {
     hash = addTrailing0x(hash);
     if (hash.length !== 66) throw new Error('EthCrypto.sign(): Can only sign hashes, given: ' + hash);
 
-    var sigObj = secp256k1_sign(new Buffer(removeTrailing0x(hash), 'hex'), new Buffer(removeTrailing0x(privateKey), 'hex'));
+    var sigObj = secp256k1_sign(new Uint8Array(Buffer.from(removeTrailing0x(hash), 'hex')), new Uint8Array(Buffer.from(removeTrailing0x(privateKey), 'hex')));
 
-    var recoveryId = sigObj.recovery === 1 ? '1c' : '1b';
+    var recoveryId = sigObj.recid === 1 ? '1c' : '1b';
 
-    var newSignature = '0x' + sigObj.signature.toString('hex') + recoveryId;
+    var newSignature = '0x' + Buffer.from(sigObj.signature).toString('hex') + recoveryId;
     return newSignature;
 }

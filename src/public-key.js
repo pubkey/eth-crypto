@@ -5,30 +5,34 @@ import {
     pubToAddress,
     toChecksumAddress
 } from 'ethereumjs-util';
+import {
+    hexToUnit8Array,
+    uint8ArrayToHex
+} from './util';
 
 export function compress(startsWith04) {
 
     // add trailing 04 if not done before
-    const testBuffer = new Buffer(startsWith04, 'hex');
+    const testBuffer = Buffer.from(startsWith04, 'hex');
     if (testBuffer.length === 64) startsWith04 = '04' + startsWith04;
 
 
-    return publicKeyConvert(
-        new Buffer(startsWith04, 'hex'),
+    return uint8ArrayToHex(publicKeyConvert(
+        hexToUnit8Array(startsWith04),
         true
-    ).toString('hex');
+    ));
 }
 
 export function decompress(startsWith02Or03) {
 
     // if already decompressed an not has trailing 04
-    const testBuffer = new Buffer(startsWith02Or03, 'hex');
+    const testBuffer = Buffer.from(startsWith02Or03, 'hex');
     if (testBuffer.length === 64) startsWith02Or03 = '04' + startsWith02Or03;
 
-    let decompressed = publicKeyConvert(
-        new Buffer(startsWith02Or03, 'hex'),
+    let decompressed = uint8ArrayToHex(publicKeyConvert(
+        hexToUnit8Array(startsWith02Or03),
         false
-    ).toString('hex');
+    ));
 
     // remove trailing 04
     decompressed = decompressed.substring(2);
@@ -45,7 +49,7 @@ export function toAddress(publicKey) {
     // normalize key
     publicKey = decompress(publicKey);
 
-    const addressBuffer = pubToAddress(new Buffer(publicKey, 'hex'));
+    const addressBuffer = pubToAddress(Buffer.from(publicKey, 'hex'));
     const checkSumAdress = toChecksumAddress(addressBuffer.toString('hex'));
     return checkSumAdress;
 }

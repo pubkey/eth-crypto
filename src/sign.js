@@ -1,5 +1,5 @@
 import {
-    sign as secp256k1_sign
+    ecdsaSign as secp256k1_sign
 } from 'secp256k1';
 import {
     addTrailing0x,
@@ -19,12 +19,12 @@ export default function sign(privateKey, hash) {
         throw new Error('EthCrypto.sign(): Can only sign hashes, given: ' + hash);
 
     const sigObj = secp256k1_sign(
-        new Buffer(removeTrailing0x(hash), 'hex'),
-        new Buffer(removeTrailing0x(privateKey), 'hex')
+        new Uint8Array(Buffer.from(removeTrailing0x(hash), 'hex')),
+        new Uint8Array(Buffer.from(removeTrailing0x(privateKey), 'hex'))
     );
 
-    const recoveryId = sigObj.recovery === 1 ? '1c' : '1b';
+    const recoveryId = sigObj.recid === 1 ? '1c' : '1b';
 
-    const newSignature = '0x' + sigObj.signature.toString('hex') + recoveryId;
+    const newSignature = '0x' + Buffer.from(sigObj.signature).toString('hex') + recoveryId;
     return newSignature;
 }

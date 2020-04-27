@@ -12,7 +12,7 @@ export function compress(hex) {
     hex = removeTrailing0x(hex);
 
     // if base64:true, we use our own function because it results in a smaller output
-    if (base64 === true) return new Buffer(hex, 'hex').toString('base64');
+    if (base64 === true) return Buffer.from(hex, 'hex').toString('base64');
 
     var string = '';
     while (hex.length % 4 != 0) {
@@ -32,7 +32,7 @@ export function decompress(compressedString) {
 
     // if base64:true, we use our own function because it results in a smaller output
     if (base64 === true) {
-        var ret = new Buffer(compressedString, 'base64').toString('hex');
+        var ret = Buffer.from(compressedString, 'base64').toString('hex');
         return addTrailing0x(ret);
     }
 
