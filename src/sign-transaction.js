@@ -15,7 +15,7 @@ export default function signTransaction(
     if (address != rawTx.from)
         throw new Error('EthCrypto.signTransaction(): rawTx.from does not match the address of the privateKey');
 
-    const privateKeyBuffer = new Buffer(privateKey.replace(/^.{2}/g, ''), 'hex');
+    const privateKeyBuffer = Buffer.from(privateKey.replace(/^.{2}/g, ''), 'hex');
 
     const tx = new Transaction(rawTx);
     tx.sign(privateKeyBuffer);

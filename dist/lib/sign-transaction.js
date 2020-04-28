@@ -22,7 +22,7 @@ function signTransaction(rawTx, privateKey) {
     var address = (0, _publicKey.toAddress)(publicKey);
     if (address != rawTx.from) throw new Error('EthCrypto.signTransaction(): rawTx.from does not match the address of the privateKey');
 
-    var privateKeyBuffer = new Buffer(privateKey.replace(/^.{2}/g, ''), 'hex');
+    var privateKeyBuffer = Buffer.from(privateKey.replace(/^.{2}/g, ''), 'hex');
 
     var tx = new _ethereumjsTx.Transaction(rawTx);
     tx.sign(privateKeyBuffer);

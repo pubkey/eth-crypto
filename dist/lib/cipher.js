@@ -14,10 +14,10 @@ function stringify(cipher) {
     // use compressed key because it's smaller
     var compressedKey = (0, _publicKey.compress)(cipher.ephemPublicKey);
 
-    var ret = Buffer.concat([new Buffer(cipher.iv, 'hex'), // 16bit
-    new Buffer(compressedKey, 'hex'), // 33bit
-    new Buffer(cipher.mac, 'hex'), // 32bit
-    new Buffer(cipher.ciphertext, 'hex') // var bit
+    var ret = Buffer.concat([Buffer.from(cipher.iv, 'hex'), // 16bit
+    Buffer.from(compressedKey, 'hex'), // 33bit
+    Buffer.from(cipher.mac, 'hex'), // 32bit
+    Buffer.from(cipher.ciphertext, 'hex') // var bit
     ]);
 
     return ret.toString('hex');
@@ -26,7 +26,7 @@ function stringify(cipher) {
 function parse(str) {
     if (typeof str !== 'string') return str;
 
-    var buf = new Buffer(str, 'hex');
+    var buf = Buffer.from(str, 'hex');
 
     var ret = {
         iv: buf.toString('hex', 0, 16),

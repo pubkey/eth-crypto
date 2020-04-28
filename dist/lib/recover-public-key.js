@@ -24,7 +24,7 @@ function recoverPublicKey(signature, hash) {
 
     var recoveryNumber = vValue === '1c' ? 1 : 0;
 
-    var pubKey = (0, _secp256k.recover)(new Buffer((0, _util.removeTrailing0x)(hash), 'hex'), new Buffer(sigOnly, 'hex'), recoveryNumber, false).toString('hex');
+    var pubKey = (0, _util.uint8ArrayToHex)((0, _secp256k.ecdsaRecover)((0, _util.hexToUnit8Array)(sigOnly), recoveryNumber, (0, _util.hexToUnit8Array)((0, _util.removeTrailing0x)(hash)), false));
 
     // remove trailing '04'
     pubKey = pubKey.slice(2);

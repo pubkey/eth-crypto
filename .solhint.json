@@ -1,7 +1,7 @@
 {
   "extends": "solhint:default",
   "rules": {
-    "func-order": false,
-    "not-rely-on-time": false
+    "func-order": "off",
+    "not-rely-on-time": "off"
   }
 }

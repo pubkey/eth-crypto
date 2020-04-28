@@ -10,10 +10,10 @@ export function stringify(cipher) {
     const compressedKey = compress(cipher.ephemPublicKey);
 
     const ret = Buffer.concat([
-        new Buffer(cipher.iv, 'hex'), // 16bit
-        new Buffer(compressedKey, 'hex'), // 33bit
-        new Buffer(cipher.mac, 'hex'), // 32bit
-        new Buffer(cipher.ciphertext, 'hex') // var bit
+        Buffer.from(cipher.iv, 'hex'), // 16bit
+        Buffer.from(compressedKey, 'hex'), // 33bit
+        Buffer.from(cipher.mac, 'hex'), // 32bit
+        Buffer.from(cipher.ciphertext, 'hex') // var bit
     ]);
 
     return ret.toString('hex');
@@ -25,7 +25,7 @@ export function parse(str) {
     if (typeof str !== 'string')
         return str;
 
-    const buf = new Buffer(str, 'hex');
+    const buf = Buffer.from(str, 'hex');
 
     const ret = {
         iv: buf.toString('hex', 0, 16),

@@ -14,7 +14,7 @@ export function compress(hex, base64 = false) {
 
     // if base64:true, we use our own function because it results in a smaller output
     if (base64 === true)
-        return new Buffer(hex, 'hex').toString('base64');
+        return Buffer.from(hex, 'hex').toString('base64');
 
     let string = '';
     while (hex.length % 4 != 0) { // we need it to be multiple of 4
@@ -31,7 +31,7 @@ export function decompress(compressedString, base64 = false) {
 
     // if base64:true, we use our own function because it results in a smaller output
     if (base64 === true) {
-        const ret = new Buffer(compressedString, 'base64').toString('hex');
+        const ret = Buffer.from(compressedString, 'base64').toString('hex');
         return addTrailing0x(ret);
     }
 

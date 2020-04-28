@@ -1,8 +1,10 @@
 import {
-    recover
+    ecdsaRecover
 } from 'secp256k1';
 import {
-    removeTrailing0x
+    removeTrailing0x,
+    hexToUnit8Array,
+    uint8ArrayToHex
 } from './util';
 
 
@@ -21,12 +23,12 @@ export default function recoverPublicKey(signature, hash) {
 
     const recoveryNumber = vValue === '1c' ? 1 : 0;
 
-    let pubKey = recover(
-        new Buffer(removeTrailing0x(hash), 'hex'),
-        new Buffer(sigOnly, 'hex'),
+    let pubKey = uint8ArrayToHex(ecdsaRecover(
+        hexToUnit8Array(sigOnly),
         recoveryNumber,
+        hexToUnit8Array(removeTrailing0x(hash)),
         false
-    ).toString('hex');
+    ));
 
     // remove trailing '04'
     pubKey = pubKey.slice(2);

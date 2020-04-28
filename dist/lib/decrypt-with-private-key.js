@@ -19,13 +19,13 @@ function decryptWithPrivateKey(privateKey, encrypted) {
     var twoStripped = (0, _util.removeTrailing0x)(privateKey);
 
     var encryptedBuffer = {
-        iv: new Buffer(encrypted.iv, 'hex'),
-        ephemPublicKey: new Buffer(encrypted.ephemPublicKey, 'hex'),
-        ciphertext: new Buffer(encrypted.ciphertext, 'hex'),
-        mac: new Buffer(encrypted.mac, 'hex')
+        iv: Buffer.from(encrypted.iv, 'hex'),
+        ephemPublicKey: Buffer.from(encrypted.ephemPublicKey, 'hex'),
+        ciphertext: Buffer.from(encrypted.ciphertext, 'hex'),
+        mac: Buffer.from(encrypted.mac, 'hex')
     };
 
-    return (0, _eccrypto.decrypt)(new Buffer(twoStripped, 'hex'), encryptedBuffer).then(function (decryptedBuffer) {
+    return (0, _eccrypto.decrypt)(Buffer.from(twoStripped, 'hex'), encryptedBuffer).then(function (decryptedBuffer) {
         return decryptedBuffer.toString();
     });
 }
