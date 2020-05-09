@@ -14,7 +14,7 @@ Cryptographic javascript-functions for ethereum and tutorials on how to use them
 
 - **[Creating Keys and use them for ethereum-transactions](./tutorials/creating-transactions.md)**
 
-  In this tutorial we will create an ethereum-identity and use it so send transactions to the blockchain.
+  In this tutorial we will create an ethereum-identity and use it to send transactions to the blockchain.
 
 - **[Sign and validate data with solidity](./tutorials/signed-data.md)**
 
