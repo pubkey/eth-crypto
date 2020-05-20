@@ -70,7 +70,7 @@
     "babel-preset-es2016": "6.24.1",
     "babel-preset-es2017": "6.24.1",
     "babel-preset-latest": "6.24.1",
-    "bn.js": "5.1.1",
+    "bn.js": "5.1.2",
     "browserify": "16.5.1",
     "concurrently": "5.2.0",
     "convert-hrtime": "3.0.0",
