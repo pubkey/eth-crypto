@@ -96,7 +96,7 @@
     "karma-safari-launcher": "1.0.0",
     "mocha": "8.0.1",
     "rimraf": "3.0.2",
-    "solhint": "3.0.0",
+    "solhint": "3.1.0",
     "solidity-cli": "1.0.3",
     "terser-webpack-plugin": "3.0.7",
     "ts-node": "8.10.2",
