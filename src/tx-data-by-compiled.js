@@ -1,4 +1,4 @@
-import { ContractFactory } from 'ethers/contract.js';
+import { ContractFactory } from 'ethers';
 
 export default function txDataByCompiled(
     abi,
