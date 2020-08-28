@@ -10,7 +10,7 @@ var _toConsumableArray3 = _interopRequireDefault(_toConsumableArray2);
 
 exports['default'] = txDataByCompiled;
 
-var _contract = require('ethers/contract.js');
+var _ethers = require('ethers');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
@@ -19,7 +19,7 @@ function txDataByCompiled(abi, bytecode, args) {
     if (typeof abi === 'string') abi = JSON.parse(abi);
 
     // Construct a Contract Factory
-    var factory = new _contract.ContractFactory(abi, '0x' + bytecode);
+    var factory = new _ethers.ContractFactory(abi, '0x' + bytecode);
 
     var deployTransaction = factory.getDeployTransaction.apply(factory, (0, _toConsumableArray3['default'])(args));
 

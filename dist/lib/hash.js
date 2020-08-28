@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.SIGN_PREFIX = undefined;
 exports.keccak256 = keccak256;
 
-var _solidity = require('ethers/utils/solidity.js');
+var _ethers = require('ethers');
 
 function keccak256(params) {
     var types = [];
@@ -20,7 +20,7 @@ function keccak256(params) {
             values.push(p.value);
         });
     }
-    return (0, _solidity.keccak256)(types, values);
+    return _ethers.utils.solidityKeccak256(types, values);
 }
 
 var SIGN_PREFIX = exports.SIGN_PREFIX = '\x19Ethereum Signed Message:\n32';

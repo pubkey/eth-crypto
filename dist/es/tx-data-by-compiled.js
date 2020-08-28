@@ -1,4 +1,4 @@
-import { ContractFactory } from 'ethers/contract.js';
+import { ContractFactory } from 'ethers';
 
 export default function txDataByCompiled(abi, bytecode, args) {
     // solc returns a string which is often passed instead of the json
