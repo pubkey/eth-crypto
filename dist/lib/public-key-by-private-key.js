@@ -17,6 +17,6 @@ var _util = require('./util');
  */
 function publicKeyOfPrivateKey(privateKey) {
     privateKey = (0, _util.addTrailing0x)(privateKey);
-    var publicKeyBuffer = (0, _ethereumjsUtil.privateToPublic)(privateKey);
+    var publicKeyBuffer = (0, _ethereumjsUtil.privateToPublic)((0, _ethereumjsUtil.toBuffer)(privateKey));
     return publicKeyBuffer.toString('hex');
 }
