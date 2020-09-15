@@ -45,7 +45,7 @@ function toAddress(publicKey) {
     // normalize key
     publicKey = decompress(publicKey);
 
-    var addressBuffer = (0, _ethereumjsUtil.pubToAddress)(Buffer.from(publicKey, 'hex'));
-    var checkSumAdress = (0, _ethereumjsUtil.toChecksumAddress)(addressBuffer.toString('hex'));
+    var addressBuffer = (0, _ethereumjsUtil.pubToAddress)((0, _ethereumjsUtil.toBuffer)((0, _util.addTrailing0x)(publicKey)));
+    var checkSumAdress = (0, _ethereumjsUtil.toChecksumAddress)((0, _util.addTrailing0x)(addressBuffer.toString('hex')));
     return checkSumAdress;
 }

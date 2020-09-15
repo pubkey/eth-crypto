@@ -1,6 +1,6 @@
 import { publicKeyConvert } from 'secp256k1';
-import { pubToAddress, toChecksumAddress } from 'ethereumjs-util';
-import { hexToUnit8Array, uint8ArrayToHex } from './util';
+import { pubToAddress, toChecksumAddress, toBuffer } from 'ethereumjs-util';
+import { hexToUnit8Array, uint8ArrayToHex, addTrailing0x } from './util';
 
 export function compress(startsWith04) {
 
@@ -34,7 +34,7 @@ export function toAddress(publicKey) {
     // normalize key
     publicKey = decompress(publicKey);
 
-    var addressBuffer = pubToAddress(Buffer.from(publicKey, 'hex'));
-    var checkSumAdress = toChecksumAddress(addressBuffer.toString('hex'));
+    var addressBuffer = pubToAddress(toBuffer(addTrailing0x(publicKey)));
+    var checkSumAdress = toChecksumAddress(addTrailing0x(addressBuffer.toString('hex')));
     return checkSumAdress;
 }
