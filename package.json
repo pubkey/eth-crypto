@@ -113,7 +113,7 @@
     "eccrypto": "1.1.5",
     "eth-lib": "0.2.8",
     "ethereumjs-tx": "2.1.2",
-    "ethereumjs-util": "6.2.0",
+    "ethereumjs-util": "7.0.5",
     "ethers": "5.0.13",
     "secp256k1": "4.0.2"
   }
