@@ -4,7 +4,7 @@ import {
     toBuffer
 } from 'ethereumjs-util';
 import {
-    addTrailing0x
+    addLeading0x
 } from './util';
 
 
@@ -13,9 +13,9 @@ export default function calculateContractAddress(
     nonce
 ) {
     const addressBuffer = generateAddress(
-        toBuffer(addTrailing0x(creatorAddress)),
+        toBuffer(addLeading0x(creatorAddress)),
         toBuffer(nonce)
     );
     const address = addressBuffer.toString('hex');
-    return toChecksumAddress(addTrailing0x(address));
+    return toChecksumAddress(addLeading0x(address));
 }

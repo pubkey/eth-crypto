@@ -97,8 +97,8 @@ type hashType = {
 export const hash: hashType;
 
 type utilType = {
-    removeTrailing0x(str: string): string;
-    addTrailing0x(str: string): string;
+    removeLeading0x(str: string): string;
+    addLeading0x(str: string): string;
 };
 export const util: utilType;
 

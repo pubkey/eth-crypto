@@ -4,12 +4,12 @@
  * @link https://stackoverflow.com/a/40471908/3443137
  */
 
-import { removeTrailing0x, addTrailing0x } from './util';
+import { removeLeading0x, addLeading0x } from './util';
 
 export function compress(hex) {
     var base64 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 
-    hex = removeTrailing0x(hex);
+    hex = removeLeading0x(hex);
 
     // if base64:true, we use our own function because it results in a smaller output
     if (base64 === true) return Buffer.from(hex, 'hex').toString('base64');
@@ -33,7 +33,7 @@ export function decompress(compressedString) {
     // if base64:true, we use our own function because it results in a smaller output
     if (base64 === true) {
         var ret = Buffer.from(compressedString, 'base64').toString('hex');
-        return addTrailing0x(ret);
+        return addLeading0x(ret);
     }
 
     var hex = '';
@@ -42,5 +42,5 @@ export function decompress(compressedString) {
         hex += ((i == 0 ? '' : '000') + compressedString.charCodeAt(i).toString(16)).slice(-4);
     }
     hex = hex.toLowerCase();
-    return addTrailing0x(hex);
+    return addLeading0x(hex);
 }

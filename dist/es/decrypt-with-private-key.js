@@ -1,13 +1,13 @@
 import { decrypt } from 'eccrypto';
 import { parse } from './cipher';
-import { removeTrailing0x } from './util';
+import { removeLeading0x } from './util';
 
 export default function decryptWithPrivateKey(privateKey, encrypted) {
 
     encrypted = parse(encrypted);
 
     // remove trailing '0x' from privateKey
-    var twoStripped = removeTrailing0x(privateKey);
+    var twoStripped = removeLeading0x(privateKey);
 
     var encryptedBuffer = {
         iv: Buffer.from(encrypted.iv, 'hex'),

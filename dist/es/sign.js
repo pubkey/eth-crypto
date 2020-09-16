@@ -1,5 +1,5 @@
 import { ecdsaSign as secp256k1_sign } from 'secp256k1';
-import { addTrailing0x, removeTrailing0x } from './util';
+import { addLeading0x, removeLeading0x } from './util';
 
 /**
  * signs the given message
@@ -9,10 +9,10 @@ import { addTrailing0x, removeTrailing0x } from './util';
  * @return {string} hexString
  */
 export default function sign(privateKey, hash) {
-    hash = addTrailing0x(hash);
+    hash = addLeading0x(hash);
     if (hash.length !== 66) throw new Error('EthCrypto.sign(): Can only sign hashes, given: ' + hash);
 
-    var sigObj = secp256k1_sign(new Uint8Array(Buffer.from(removeTrailing0x(hash), 'hex')), new Uint8Array(Buffer.from(removeTrailing0x(privateKey), 'hex')));
+    var sigObj = secp256k1_sign(new Uint8Array(Buffer.from(removeLeading0x(hash), 'hex')), new Uint8Array(Buffer.from(removeLeading0x(privateKey), 'hex')));
 
     var recoveryId = sigObj.recid === 1 ? '1c' : '1b';
 

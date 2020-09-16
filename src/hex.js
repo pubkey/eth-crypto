@@ -5,12 +5,12 @@
  */
 
 import {
-    removeTrailing0x,
-    addTrailing0x
+    removeLeading0x,
+    addLeading0x
 } from './util';
 
 export function compress(hex, base64 = false) {
-    hex = removeTrailing0x(hex);
+    hex = removeLeading0x(hex);
 
     // if base64:true, we use our own function because it results in a smaller output
     if (base64 === true)
@@ -32,7 +32,7 @@ export function decompress(compressedString, base64 = false) {
     // if base64:true, we use our own function because it results in a smaller output
     if (base64 === true) {
         const ret = Buffer.from(compressedString, 'base64').toString('hex');
-        return addTrailing0x(ret);
+        return addLeading0x(ret);
     }
 
     let hex = '';
@@ -41,5 +41,5 @@ export function decompress(compressedString, base64 = false) {
         hex += ((i == 0 ? '' : '000') + compressedString.charCodeAt(i).toString(16)).slice(-4);
     }
     hex = hex.toLowerCase();
-    return addTrailing0x(hex);
+    return addLeading0x(hex);
 }
