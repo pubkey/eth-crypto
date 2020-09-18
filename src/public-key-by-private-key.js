@@ -3,7 +3,7 @@ import {
     toBuffer
 } from 'ethereumjs-util';
 import {
-    addTrailing0x
+    addLeading0x
 } from './util';
 
 /**
@@ -13,7 +13,7 @@ import {
  * @returns {string}
  */
 export default function publicKeyOfPrivateKey(privateKey) {
-    privateKey = addTrailing0x(privateKey);
+    privateKey = addLeading0x(privateKey);
     const publicKeyBuffer = privateToPublic(toBuffer(privateKey));
     return publicKeyBuffer.toString('hex');
 }

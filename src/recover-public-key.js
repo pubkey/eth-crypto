@@ -2,7 +2,7 @@ import {
     ecdsaRecover
 } from 'secp256k1';
 import {
-    removeTrailing0x,
+    removeLeading0x,
     hexToUnit8Array,
     uint8ArrayToHex
 } from './util';
@@ -15,7 +15,7 @@ import {
  * @return {string} publicKey
  */
 export default function recoverPublicKey(signature, hash) {
-    signature = removeTrailing0x(signature);
+    signature = removeLeading0x(signature);
 
     // split into v-value and sig
     const sigOnly = signature.substring(0, signature.length - 2); // all but last 2 chars
@@ -26,7 +26,7 @@ export default function recoverPublicKey(signature, hash) {
     let pubKey = uint8ArrayToHex(ecdsaRecover(
         hexToUnit8Array(sigOnly),
         recoveryNumber,
-        hexToUnit8Array(removeTrailing0x(hash)),
+        hexToUnit8Array(removeLeading0x(hash)),
         false
     ));
 

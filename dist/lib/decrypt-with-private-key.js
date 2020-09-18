@@ -16,7 +16,7 @@ function decryptWithPrivateKey(privateKey, encrypted) {
     encrypted = (0, _cipher.parse)(encrypted);
 
     // remove trailing '0x' from privateKey
-    var twoStripped = (0, _util.removeTrailing0x)(privateKey);
+    var twoStripped = (0, _util.removeLeading0x)(privateKey);
 
     var encryptedBuffer = {
         iv: Buffer.from(encrypted.iv, 'hex'),

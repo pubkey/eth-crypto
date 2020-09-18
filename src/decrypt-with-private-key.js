@@ -5,7 +5,7 @@ import {
     parse
 } from './cipher';
 import {
-    removeTrailing0x
+    removeLeading0x
 } from './util';
 
 export default function decryptWithPrivateKey(privateKey, encrypted) {
@@ -13,7 +13,7 @@ export default function decryptWithPrivateKey(privateKey, encrypted) {
     encrypted = parse(encrypted);
 
     // remove trailing '0x' from privateKey
-    const twoStripped = removeTrailing0x(privateKey);
+    const twoStripped = removeLeading0x(privateKey);
 
     const encryptedBuffer = {
         iv: Buffer.from(encrypted.iv, 'hex'),

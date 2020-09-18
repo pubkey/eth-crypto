@@ -11,7 +11,7 @@ var _util = require('./util');
 function compress(hex) {
     var base64 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 
-    hex = (0, _util.removeTrailing0x)(hex);
+    hex = (0, _util.removeLeading0x)(hex);
 
     // if base64:true, we use our own function because it results in a smaller output
     if (base64 === true) return Buffer.from(hex, 'hex').toString('base64');
@@ -39,7 +39,7 @@ function decompress(compressedString) {
     // if base64:true, we use our own function because it results in a smaller output
     if (base64 === true) {
         var ret = Buffer.from(compressedString, 'base64').toString('hex');
-        return (0, _util.addTrailing0x)(ret);
+        return (0, _util.addLeading0x)(ret);
     }
 
     var hex = '';
@@ -48,5 +48,5 @@ function decompress(compressedString) {
         hex += ((i == 0 ? '' : '000') + compressedString.charCodeAt(i).toString(16)).slice(-4);
     }
     hex = hex.toLowerCase();
-    return (0, _util.addTrailing0x)(hex);
+    return (0, _util.addLeading0x)(hex);
 }

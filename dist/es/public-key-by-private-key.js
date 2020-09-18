@@ -1,5 +1,5 @@
 import { privateToPublic, toBuffer } from 'ethereumjs-util';
-import { addTrailing0x } from './util';
+import { addLeading0x } from './util';
 
 /**
  * Generate publicKey from the privateKey.
@@ -8,7 +8,7 @@ import { addTrailing0x } from './util';
  * @returns {string}
  */
 export default function publicKeyOfPrivateKey(privateKey) {
-    privateKey = addTrailing0x(privateKey);
+    privateKey = addLeading0x(privateKey);
     var publicKeyBuffer = privateToPublic(toBuffer(privateKey));
     return publicKeyBuffer.toString('hex');
 }

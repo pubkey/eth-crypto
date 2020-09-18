@@ -17,10 +17,10 @@ var _util = require('./util');
  * @return {string} hexString
  */
 function sign(privateKey, hash) {
-    hash = (0, _util.addTrailing0x)(hash);
+    hash = (0, _util.addLeading0x)(hash);
     if (hash.length !== 66) throw new Error('EthCrypto.sign(): Can only sign hashes, given: ' + hash);
 
-    var sigObj = (0, _secp256k.ecdsaSign)(new Uint8Array(Buffer.from((0, _util.removeTrailing0x)(hash), 'hex')), new Uint8Array(Buffer.from((0, _util.removeTrailing0x)(privateKey), 'hex')));
+    var sigObj = (0, _secp256k.ecdsaSign)(new Uint8Array(Buffer.from((0, _util.removeLeading0x)(hash), 'hex')), new Uint8Array(Buffer.from((0, _util.removeLeading0x)(privateKey), 'hex')));
 
     var recoveryId = sigObj.recid === 1 ? '1c' : '1b';
 

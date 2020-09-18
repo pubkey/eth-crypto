@@ -9,7 +9,7 @@ import {
 import {
     hexToUnit8Array,
     uint8ArrayToHex,
-    addTrailing0x
+    addLeading0x
 } from './util';
 
 export function compress(startsWith04) {
@@ -51,7 +51,7 @@ export function toAddress(publicKey) {
     // normalize key
     publicKey = decompress(publicKey);
 
-    const addressBuffer = pubToAddress(toBuffer(addTrailing0x(publicKey)));
-    const checkSumAdress = toChecksumAddress(addTrailing0x(addressBuffer.toString('hex')));
+    const addressBuffer = pubToAddress(toBuffer(addLeading0x(publicKey)));
+    const checkSumAdress = toChecksumAddress(addLeading0x(addressBuffer.toString('hex')));
     return checkSumAdress;
 }
