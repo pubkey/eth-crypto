@@ -53,7 +53,7 @@
     "async-test-util": "1.7.3",
     "babel-cli": "6.26.0",
     "babel-core": "6.26.3",
-    "babel-loader": "8.1.0",
+    "babel-loader": "8.2.0",
     "babel-plugin-transform-async-to-generator": "6.24.1",
     "babel-plugin-transform-class-properties": "6.24.1",
     "babel-plugin-transform-es2015-block-scoping": "6.26.0",
