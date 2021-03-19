@@ -24,7 +24,7 @@ const configuration = {
             const browsers = availableBrowser
                 .filter(b => !['PhantomJS', 'FirefoxAurora', 'FirefoxNightly'].includes(b))
                 .map(b => {
-                    if (b === 'Chrome') return 'Chrome_travis_ci';
+                    if (b === 'Chrome' || b === 'Chromium') return 'Chrome_travis_ci';
                     else return b;
                 });
             return browsers;
