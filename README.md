@@ -12,7 +12,7 @@ Cryptographic javascript-functions for ethereum and tutorials on how to use them
 
 ## Tutorials
 
-- **[Creating Keys and use them for ethereum-transactions](./tutorials/creating-transactions.md)**
+- **[Creating keys and use them for ethereum transactions](./tutorials/creating-transactions.md)**
 
   In this tutorial we will create an ethereum-identity and use it to send transactions to the blockchain.
 
