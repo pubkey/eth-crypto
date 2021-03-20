@@ -84,7 +84,7 @@
     "js-sha3": "0.8.0",
     "karma": "6.2.0",
     "karma-babel-preprocessor": "8.0.1",
-    "karma-browserify": "7.0.0",
+    "karma-browserify": "8.0.0",
     "karma-chrome-launcher": "3.1.0",
     "karma-coverage": "2.0.3",
     "karma-detect-browsers": "2.3.3",
