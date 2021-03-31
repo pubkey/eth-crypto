@@ -1,9 +1,8 @@
 <p align="center">
-    <a alt="travis" href="https://travis-ci.org/pubkey/eth-crypto">
-        <img src="https://travis-ci.org/pubkey/eth-crypto.svg?branch=master" /></a>
     <a href="https://twitter.com/pubkeypubkey">
         <img src="https://img.shields.io/twitter/follow/pubkeypubkey.svg?style=social&logo=twitter"
-            alt="follow on Twitter"></a>
+            alt="follow on Twitter">
+    </a>
 </p>
 
 # eth-crypto
