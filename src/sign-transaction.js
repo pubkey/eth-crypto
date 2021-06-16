@@ -7,7 +7,8 @@ import {
 
 export default function signTransaction(
     rawTx,
-    privateKey
+    privateKey,
+    txOptions = {}
 ) {
 
     // check if privateKey->address matches rawTx.from
@@ -18,7 +19,7 @@ export default function signTransaction(
 
     const privateKeyBuffer = Buffer.from(privateKey.replace(/^.{2}/g, ''), 'hex');
 
-    const tx = Transaction.fromTxData(rawTx);
+    const tx = Transaction.fromTxData(rawTx, txOptions);
     const signedTx = tx.sign(privateKeyBuffer);
     const serializedTx = signedTx.serialize().toString('hex');
     return serializedTx;

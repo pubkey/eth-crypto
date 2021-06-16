@@ -16,6 +16,8 @@ var _publicKey = require('./public-key');
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 function signTransaction(rawTx, privateKey) {
+    var txOptions = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
 
     // check if privateKey->address matches rawTx.from
     var publicKey = (0, _publicKeyByPrivateKey2['default'])(privateKey);
@@ -24,7 +26,7 @@ function signTransaction(rawTx, privateKey) {
 
     var privateKeyBuffer = Buffer.from(privateKey.replace(/^.{2}/g, ''), 'hex');
 
-    var tx = _tx.Transaction.fromTxData(rawTx);
+    var tx = _tx.Transaction.fromTxData(rawTx, txOptions);
     var signedTx = tx.sign(privateKeyBuffer);
     var serializedTx = signedTx.serialize().toString('hex');
     return serializedTx;
