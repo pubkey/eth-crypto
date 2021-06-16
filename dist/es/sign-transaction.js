@@ -1,4 +1,5 @@
-import { Transaction } from 'ethereumjs-tx';
+
+import { Transaction } from '@ethereumjs/tx';
 import publicKeyByPrivateKey from './public-key-by-private-key';
 import { toAddress as addressByPublicKey } from './public-key';
 
@@ -11,8 +12,8 @@ export default function signTransaction(rawTx, privateKey) {
 
     var privateKeyBuffer = Buffer.from(privateKey.replace(/^.{2}/g, ''), 'hex');
 
-    var tx = new Transaction(rawTx);
-    tx.sign(privateKeyBuffer);
-    var serializedTx = tx.serialize().toString('hex');
+    var tx = Transaction.fromTxData(rawTx);
+    var signedTx = tx.sign(privateKeyBuffer);
+    var serializedTx = signedTx.serialize().toString('hex');
     return serializedTx;
 }

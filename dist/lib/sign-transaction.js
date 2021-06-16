@@ -5,7 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports['default'] = signTransaction;
 
-var _ethereumjsTx = require('ethereumjs-tx');
+var _tx = require('@ethereumjs/tx');
 
 var _publicKeyByPrivateKey = require('./public-key-by-private-key');
 
@@ -24,8 +24,8 @@ function signTransaction(rawTx, privateKey) {
 
     var privateKeyBuffer = Buffer.from(privateKey.replace(/^.{2}/g, ''), 'hex');
 
-    var tx = new _ethereumjsTx.Transaction(rawTx);
-    tx.sign(privateKeyBuffer);
-    var serializedTx = tx.serialize().toString('hex');
+    var tx = _tx.Transaction.fromTxData(rawTx);
+    var signedTx = tx.sign(privateKeyBuffer);
+    var serializedTx = signedTx.serialize().toString('hex');
     return serializedTx;
 }
