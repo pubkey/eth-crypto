@@ -284,21 +284,21 @@ describe('unit.test.js', () => {
                 const compressed = '03a34d6aef3eb42335fb3cacb59478c0b44c0bbeb8bb4ca427dbc7044157a5d24b';
                 const uncompressed = EthCrypto.publicKey.decompress(compressed);
                 assert.equal(typeof uncompressed, 'string');
-                const buf = new Buffer(uncompressed, 'hex');
+                const buf = Buffer.from(uncompressed, 'hex');
                 assert.equal(buf.length, 64);
             });
             it('should work when already uncompressed', () => {
                 const compressed = '04a34d6aef3eb42335fb3cacb59478c0b44c0bbeb8bb4ca427dbc7044157a5d24b4adf14868d8449c9b3e50d3d6338f3e5a2d3445abe679cddbe75cb893475806f';
                 const uncompressed = EthCrypto.publicKey.decompress(compressed);
                 assert.equal(typeof uncompressed, 'string');
-                const buf = new Buffer(uncompressed, 'hex');
+                const buf = Buffer.from(uncompressed, 'hex');
                 assert.equal(buf.length, 64);
             });
             it('should work when already uncompressed (no04)', () => {
                 const compressed = 'a34d6aef3eb42335fb3cacb59478c0b44c0bbeb8bb4ca427dbc7044157a5d24b4adf14868d8449c9b3e50d3d6338f3e5a2d3445abe679cddbe75cb893475806f';
                 const uncompressed = EthCrypto.publicKey.decompress(compressed);
                 assert.equal(typeof uncompressed, 'string');
-                const buf = new Buffer(uncompressed, 'hex');
+                const buf = Buffer.from(uncompressed, 'hex');
                 assert.equal(buf.length, 64);
             });
         });

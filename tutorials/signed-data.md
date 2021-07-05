@@ -131,7 +131,7 @@ const rawTx2 = {
     to: contractAddress,
     nonce: 1, // increased by one
     value: parseInt(web3.utils.toWei('3', 'ether')),
-    gas: 600000,
+    gasLimit: 600000,
     gasPrice: 20000000000
 };
 const serializedTx2 = EthCrypto.signTransaction(

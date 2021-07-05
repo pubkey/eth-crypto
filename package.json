@@ -108,11 +108,11 @@
     "webpack-cli": "4.7.2"
   },
   "dependencies": {
+    "@ethereumjs/tx": "3.2.1",
     "@types/bn.js": "5.1.0",
     "babel-runtime": "6.26.0",
     "eccrypto": "1.1.6",
     "eth-lib": "0.2.8",
-    "ethereumjs-tx": "2.1.2",
     "ethereumjs-util": "7.0.10",
     "ethers": "5.4.1",
     "secp256k1": "4.0.2"

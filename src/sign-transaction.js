@@ -1,4 +1,5 @@
-import { Transaction } from 'ethereumjs-tx';
+
+import { Transaction } from '@ethereumjs/tx';
 import publicKeyByPrivateKey from './public-key-by-private-key';
 import {
     toAddress as addressByPublicKey
@@ -6,7 +7,8 @@ import {
 
 export default function signTransaction(
     rawTx,
-    privateKey
+    privateKey,
+    txOptions = {}
 ) {
 
     // check if privateKey->address matches rawTx.from
@@ -17,8 +19,8 @@ export default function signTransaction(
 
     const privateKeyBuffer = Buffer.from(privateKey.replace(/^.{2}/g, ''), 'hex');
 
-    const tx = new Transaction(rawTx);
-    tx.sign(privateKeyBuffer);
-    const serializedTx = tx.serialize().toString('hex');
+    const tx = Transaction.fromTxData(rawTx, txOptions);
+    const signedTx = tx.sign(privateKeyBuffer);
+    const serializedTx = signedTx.serialize().toString('hex');
     return serializedTx;
 }

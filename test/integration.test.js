@@ -43,7 +43,7 @@ describe('integration.test.js', () => {
                     state.accounts.push(identity);
                     const twoStripped = identity.privateKey.replace(/^.{2}/g, '');
                     return {
-                        secretKey: new Buffer(twoStripped, 'hex'),
+                        secretKey: Buffer.from(twoStripped, 'hex'),
                         balance: state.web3.utils.toWei('100', 'ether')
                     };
                 });
@@ -87,7 +87,7 @@ describe('integration.test.js', () => {
                 .fill(0)
                 .map(() => EthCrypto.createIdentity())
                 .map(identity => ({
-                    secretKey: new Buffer(identity.privateKey.replace(/^.{2}/g, ''), 'hex'),
+                    secretKey: Buffer.from(identity.privateKey.replace(/^.{2}/g, ''), 'hex'),
                     balance: web3.utils.toWei('100', 'ether')
                 }));
             web3.setProvider(ganache.provider({
@@ -101,7 +101,7 @@ describe('integration.test.js', () => {
             web3.transactionConfirmationBlocks = WEB3_CONFIRMATION_BLOCKS;
             web3.setProvider(ganache.provider({
                 accounts: [{
-                    secretKey: new Buffer(identity.privateKey.replace(/^.{2}/g, ''), 'hex'),
+                    secretKey: Buffer.from(identity.privateKey.replace(/^.{2}/g, ''), 'hex'),
                     balance: web3.utils.toWei('100', 'ether')
                 }]
             }));
