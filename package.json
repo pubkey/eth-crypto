@@ -100,7 +100,7 @@
     "solidity-cli": "1.0.3",
     "terser-webpack-plugin": "4.2.3",
     "ts-node": "10.2.1",
-    "typescript": "4.3.5",
+    "typescript": "4.4.2",
     "uglify-es": "3.3.9",
     "web3": "1.5.2",
     "webpack": "4.41.5",
