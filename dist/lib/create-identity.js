@@ -1,5 +1,7 @@
 "use strict";
 
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -13,8 +15,6 @@ var _account = require("eth-lib/lib/account");
 var _hash = require("eth-lib/lib/hash");
 
 var _bytes = _interopRequireDefault(require("eth-lib/lib/bytes"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var MIN_ENTROPY_SIZE = 128;
 /**

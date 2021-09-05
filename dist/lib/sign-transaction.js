@@ -1,5 +1,7 @@
 "use strict";
 
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -10,8 +12,6 @@ var _tx = require("@ethereumjs/tx");
 var _publicKeyByPrivateKey = _interopRequireDefault(require("./public-key-by-private-key"));
 
 var _publicKey = require("./public-key");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function signTransaction(rawTx, privateKey) {
   var txOptions = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
