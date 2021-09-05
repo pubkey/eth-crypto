@@ -1,4 +1,3 @@
-
 import createIdentity from './create-identity';
 import * as publicKey from './public-key';
 import decryptWithPrivateKey from './decrypt-with-private-key';
@@ -15,24 +14,22 @@ import * as hash from './hash';
 import * as hex from './hex';
 import * as vrs from './vrs';
 import * as util from './util';
-
 export { createIdentity, publicKey, decryptWithPrivateKey, encryptWithPublicKey, cipher, publicKeyByPrivateKey, recover, recoverPublicKey, sign, signTransaction, txDataByCompiled, calculateContractAddress, hash, hex, vrs, util };
-
 export default {
-    createIdentity: createIdentity,
-    publicKey: publicKey,
-    decryptWithPrivateKey: decryptWithPrivateKey,
-    encryptWithPublicKey: encryptWithPublicKey,
-    cipher: cipher,
-    publicKeyByPrivateKey: publicKeyByPrivateKey,
-    recover: recover,
-    recoverPublicKey: recoverPublicKey,
-    sign: sign,
-    signTransaction: signTransaction,
-    txDataByCompiled: txDataByCompiled,
-    calculateContractAddress: calculateContractAddress,
-    hash: hash,
-    hex: hex,
-    vrs: vrs,
-    util: util
+  createIdentity: createIdentity,
+  publicKey: publicKey,
+  decryptWithPrivateKey: decryptWithPrivateKey,
+  encryptWithPublicKey: encryptWithPublicKey,
+  cipher: cipher,
+  publicKeyByPrivateKey: publicKeyByPrivateKey,
+  recover: recover,
+  recoverPublicKey: recoverPublicKey,
+  sign: sign,
+  signTransaction: signTransaction,
+  txDataByCompiled: txDataByCompiled,
+  calculateContractAddress: calculateContractAddress,
+  hash: hash,
+  hex: hex,
+  vrs: vrs,
+  util: util
 };

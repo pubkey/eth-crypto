@@ -1,27 +1,29 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
+exports["default"] = txDataByCompiled;
 
-var _toConsumableArray2 = require('babel-runtime/helpers/toConsumableArray');
+var _ethers = require("ethers");
 
-var _toConsumableArray3 = _interopRequireDefault(_toConsumableArray2);
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
-exports['default'] = txDataByCompiled;
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-var _ethers = require('ethers');
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
 function txDataByCompiled(abi, bytecode, args) {
-    // solc returns a string which is often passed instead of the json
-    if (typeof abi === 'string') abi = JSON.parse(abi);
+  // solc returns a string which is often passed instead of the json
+  if (typeof abi === 'string') abi = JSON.parse(abi); // Construct a Contract Factory
 
-    // Construct a Contract Factory
-    var factory = new _ethers.ContractFactory(abi, '0x' + bytecode);
-
-    var deployTransaction = factory.getDeployTransaction.apply(factory, (0, _toConsumableArray3['default'])(args));
-
-    return deployTransaction.data;
+  var factory = new _ethers.ContractFactory(abi, '0x' + bytecode);
+  var deployTransaction = factory.getDeployTransaction.apply(factory, _toConsumableArray(args));
+  return deployTransaction.data;
 }

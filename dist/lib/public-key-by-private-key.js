@@ -1,13 +1,13 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
-exports['default'] = publicKeyOfPrivateKey;
+exports["default"] = publicKeyOfPrivateKey;
 
-var _ethereumjsUtil = require('ethereumjs-util');
+var _ethereumjsUtil = require("ethereumjs-util");
 
-var _util = require('./util');
+var _util = require("./util");
 
 /**
  * Generate publicKey from the privateKey.
@@ -16,7 +16,7 @@ var _util = require('./util');
  * @returns {string}
  */
 function publicKeyOfPrivateKey(privateKey) {
-    privateKey = (0, _util.addLeading0x)(privateKey);
-    var publicKeyBuffer = (0, _ethereumjsUtil.privateToPublic)((0, _ethereumjsUtil.toBuffer)(privateKey));
-    return publicKeyBuffer.toString('hex');
+  privateKey = (0, _util.addLeading0x)(privateKey);
+  var publicKeyBuffer = (0, _ethereumjsUtil.privateToPublic)((0, _ethereumjsUtil.toBuffer)(privateKey));
+  return publicKeyBuffer.toString('hex');
 }
