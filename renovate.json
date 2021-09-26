@@ -8,5 +8,6 @@
   "statusCheckVerify": true,
   "automerge": true,
   "rebaseStalePrs": true,
-  "prHourlyLimit": 4
+  "prHourlyLimit": 4,
+  "dependencyDashboard": false
 }
