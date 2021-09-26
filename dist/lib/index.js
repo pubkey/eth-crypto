@@ -1,109 +1,138 @@
-'use strict';
+"use strict";
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
+var _typeof = require("@babel/runtime/helpers/typeof");
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
-exports.util = exports.vrs = exports.hex = exports.hash = exports.calculateContractAddress = exports.txDataByCompiled = exports.signTransaction = exports.sign = exports.recoverPublicKey = exports.recover = exports.publicKeyByPrivateKey = exports.cipher = exports.encryptWithPublicKey = exports.decryptWithPrivateKey = exports.publicKey = exports.createIdentity = undefined;
+Object.defineProperty(exports, "createIdentity", {
+  enumerable: true,
+  get: function get() {
+    return _createIdentity["default"];
+  }
+});
+Object.defineProperty(exports, "decryptWithPrivateKey", {
+  enumerable: true,
+  get: function get() {
+    return _decryptWithPrivateKey["default"];
+  }
+});
+Object.defineProperty(exports, "encryptWithPublicKey", {
+  enumerable: true,
+  get: function get() {
+    return _encryptWithPublicKey["default"];
+  }
+});
+Object.defineProperty(exports, "publicKeyByPrivateKey", {
+  enumerable: true,
+  get: function get() {
+    return _publicKeyByPrivateKey["default"];
+  }
+});
+Object.defineProperty(exports, "recover", {
+  enumerable: true,
+  get: function get() {
+    return _recover["default"];
+  }
+});
+Object.defineProperty(exports, "recoverPublicKey", {
+  enumerable: true,
+  get: function get() {
+    return _recoverPublicKey["default"];
+  }
+});
+Object.defineProperty(exports, "sign", {
+  enumerable: true,
+  get: function get() {
+    return _sign["default"];
+  }
+});
+Object.defineProperty(exports, "signTransaction", {
+  enumerable: true,
+  get: function get() {
+    return _signTransaction["default"];
+  }
+});
+Object.defineProperty(exports, "txDataByCompiled", {
+  enumerable: true,
+  get: function get() {
+    return _txDataByCompiled["default"];
+  }
+});
+Object.defineProperty(exports, "calculateContractAddress", {
+  enumerable: true,
+  get: function get() {
+    return _calculateContractAddress["default"];
+  }
+});
+exports.util = exports.vrs = exports.hex = exports.hash = exports.cipher = exports.publicKey = exports["default"] = void 0;
 
-var _createIdentity = require('./create-identity');
+var _createIdentity = _interopRequireDefault(require("./create-identity"));
 
-var _createIdentity2 = _interopRequireDefault(_createIdentity);
+var publicKey = _interopRequireWildcard(require("./public-key"));
 
-var _publicKey = require('./public-key');
-
-var publicKey = _interopRequireWildcard(_publicKey);
-
-var _decryptWithPrivateKey = require('./decrypt-with-private-key');
-
-var _decryptWithPrivateKey2 = _interopRequireDefault(_decryptWithPrivateKey);
-
-var _encryptWithPublicKey = require('./encrypt-with-public-key');
-
-var _encryptWithPublicKey2 = _interopRequireDefault(_encryptWithPublicKey);
-
-var _cipher = require('./cipher');
-
-var cipher = _interopRequireWildcard(_cipher);
-
-var _publicKeyByPrivateKey = require('./public-key-by-private-key');
-
-var _publicKeyByPrivateKey2 = _interopRequireDefault(_publicKeyByPrivateKey);
-
-var _recover = require('./recover');
-
-var _recover2 = _interopRequireDefault(_recover);
-
-var _recoverPublicKey = require('./recover-public-key');
-
-var _recoverPublicKey2 = _interopRequireDefault(_recoverPublicKey);
-
-var _sign = require('./sign');
-
-var _sign2 = _interopRequireDefault(_sign);
-
-var _signTransaction = require('./sign-transaction');
-
-var _signTransaction2 = _interopRequireDefault(_signTransaction);
-
-var _txDataByCompiled = require('./tx-data-by-compiled');
-
-var _txDataByCompiled2 = _interopRequireDefault(_txDataByCompiled);
-
-var _calculateContractAddress = require('./calculate-contract-address');
-
-var _calculateContractAddress2 = _interopRequireDefault(_calculateContractAddress);
-
-var _hash = require('./hash');
-
-var hash = _interopRequireWildcard(_hash);
-
-var _hex = require('./hex');
-
-var hex = _interopRequireWildcard(_hex);
-
-var _vrs = require('./vrs');
-
-var vrs = _interopRequireWildcard(_vrs);
-
-var _util = require('./util');
-
-var util = _interopRequireWildcard(_util);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-exports.createIdentity = _createIdentity2['default'];
 exports.publicKey = publicKey;
-exports.decryptWithPrivateKey = _decryptWithPrivateKey2['default'];
-exports.encryptWithPublicKey = _encryptWithPublicKey2['default'];
+
+var _decryptWithPrivateKey = _interopRequireDefault(require("./decrypt-with-private-key"));
+
+var _encryptWithPublicKey = _interopRequireDefault(require("./encrypt-with-public-key"));
+
+var cipher = _interopRequireWildcard(require("./cipher"));
+
 exports.cipher = cipher;
-exports.publicKeyByPrivateKey = _publicKeyByPrivateKey2['default'];
-exports.recover = _recover2['default'];
-exports.recoverPublicKey = _recoverPublicKey2['default'];
-exports.sign = _sign2['default'];
-exports.signTransaction = _signTransaction2['default'];
-exports.txDataByCompiled = _txDataByCompiled2['default'];
-exports.calculateContractAddress = _calculateContractAddress2['default'];
+
+var _publicKeyByPrivateKey = _interopRequireDefault(require("./public-key-by-private-key"));
+
+var _recover = _interopRequireDefault(require("./recover"));
+
+var _recoverPublicKey = _interopRequireDefault(require("./recover-public-key"));
+
+var _sign = _interopRequireDefault(require("./sign"));
+
+var _signTransaction = _interopRequireDefault(require("./sign-transaction"));
+
+var _txDataByCompiled = _interopRequireDefault(require("./tx-data-by-compiled"));
+
+var _calculateContractAddress = _interopRequireDefault(require("./calculate-contract-address"));
+
+var hash = _interopRequireWildcard(require("./hash"));
+
 exports.hash = hash;
+
+var hex = _interopRequireWildcard(require("./hex"));
+
 exports.hex = hex;
+
+var vrs = _interopRequireWildcard(require("./vrs"));
+
 exports.vrs = vrs;
+
+var util = _interopRequireWildcard(require("./util"));
+
 exports.util = util;
-exports['default'] = {
-    createIdentity: _createIdentity2['default'],
-    publicKey: publicKey,
-    decryptWithPrivateKey: _decryptWithPrivateKey2['default'],
-    encryptWithPublicKey: _encryptWithPublicKey2['default'],
-    cipher: cipher,
-    publicKeyByPrivateKey: _publicKeyByPrivateKey2['default'],
-    recover: _recover2['default'],
-    recoverPublicKey: _recoverPublicKey2['default'],
-    sign: _sign2['default'],
-    signTransaction: _signTransaction2['default'],
-    txDataByCompiled: _txDataByCompiled2['default'],
-    calculateContractAddress: _calculateContractAddress2['default'],
-    hash: hash,
-    hex: hex,
-    vrs: vrs,
-    util: util
+
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+var _default = {
+  createIdentity: _createIdentity["default"],
+  publicKey: publicKey,
+  decryptWithPrivateKey: _decryptWithPrivateKey["default"],
+  encryptWithPublicKey: _encryptWithPublicKey["default"],
+  cipher: cipher,
+  publicKeyByPrivateKey: _publicKeyByPrivateKey["default"],
+  recover: _recover["default"],
+  recoverPublicKey: _recoverPublicKey["default"],
+  sign: _sign["default"],
+  signTransaction: _signTransaction["default"],
+  txDataByCompiled: _txDataByCompiled["default"],
+  calculateContractAddress: _calculateContractAddress["default"],
+  hash: hash,
+  hex: hex,
+  vrs: vrs,
+  util: util
 };
+exports["default"] = _default;
