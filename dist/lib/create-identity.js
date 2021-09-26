@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.createPrivateKey = createPrivateKey;
-exports["default"] = createIdentity;
+exports.default = createIdentity;
 
 var _publicKeyByPrivateKey = _interopRequireDefault(require("./public-key-by-private-key"));
 
@@ -31,9 +31,9 @@ function createPrivateKey(entropy) {
     return outerHex;
   } else {
     // @link https://github.com/MaiaVictor/eth-lib/blob/master/lib/account.js#L8
-    var innerHex = (0, _hash.keccak256)(_bytes["default"].concat(_bytes["default"].random(32), _bytes["default"].random(32)));
+    var innerHex = (0, _hash.keccak256)(_bytes.default.concat(_bytes.default.random(32), _bytes.default.random(32)));
 
-    var middleHex = _bytes["default"].concat(_bytes["default"].concat(_bytes["default"].random(32), innerHex), _bytes["default"].random(32));
+    var middleHex = _bytes.default.concat(_bytes.default.concat(_bytes.default.random(32), innerHex), _bytes.default.random(32));
 
     var _outerHex = (0, _hash.keccak256)(middleHex);
 
@@ -50,6 +50,6 @@ function createPrivateKey(entropy) {
 function createIdentity(entropy) {
   var privateKey = createPrivateKey(entropy);
   var identity = (0, _account.fromPrivate)(privateKey);
-  identity.publicKey = (0, _publicKeyByPrivateKey["default"])(identity.privateKey);
+  identity.publicKey = (0, _publicKeyByPrivateKey.default)(identity.privateKey);
   return identity;
 }

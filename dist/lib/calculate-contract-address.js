@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = calculateContractAddress;
+exports.default = calculateContractAddress;
 
 var _ethereumjsUtil = require("ethereumjs-util");
 

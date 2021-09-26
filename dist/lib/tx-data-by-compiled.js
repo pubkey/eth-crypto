@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = txDataByCompiled;
+exports.default = txDataByCompiled;
 
 var _toConsumableArray2 = _interopRequireDefault(require("@babel/runtime/helpers/toConsumableArray"));
 
@@ -16,6 +16,6 @@ function txDataByCompiled(abi, bytecode, args) {
   if (typeof abi === 'string') abi = JSON.parse(abi); // Construct a Contract Factory
 
   var factory = new _ethers.ContractFactory(abi, '0x' + bytecode);
-  var deployTransaction = factory.getDeployTransaction.apply(factory, (0, _toConsumableArray2["default"])(args));
+  var deployTransaction = factory.getDeployTransaction.apply(factory, (0, _toConsumableArray2.default)(args));
   return deployTransaction.data;
 }
