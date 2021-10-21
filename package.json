@@ -55,7 +55,7 @@
     "@babel/preset-env": "7.15.8",
     "assert": "2.0.0",
     "async-test-util": "1.7.3",
-    "babel-loader": "8.2.2",
+    "babel-loader": "8.2.3",
     "bn.js": "5.2.0",
     "browserify": "17.0.0",
     "concurrently": "6.3.0",
