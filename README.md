@@ -307,7 +307,7 @@ console.log(receipt.contractAddress === calculatedAddress);
 
 ### hex compress/decompress
 
-"Compress" or "decompress" a hex-string to make it smaller. You can either compress to utf16 which reduces the size to about 1/4, or to base64 which reduces the size to about 4/5.
+"Compress" or "decompress" a hex-string to make it smaller. You can either compress to utf16 which reduces the size to about 1/4, or to base64 which reduces the size to about 4/5. This is not a real compression, it just make your string smaller when you have to store it in utf-16 anyways.
 
 ```javascript
 const hexString = '0x107be946709e41b7895eea9f2dacf998a0a9124acbb786f0fd1a826101581a07'; // 66 chars
