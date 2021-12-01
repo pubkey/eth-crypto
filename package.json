@@ -100,7 +100,7 @@
     "eccrypto": "1.1.6",
     "eth-lib": "0.2.8",
     "ethereumjs-util": "7.1.1",
-    "ethers": "5.5.1",
+    "ethers": "5.5.2",
     "secp256k1": "4.0.2"
   }
 }
