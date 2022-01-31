@@ -3,10 +3,10 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.removeLeading0x = removeLeading0x;
 exports.addLeading0x = addLeading0x;
-exports.uint8ArrayToHex = uint8ArrayToHex;
 exports.hexToUnit8Array = hexToUnit8Array;
+exports.removeLeading0x = removeLeading0x;
+exports.uint8ArrayToHex = uint8ArrayToHex;
 
 function removeLeading0x(str) {
   if (str.startsWith('0x')) return str.substring(2);else return str;

@@ -1,19 +1,18 @@
 import {
-    decodeSignature,
-    encodeSignature
-} from 'eth-lib/lib/account';
-
+    utils as ethersUtils
+} from 'ethers';
 /**
  * split signature-hex into parts
  * @param  {string} hexString
  * @return {{v: string, r: string, s: string}}
  */
 export function fromString(hexString) {
-    const arr = decodeSignature(hexString);
+    const arr = ethersUtils.splitSignature(hexString);
     return {
-        v: arr[0],
-        r: arr[1],
-        s: arr[2]
+        // convert "v" to hex
+        v: `0x${arr.v.toString(16)}`,
+        r: arr.r,
+        s: arr.s,
     };
 }
 
@@ -23,6 +22,5 @@ export function fromString(hexString) {
  * @return {string} hexString
  */
 export function toString(sig) {
-    const partsArray = [sig.v, sig.r, sig.s];
-    return encodeSignature(partsArray);
+    return ethersUtils.joinSignature(sig);
 }

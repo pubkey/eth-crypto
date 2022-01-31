@@ -6,17 +6,16 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.createPrivateKey = createPrivateKey;
-exports.default = createIdentity;
+exports["default"] = createIdentity;
 
-var _publicKeyByPrivateKey = _interopRequireDefault(require("./public-key-by-private-key"));
+var _toConsumableArray2 = _interopRequireDefault(require("@babel/runtime/helpers/toConsumableArray"));
 
-var _account = require("eth-lib/lib/account");
+var _ethers = require("ethers");
 
-var _hash = require("eth-lib/lib/hash");
-
-var _bytes = _interopRequireDefault(require("eth-lib/lib/bytes"));
+var _ethereumjsUtil = require("ethereumjs-util");
 
 var MIN_ENTROPY_SIZE = 128;
+var keccak256 = _ethers.ethers.utils.keccak256;
 /**
  * create a privateKey from the given entropy or a new one
  * @param  {Buffer} entropy
@@ -27,15 +26,14 @@ function createPrivateKey(entropy) {
   if (entropy) {
     if (!Buffer.isBuffer(entropy)) throw new Error('EthCrypto.createPrivateKey(): given entropy is no Buffer');
     if (Buffer.byteLength(entropy, 'utf8') < MIN_ENTROPY_SIZE) throw new Error('EthCrypto.createPrivateKey(): Entropy-size must be at least ' + MIN_ENTROPY_SIZE);
-    var outerHex = (0, _hash.keccak256)(entropy);
+    var outerHex = keccak256(entropy);
     return outerHex;
   } else {
-    // @link https://github.com/MaiaVictor/eth-lib/blob/master/lib/account.js#L8
-    var innerHex = (0, _hash.keccak256)(_bytes.default.concat(_bytes.default.random(32), _bytes.default.random(32)));
+    var innerHex = keccak256(_ethers.ethers.utils.concat([].concat((0, _toConsumableArray2["default"])(_ethers.ethers.utils.randomBytes(32)), (0, _toConsumableArray2["default"])(_ethers.ethers.utils.randomBytes(32)))));
 
-    var middleHex = _bytes.default.concat(_bytes.default.concat(_bytes.default.random(32), innerHex), _bytes.default.random(32));
+    var middleHex = _ethers.ethers.utils.concat([_ethers.ethers.utils.concat([_ethers.ethers.utils.randomBytes(32), innerHex]), _ethers.ethers.utils.randomBytes(32)]);
 
-    var _outerHex = (0, _hash.keccak256)(middleHex);
+    var _outerHex = keccak256(middleHex);
 
     return _outerHex;
   }
@@ -49,7 +47,12 @@ function createPrivateKey(entropy) {
 
 function createIdentity(entropy) {
   var privateKey = createPrivateKey(entropy);
-  var identity = (0, _account.fromPrivate)(privateKey);
-  identity.publicKey = (0, _publicKeyByPrivateKey.default)(identity.privateKey);
+  var wallet = new _ethers.ethers.Wallet(privateKey);
+  var identity = {
+    privateKey: privateKey,
+    publicKey: (0, _ethereumjsUtil.stripHexPrefix)(wallet.publicKey).slice(2),
+    // remove trailing '0x04'
+    address: wallet.address
+  };
   return identity;
 }

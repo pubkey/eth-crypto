@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = recover;
+exports["default"] = recover;
 
 var _recoverPublicKey = _interopRequireDefault(require("./recover-public-key"));
 
@@ -18,7 +18,7 @@ var _publicKey = require("./public-key");
  * @return {string} address
  */
 function recover(sigString, hash) {
-  var pubkey = (0, _recoverPublicKey.default)(sigString, hash);
+  var pubkey = (0, _recoverPublicKey["default"])(sigString, hash);
   var address = (0, _publicKey.toAddress)(pubkey);
   return address;
 }

@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = decryptWithPrivateKey;
+exports["default"] = decryptWithPrivateKey;
 
 var _eccrypto = require("eccrypto");
 

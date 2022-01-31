@@ -3,8 +3,8 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.stringify = stringify;
 exports.parse = parse;
+exports.stringify = stringify;
 
 var _publicKey = require("./public-key");
 
