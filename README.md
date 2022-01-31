@@ -235,7 +235,7 @@ const identity = EthCrypto.createIdentity();
 const rawTx = {
     from: identity.address,
     to: '0x86Fa049857E0209aa7D9e616F7eb3b3B78ECfdb0',
-    value: 1000000000000000000,
+    value: new BN('1000000000000000000'),
     gasPrice: 5000000000,
     nonce: 0,
     gasLimit: 21000

@@ -1,5 +1,6 @@
 const AsyncTestUtil = require('async-test-util');
 const assert = require('assert');
+const BN = require('bn.js');
 const EthCrypto = require('../dist/lib/index');
 
 const TEST_DATA = {
@@ -331,7 +332,7 @@ describe('unit.test.js', () => {
                 const rawTx = {
                     from: ident.address,
                     to: '0x86Fa049857E0209aa7D9e616F7eb3b3B78ECfdb0',
-                    value: 1000000000000000000,
+                    value: new BN('1000000000000000000'),
                     gasPrice: 5000000000,
                     gasLimit: 21000
                 };
@@ -348,7 +349,7 @@ describe('unit.test.js', () => {
                 const rawTx = {
                     from: ident.address,
                     to: '0x86Fa049857E0209aa7D9e616F7eb3b3B78ECfdb0',
-                    value: 1000000000000000000,
+                    value: new BN('1000000000000000000'),
                     gasPrice: 5000000000,
                     gasLimit: 21000
                 };

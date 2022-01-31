@@ -1,4 +1,4 @@
-import BigNumber = require('bn.js');
+import BigNumber from 'bn.js';
 import { TxOptions } from '@ethereumjs/tx';
 
 type createIdentityType = (entropy?: Buffer) => {

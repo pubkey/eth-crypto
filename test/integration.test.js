@@ -4,6 +4,7 @@ const path = require('path');
 const AsyncTestUtil = require('async-test-util');
 const SolidityCli = require('solidity-cli');
 const assert = require('assert');
+const BN = require('bn.js');
 const EthCrypto = require('../dist/lib/index');
 // const web3 = EthCrypto.util.web3;
 
@@ -109,7 +110,7 @@ describe('integration.test.js', () => {
             const rawTx = {
                 from: identity.address,
                 to: '0x63dcee1fd1d814858acd4172bb20e1aa0c947c0a',
-                value: parseInt(web3.utils.toWei('1', 'ether')),
+                value: new BN(web3.utils.toWei('1', 'ether')),
                 nonce: 0,
                 gasLimit: 60000,
                 gasPrice: parseInt(gasPrice)
