@@ -19,7 +19,7 @@ export function createPrivateKey(entropy) {
         const outerHex = keccak256(entropy);
         return outerHex;
     } else {
-        const innerHex = keccak256(ethers.utils.concat([...ethers.utils.randomBytes(32), ...ethers.utils.randomBytes(32)]));
+        const innerHex = keccak256(ethers.utils.concat([ethers.utils.randomBytes(32), ethers.utils.randomBytes(32)]));
         const middleHex = ethers.utils.concat([ethers.utils.concat([ethers.utils.randomBytes(32), innerHex]), ethers.utils.randomBytes(32)]);
         const outerHex = keccak256(middleHex);
         return outerHex;
@@ -36,7 +36,8 @@ export default function createIdentity(entropy) {
     const wallet = new ethers.Wallet(privateKey);
     const identity = {
         privateKey: privateKey,
-        publicKey: stripHexPrefix(wallet.publicKey).slice(2), // remove trailing '0x04'
+        // remove trailing '0x04'
+        publicKey: stripHexPrefix(wallet.publicKey).slice(2),
         address: wallet.address,
     };
     return identity;

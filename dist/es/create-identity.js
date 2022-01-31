@@ -1,4 +1,3 @@
-import _toConsumableArray from "@babel/runtime/helpers/toConsumableArray";
 import { ethers } from 'ethers';
 import { stripHexPrefix } from 'ethereumjs-util';
 var MIN_ENTROPY_SIZE = 128;
@@ -16,7 +15,7 @@ export function createPrivateKey(entropy) {
     var outerHex = keccak256(entropy);
     return outerHex;
   } else {
-    var innerHex = keccak256(ethers.utils.concat([].concat(_toConsumableArray(ethers.utils.randomBytes(32)), _toConsumableArray(ethers.utils.randomBytes(32)))));
+    var innerHex = keccak256(ethers.utils.concat([ethers.utils.randomBytes(32), ethers.utils.randomBytes(32)]));
     var middleHex = ethers.utils.concat([ethers.utils.concat([ethers.utils.randomBytes(32), innerHex]), ethers.utils.randomBytes(32)]);
 
     var _outerHex = keccak256(middleHex);
@@ -35,8 +34,8 @@ export default function createIdentity(entropy) {
   var wallet = new ethers.Wallet(privateKey);
   var identity = {
     privateKey: privateKey,
-    publicKey: stripHexPrefix(wallet.publicKey).slice(2),
     // remove trailing '0x04'
+    publicKey: stripHexPrefix(wallet.publicKey).slice(2),
     address: wallet.address
   };
   return identity;

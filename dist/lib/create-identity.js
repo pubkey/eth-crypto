@@ -1,14 +1,10 @@
 "use strict";
 
-var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
-
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.createPrivateKey = createPrivateKey;
 exports["default"] = createIdentity;
-
-var _toConsumableArray2 = _interopRequireDefault(require("@babel/runtime/helpers/toConsumableArray"));
 
 var _ethers = require("ethers");
 
@@ -29,7 +25,7 @@ function createPrivateKey(entropy) {
     var outerHex = keccak256(entropy);
     return outerHex;
   } else {
-    var innerHex = keccak256(_ethers.ethers.utils.concat([].concat((0, _toConsumableArray2["default"])(_ethers.ethers.utils.randomBytes(32)), (0, _toConsumableArray2["default"])(_ethers.ethers.utils.randomBytes(32)))));
+    var innerHex = keccak256(_ethers.ethers.utils.concat([_ethers.ethers.utils.randomBytes(32), _ethers.ethers.utils.randomBytes(32)]));
 
     var middleHex = _ethers.ethers.utils.concat([_ethers.ethers.utils.concat([_ethers.ethers.utils.randomBytes(32), innerHex]), _ethers.ethers.utils.randomBytes(32)]);
 
@@ -50,8 +46,8 @@ function createIdentity(entropy) {
   var wallet = new _ethers.ethers.Wallet(privateKey);
   var identity = {
     privateKey: privateKey,
-    publicKey: (0, _ethereumjsUtil.stripHexPrefix)(wallet.publicKey).slice(2),
     // remove trailing '0x04'
+    publicKey: (0, _ethereumjsUtil.stripHexPrefix)(wallet.publicKey).slice(2),
     address: wallet.address
   };
   return identity;
