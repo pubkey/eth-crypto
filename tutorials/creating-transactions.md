@@ -36,7 +36,7 @@ An ethereum-transaction is basically a json-object with defined values. Lets cre
     const rawTransaction = {
         from: identity.address, // sender address
         to: '0x86Fa049857E0209aa7D9e616F7eb3b3B78ECfdb0', // reciever address
-        value: 1000000000000000000, // amount of wei we want to send (= 1 ether)
+        value: new BN('1000000000000000000'), // amount of wei we want to send (= 1 ether)
         nonce: 0, // incremental tx-number. Add +1 for every transaction you do
         gasPrice: 5000000000,
         gasLimit: 21000 // normal gasLimit for code-less transactions
