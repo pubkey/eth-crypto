@@ -11,7 +11,7 @@ var _ethers = require("ethers");
 var _ethereumjsUtil = require("ethereumjs-util");
 
 var MIN_ENTROPY_SIZE = 128;
-var keccak256 = _ethers.ethers.utils.keccak256;
+var keccak256 = _ethers.utils.keccak256;
 /**
  * create a privateKey from the given entropy or a new one
  * @param  {Buffer} entropy
@@ -25,9 +25,9 @@ function createPrivateKey(entropy) {
     var outerHex = keccak256(entropy);
     return outerHex;
   } else {
-    var innerHex = keccak256(_ethers.ethers.utils.concat([_ethers.ethers.utils.randomBytes(32), _ethers.ethers.utils.randomBytes(32)]));
+    var innerHex = keccak256(_ethers.utils.concat([_ethers.utils.randomBytes(32), _ethers.utils.randomBytes(32)]));
 
-    var middleHex = _ethers.ethers.utils.concat([_ethers.ethers.utils.concat([_ethers.ethers.utils.randomBytes(32), innerHex]), _ethers.ethers.utils.randomBytes(32)]);
+    var middleHex = _ethers.utils.concat([_ethers.utils.concat([_ethers.utils.randomBytes(32), innerHex]), _ethers.utils.randomBytes(32)]);
 
     var _outerHex = keccak256(middleHex);
 
@@ -43,7 +43,7 @@ function createPrivateKey(entropy) {
 
 function createIdentity(entropy) {
   var privateKey = createPrivateKey(entropy);
-  var wallet = new _ethers.ethers.Wallet(privateKey);
+  var wallet = new _ethers.Wallet(privateKey);
   var identity = {
     privateKey: privateKey,
     // remove trailing '0x04'

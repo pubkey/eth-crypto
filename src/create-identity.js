@@ -1,8 +1,8 @@
-import { ethers } from 'ethers';
+import { utils as ethersUtils, Wallet } from 'ethers';
 import { stripHexPrefix } from 'ethereumjs-util';
 
 const MIN_ENTROPY_SIZE = 128;
-const { keccak256 } = ethers.utils;
+const { keccak256 } = ethersUtils;
 
 /**
  * create a privateKey from the given entropy or a new one
@@ -19,8 +19,8 @@ export function createPrivateKey(entropy) {
         const outerHex = keccak256(entropy);
         return outerHex;
     } else {
-        const innerHex = keccak256(ethers.utils.concat([ethers.utils.randomBytes(32), ethers.utils.randomBytes(32)]));
-        const middleHex = ethers.utils.concat([ethers.utils.concat([ethers.utils.randomBytes(32), innerHex]), ethers.utils.randomBytes(32)]);
+        const innerHex = keccak256(ethersUtils.concat([ethersUtils.randomBytes(32), ethersUtils.randomBytes(32)]));
+        const middleHex = ethersUtils.concat([ethersUtils.concat([ethersUtils.randomBytes(32), innerHex]), ethersUtils.randomBytes(32)]);
         const outerHex = keccak256(middleHex);
         return outerHex;
     }
@@ -33,7 +33,7 @@ export function createPrivateKey(entropy) {
  */
 export default function createIdentity(entropy) {
     const privateKey = createPrivateKey(entropy);
-    const wallet = new ethers.Wallet(privateKey);
+    const wallet = new Wallet(privateKey);
     const identity = {
         privateKey: privateKey,
         // remove trailing '0x04'
