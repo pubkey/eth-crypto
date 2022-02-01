@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = encryptWithPublicKey;
+exports["default"] = encryptWithPublicKey;
 
 var _eccrypto = require("eccrypto");
 

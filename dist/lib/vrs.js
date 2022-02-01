@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.fromString = fromString;
 exports.toString = toString;
 
-var _account = require("eth-lib/lib/account");
+var _ethers = require("ethers");
 
 /**
  * split signature-hex into parts
@@ -14,11 +14,13 @@ var _account = require("eth-lib/lib/account");
  * @return {{v: string, r: string, s: string}}
  */
 function fromString(hexString) {
-  var arr = (0, _account.decodeSignature)(hexString);
+  var arr = _ethers.utils.splitSignature(hexString);
+
   return {
-    v: arr[0],
-    r: arr[1],
-    s: arr[2]
+    // convert "v" to hex
+    v: "0x".concat(arr.v.toString(16)),
+    r: arr.r,
+    s: arr.s
   };
 }
 /**
@@ -29,6 +31,5 @@ function fromString(hexString) {
 
 
 function toString(sig) {
-  var partsArray = [sig.v, sig.r, sig.s];
-  return (0, _account.encodeSignature)(partsArray);
+  return _ethers.utils.joinSignature(sig);
 }

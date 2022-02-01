@@ -6,6 +6,7 @@
 const ganache = require('ganache-cli');
 const Web3 = require('web3');
 const assert = require('assert');
+const BN = require('bn.js');
 const EthCrypto = require('../../dist/lib/index');
 
 describe('signed-data.md', () => {
@@ -86,7 +87,7 @@ describe('signed-data.md', () => {
             from: creatorIdentity.address,
             to: contractAddress,
             nonce: 1,
-            value: parseInt(web3.utils.toWei('3', 'ether')),
+            value: new BN(web3.utils.toWei('3', 'ether')),
             gasLimit: 600000,
             gasPrice: 20000000000
         };

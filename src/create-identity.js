@@ -1,16 +1,8 @@
-import publicKeyByPrivateKey from './public-key-by-private-key';
-
-import {
-    fromPrivate
-} from 'eth-lib/lib/account';
-import {
-    keccak256
-} from 'eth-lib/lib/hash';
-import Bytes from 'eth-lib/lib/bytes';
-
+import { utils as ethersUtils, Wallet } from 'ethers';
+import { stripHexPrefix } from 'ethereumjs-util';
 
 const MIN_ENTROPY_SIZE = 128;
-
+const { keccak256 } = ethersUtils;
 
 /**
  * create a privateKey from the given entropy or a new one
@@ -27,9 +19,8 @@ export function createPrivateKey(entropy) {
         const outerHex = keccak256(entropy);
         return outerHex;
     } else {
-        // @link https://github.com/MaiaVictor/eth-lib/blob/master/lib/account.js#L8
-        const innerHex = keccak256(Bytes.concat(Bytes.random(32), Bytes.random(32)));
-        const middleHex = Bytes.concat(Bytes.concat(Bytes.random(32), innerHex), Bytes.random(32));
+        const innerHex = keccak256(ethersUtils.concat([ethersUtils.randomBytes(32), ethersUtils.randomBytes(32)]));
+        const middleHex = ethersUtils.concat([ethersUtils.concat([ethersUtils.randomBytes(32), innerHex]), ethersUtils.randomBytes(32)]);
         const outerHex = keccak256(middleHex);
         return outerHex;
     }
@@ -42,7 +33,12 @@ export function createPrivateKey(entropy) {
  */
 export default function createIdentity(entropy) {
     const privateKey = createPrivateKey(entropy);
-    const identity = fromPrivate(privateKey);
-    identity.publicKey = publicKeyByPrivateKey(identity.privateKey);
+    const wallet = new Wallet(privateKey);
+    const identity = {
+        privateKey: privateKey,
+        // remove trailing '0x04'
+        publicKey: stripHexPrefix(wallet.publicKey).slice(2),
+        address: wallet.address,
+    };
     return identity;
 }

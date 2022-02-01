@@ -3,8 +3,8 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.keccak256 = keccak256;
 exports.SIGN_PREFIX = void 0;
+exports.keccak256 = keccak256;
 
 var _ethers = require("ethers");
 

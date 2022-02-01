@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = publicKeyOfPrivateKey;
+exports["default"] = publicKeyOfPrivateKey;
 
 var _ethereumjsUtil = require("ethereumjs-util");
 
