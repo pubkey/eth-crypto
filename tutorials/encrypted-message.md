@@ -33,7 +33,7 @@ const payload = {
     signature
 };
 const encrypted = await EthCrypto.encryptWithPublicKey(
-    bob.publicKey, // by encryping with bobs publicKey, only bob can decrypt the payload with his privateKey
+    bob.publicKey, // by encrypting with bobs publicKey, only bob can decrypt the payload with his privateKey
     JSON.stringify(payload) // we have to stringify the payload before we can encrypt it
 );
 /*  { iv: 'c66fbc24cc7ef520a7...',
