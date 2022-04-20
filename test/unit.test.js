@@ -2,6 +2,7 @@ const AsyncTestUtil = require('async-test-util');
 const assert = require('assert');
 const BN = require('bn.js');
 const EthCrypto = require('../dist/lib/index');
+const crypto = require('crypto');
 
 const TEST_DATA = {
     address: '0x3f243FdacE01Cfd9719f7359c94BA11361f32471',
@@ -124,7 +125,7 @@ describe('unit.test.js', () => {
 
             });
         });
-        describe('negative', () => {});
+        describe('negative', () => { });
     });
     describe('.recoverPublicKey()', () => {
         it('should recover the correct key', async () => {
@@ -161,6 +162,45 @@ describe('unit.test.js', () => {
                     encrypted
                 );
                 assert.equal(decrypted, message);
+            });
+            it('should use a random iv if none provided', async () => {
+                const message = AsyncTestUtil.randomString(12);
+                const encrypted = await EthCrypto.encryptWithPublicKey(
+                    TEST_DATA.publicKey,
+                    message
+                );
+                const encrypted2 = await EthCrypto.encryptWithPublicKey(
+                    TEST_DATA.publicKey,
+                    message
+                );
+
+                assert.ok(encrypted.ciphertext !== encrypted2.ciphertext);
+            });
+            it('should have deterministic output if iv is provided', async () => {
+                const message = AsyncTestUtil.randomString(12);
+
+                const iv = crypto.randomBytes(16);
+                const ephemPrivateKey = crypto.randomBytes(32);
+                console.dir(iv);
+                const encrypted = await EthCrypto.encryptWithPublicKey(
+                    TEST_DATA.publicKey,
+                    message,
+                    {
+                        iv,
+                        ephemPrivateKey
+                    }
+                );
+                const encrypted2 = await EthCrypto.encryptWithPublicKey(
+                    TEST_DATA.publicKey,
+                    message,
+                    {
+                        iv,
+                        ephemPrivateKey
+                    }
+                );
+
+                assert.strictEqual(encrypted.ciphertext, encrypted2.ciphertext);
+                assert.strictEqual(encrypted.mac, encrypted2.mac);
             });
         });
         describe('negative', () => {
@@ -204,7 +244,7 @@ describe('unit.test.js', () => {
                 assert.equal(decrypted, message);
             });
         });
-        describe('negative', () => {});
+        describe('negative', () => { });
     });
     describe('.cipher', () => {
         describe('.stringify()', () => {

@@ -5,7 +5,7 @@ import {
     decompress
 } from './public-key';
 
-export default function encryptWithPublicKey(publicKey, message) {
+export default function encryptWithPublicKey(publicKey, message, opts) {
 
     // ensure its an uncompressed publicKey
     publicKey = decompress(publicKey);
@@ -16,7 +16,8 @@ export default function encryptWithPublicKey(publicKey, message) {
 
     return encrypt(
         Buffer.from(pubString, 'hex'),
-        Buffer.from(message)
+        Buffer.from(message),
+        opts ? opts : {}
     ).then(encryptedBuffers => {
         const encrypted = {
             iv: encryptedBuffers.iv.toString('hex'),

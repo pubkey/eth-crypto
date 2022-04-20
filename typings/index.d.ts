@@ -56,7 +56,11 @@ type vrsType = {
 };
 export const vrs: vrsType;
 
-type encryptWithPublicKeyType = (publicKey: string, message: string) => Promise<Encrypted>;
+export type EncryptOptions = {
+    iv?: Buffer,
+    ephemPrivateKey?: Buffer
+};
+type encryptWithPublicKeyType = (publicKey: string, message: string, options?: EncryptOptions) => Promise<Encrypted>;
 export const encryptWithPublicKey: encryptWithPublicKeyType;
 
 type decryptWithPrivateKeyType = (privateKey: string, encrypted: Encrypted) => Promise<string>;
