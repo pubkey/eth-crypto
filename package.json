@@ -56,7 +56,7 @@
     "assert": "2.0.0",
     "async-test-util": "2.0.0",
     "babel-loader": "8.2.5",
-    "bn.js": "5.2.0",
+    "bn.js": "5.2.1",
     "browserify": "17.0.0",
     "concurrently": "7.2.1",
     "convert-hrtime": "5.0.0",
