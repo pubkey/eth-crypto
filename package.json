@@ -50,9 +50,9 @@
   "homepage": "https://github.com/pubkey/eth-crypto#readme",
   "devDependencies": {
     "@babel/cli": "7.18.10",
-    "@babel/core": "7.19.0",
-    "@babel/plugin-transform-runtime": "7.18.10",
-    "@babel/preset-env": "7.19.0",
+    "@babel/core": "7.19.1",
+    "@babel/plugin-transform-runtime": "7.19.1",
+    "@babel/preset-env": "7.19.1",
     "assert": "2.0.0",
     "async-test-util": "2.0.0",
     "babel-loader": "8.2.5",
