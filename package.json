@@ -99,7 +99,7 @@
     "@types/bn.js": "5.1.1",
     "eccrypto": "1.1.6",
     "ethereumjs-util": "7.1.5",
-    "ethers": "5.7.0",
+    "ethers": "5.7.1",
     "secp256k1": "4.0.3"
   }
 }
