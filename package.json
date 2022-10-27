@@ -43,6 +43,7 @@
     "url": "git+https://github.com/pubkey/eth-crypto.git"
   },
   "author": "pubkey",
+  "funding": "https://github.com/sponsors/pubkey",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/pubkey/eth-crypto/issues"
