@@ -4,16 +4,13 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = decryptWithPrivateKey;
-
 var _eccrypto = require("eccrypto");
-
 var _cipher = require("./cipher");
-
 var _util = require("./util");
-
 function decryptWithPrivateKey(privateKey, encrypted) {
-  encrypted = (0, _cipher.parse)(encrypted); // remove trailing '0x' from privateKey
+  encrypted = (0, _cipher.parse)(encrypted);
 
+  // remove trailing '0x' from privateKey
   var twoStripped = (0, _util.removeLeading0x)(privateKey);
   var encryptedBuffer = {
     iv: Buffer.from(encrypted.iv, 'hex'),

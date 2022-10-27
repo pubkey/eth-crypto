@@ -1,5 +1,6 @@
 import { ecdsaSign as secp256k1_sign } from 'secp256k1';
 import { addLeading0x, removeLeading0x } from './util';
+
 /**
  * signs the given message
  * we do not use sign from eth-lib because the pure secp256k1-version is 90% faster
@@ -7,7 +8,6 @@ import { addLeading0x, removeLeading0x } from './util';
  * @param  {string} hash
  * @return {string} hexString
  */
-
 export default function sign(privateKey, hash) {
   hash = addLeading0x(hash);
   if (hash.length !== 66) throw new Error('EthCrypto.sign(): Can only sign hashes, given: ' + hash);

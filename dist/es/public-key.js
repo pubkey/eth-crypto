@@ -11,17 +11,18 @@ export function decompress(startsWith02Or03) {
   // if already decompressed an not has trailing 04
   var testBuffer = Buffer.from(startsWith02Or03, 'hex');
   if (testBuffer.length === 64) startsWith02Or03 = '04' + startsWith02Or03;
-  var decompressed = uint8ArrayToHex(publicKeyConvert(hexToUnit8Array(startsWith02Or03), false)); // remove trailing 04
+  var decompressed = uint8ArrayToHex(publicKeyConvert(hexToUnit8Array(startsWith02Or03), false));
 
+  // remove trailing 04
   decompressed = decompressed.substring(2);
   return decompressed;
 }
+
 /**
  * generates the ethereum-adress of the publicKey
  * We create the checksum-adress which is case-sensitive
  * @returns {string} address
  */
-
 export function toAddress(publicKey) {
   // normalize key
   publicKey = decompress(publicKey);

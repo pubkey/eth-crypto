@@ -4,7 +4,6 @@ import { utils as ethersUtils } from 'ethers';
  * @param  {string} hexString
  * @return {{v: string, r: string, s: string}}
  */
-
 export function fromString(hexString) {
   var arr = ethersUtils.splitSignature(hexString);
   return {
@@ -14,12 +13,12 @@ export function fromString(hexString) {
     s: arr.s
   };
 }
+
 /**
  * merge signature-parts to one string
  * @param  {{v: string, r: string, s: string}} sig
  * @return {string} hexString
  */
-
 export function toString(sig) {
   return ethersUtils.joinSignature(sig);
 }

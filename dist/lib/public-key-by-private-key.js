@@ -4,11 +4,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = publicKeyOfPrivateKey;
-
 var _ethereumjsUtil = require("ethereumjs-util");
-
 var _util = require("./util");
-
 /**
  * Generate publicKey from the privateKey.
  * This creates the uncompressed publicKey,
