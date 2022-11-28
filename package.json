@@ -51,7 +51,7 @@
   "homepage": "https://github.com/pubkey/eth-crypto#readme",
   "devDependencies": {
     "@babel/cli": "7.19.3",
-    "@babel/core": "7.20.2",
+    "@babel/core": "7.20.5",
     "@babel/plugin-transform-runtime": "7.19.6",
     "@babel/preset-env": "7.20.2",
     "assert": "2.0.0",
@@ -95,7 +95,7 @@
     "webpack-cli": "4.10.0"
   },
   "dependencies": {
-    "@babel/runtime": "7.20.1",
+    "@babel/runtime": "7.20.6",
     "@ethereumjs/tx": "3.5.2",
     "@types/bn.js": "5.1.1",
     "eccrypto": "1.1.6",
