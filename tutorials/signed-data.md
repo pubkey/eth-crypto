@@ -46,14 +46,14 @@ web3.setProvider(ganacheProvider);
 
 ## Create a smart-contract that can validate signatures
 
-Lets create an example-contract. The contract will be a donation-bag which contains some ether and has an owner. Whenever someone submits a valid donation-signature, he recieves a part of the contracts value. This allows the creator of the contract to give signed data to people **off-chain** which they can later use to claim the value **on-chain**.
+Let's create an example-contract. The contract will be a donation-bag which contains some ether and has an owner. Whenever someone submits a valid donation-signature, he receives a part of the contracts value. This allows the creator of the contract to give signed data to people **off-chain** which they can later use to claim the value **on-chain**.
 
-Write the contracts code in a file called `DonationBag.sol`. **Check out it's content [here](../contracts/DonationBag.sol)**.
+Write the contracts code in a file called `DonationBag.sol`. **Check out its content [here](../contracts/DonationBag.sol)**.
 
 As you can see, the contract has some methods:
 
 - **DonationBag()**: The constructor which is called when the contract is created. Here we set the owner of the DonationBag
-- **default-function**: The default function is called when we send ether to the contract without doing anything. This is needed so the contract can recieve value.
+- **default-function**: The default function is called when we send ether to the contract without doing anything. This is needed so the contract can receive value.
 - **prefixedHash()**: Creates a hash of the data which must be signed by the creator.
 - **isSignatureValid()**: Checks if a given signature is really signed by the sender and contains the correct content.
 - **recieveDonation():** This is called by the receiver when the donation is claimed.
@@ -171,13 +171,13 @@ const signature = EthCrypto.sign(
 
 As you can see, we did not sign the reciever-address directly but a hash that was build of some concated data:
 
-- **Prefix:** To ensure the creator cannot be tricked into accidentially singing a valid ethereum-transaction, we prefix the signed data with something unique to our system. In this case lets take the string `Signed for DonationBag:`.
-- **contractAddress:** It might be possible that the creator has more than one instance of the contract deployed to the blockchain. In this case it's signatures might be replayed to other instances. As prevention of this attack, we also add the contracts address to the signed hash.
-- **receiverAddress:** By signing this address, the creator proves that the given address should recieve the donation.
+- **Prefix:** To ensure the creator cannot be tricked into accidentally singing a valid ethereum-transaction, we prefix the signed data with something unique to our system. In this case lets take the string `Signed for DonationBag:`.
+- **contractAddress:** It might be possible that the creator has more than one instance of the contract deployed to the blockchain. In this case its signatures might be replayed to other instances. As prevention of this attack, we also add the contracts address to the signed hash.
+- **receiverAddress:** By signing this address, the creator proves that the given address should receive the donation.
 
 ## Recover the signature on the blockchain
 
-The reciever now has a signature from the creator which he can send to the contract to claim the donation.
+The receiver now has a signature from the creator which he can send to the contract to claim the donation.
 
 ```javascript
 
@@ -216,7 +216,7 @@ const serializedRecieveTx = EthCrypto.signTransaction(
 const receipt3 = await web3.eth.sendSignedTransaction(serializedRecieveTx);
 ```
 
-If everything has gone right, the receiver should now have more ether then before. Let's check this.
+If everything has gone right, the receiver should now have more ether than before. Let's check this.
 
 ```javascript
 const receiverBalance = await web3.eth.getBalance(recieverIdentity.address);
