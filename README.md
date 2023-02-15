@@ -29,7 +29,7 @@ Cryptographic javascript-functions for ethereum and tutorials on how to use them
     <a href="https://rxdb.info/?utm_source=github&utm_medium=repo&utm_campaign=github-eth-crypto-readme">
         <img
             src="https://rxdb.info/files/logo/logo_text.svg"
-            alt="Sponsored by RxDB"
+            alt="JavaScript Database"
             width="300"
          />
          <br />
