@@ -98,9 +98,11 @@
     "@babel/runtime": "7.20.13",
     "@ethereumjs/tx": "3.5.2",
     "@types/bn.js": "5.1.1",
+    "crypto-browserify": "3.12.0",
     "eccrypto": "1.1.6",
     "ethereumjs-util": "7.1.5",
     "ethers": "5.7.2",
-    "secp256k1": "5.0.0"
+    "secp256k1": "5.0.0",
+    "stream-browserify": "3.0.0"
   }
 }
