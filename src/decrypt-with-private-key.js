@@ -8,7 +8,7 @@ import {
     removeLeading0x
 } from './util';
 
-export default function decryptWithPrivateKey(privateKey, encrypted) {
+export function decryptWithPrivateKey(privateKey, encrypted) {
 
     encrypted = parse(encrypted);
 

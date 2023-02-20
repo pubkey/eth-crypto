@@ -31,7 +31,7 @@ export function createPrivateKey(entropy) {
  * private-, public-Key and address
  * @param {Buffer?} entropy if provided, will use that as single random-source
  */
-export default function createIdentity(entropy) {
+export function createIdentity(entropy) {
     const privateKey = createPrivateKey(entropy);
     const wallet = new Wallet(privateKey);
     const identity = {

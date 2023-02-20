@@ -12,7 +12,7 @@ import {
  * where 04 has stripped from left
  * @returns {string}
  */
-export default function publicKeyOfPrivateKey(privateKey) {
+export function publicKeyByPrivateKey(privateKey) {
     privateKey = addLeading0x(privateKey);
     const publicKeyBuffer = privateToPublic(toBuffer(privateKey));
     return publicKeyBuffer.toString('hex');

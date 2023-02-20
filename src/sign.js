@@ -13,7 +13,7 @@ import {
  * @param  {string} hash
  * @return {string} hexString
  */
-export default function sign(privateKey, hash) {
+export function sign(privateKey, hash) {
     hash = addLeading0x(hash);
     if (hash.length !== 66)
         throw new Error('EthCrypto.sign(): Can only sign hashes, given: ' + hash);
