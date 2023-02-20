@@ -18,7 +18,6 @@ module.exports = {
     optimization: {
         minimizer: [
             new TerserPlugin({
-                cache: true,
                 parallel: true,
             })
         ]
@@ -27,5 +26,11 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, '../test_tmp'),
         filename: 'webpack.bundle.js'
+    },
+    resolve: {
+        fallback: {
+            'crypto': require.resolve('crypto-browserify'),
+            'stream': require.resolve('stream-browserify')
+        }
     }
 };
