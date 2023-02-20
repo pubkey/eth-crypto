@@ -1,11 +1,11 @@
 
 import { Transaction } from '@ethereumjs/tx';
-import publicKeyByPrivateKey from './public-key-by-private-key';
+import { publicKeyByPrivateKey } from './public-key-by-private-key';
 import {
     toAddress as addressByPublicKey
 } from './public-key';
 
-export default function signTransaction(
+export function signTransaction(
     rawTx,
     privateKey,
     txOptions = {}

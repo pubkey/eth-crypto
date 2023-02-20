@@ -1,6 +1,6 @@
 import { ContractFactory } from 'ethers';
 
-export default function txDataByCompiled(
+export function txDataByCompiled(
     abi,
     bytecode,
     args

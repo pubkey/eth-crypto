@@ -8,7 +8,7 @@ import {
 } from './util';
 
 
-export default function calculateContractAddress(
+export function calculateContractAddress(
     creatorAddress,
     nonce
 ) {

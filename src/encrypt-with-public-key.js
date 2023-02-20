@@ -5,7 +5,7 @@ import {
     decompress
 } from './public-key';
 
-export default function encryptWithPublicKey(publicKey, message, opts) {
+export function encryptWithPublicKey(publicKey, message, opts) {
 
     // ensure its an uncompressed publicKey
     publicKey = decompress(publicKey);

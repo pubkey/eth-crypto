@@ -1,4 +1,4 @@
-import recoverPublicKey from './recover-public-key';
+import { recoverPublicKey } from './recover-public-key';
 import {
     toAddress as addressByPublicKey
 } from './public-key';
@@ -9,7 +9,7 @@ import {
  * @param  {string} hash
  * @return {string} address
  */
-export default function recover(sigString, hash) {
+export function recover(sigString, hash) {
     const pubkey = recoverPublicKey(sigString, hash);
     const address = addressByPublicKey(pubkey);
     return address;
