@@ -7,7 +7,7 @@ import { removeLeading0x, hexToUnit8Array, uint8ArrayToHex } from './util';
  * @param  {string} hash
  * @return {string} publicKey
  */
-export default function recoverPublicKey(signature, hash) {
+export function recoverPublicKey(signature, hash) {
   signature = removeLeading0x(signature);
 
   // split into v-value and sig

@@ -1,7 +1,7 @@
 import { Transaction } from '@ethereumjs/tx';
-import publicKeyByPrivateKey from './public-key-by-private-key';
+import { publicKeyByPrivateKey } from './public-key-by-private-key';
 import { toAddress as addressByPublicKey } from './public-key';
-export default function signTransaction(rawTx, privateKey) {
+export function signTransaction(rawTx, privateKey) {
   var txOptions = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
   // check if privateKey->address matches rawTx.from
   var publicKey = publicKeyByPrivateKey(privateKey);

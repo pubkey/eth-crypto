@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = recoverPublicKey;
+exports.recoverPublicKey = recoverPublicKey;
 var _secp256k = require("secp256k1");
 var _util = require("./util");
 /**

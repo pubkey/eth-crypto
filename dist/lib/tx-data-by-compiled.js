@@ -4,7 +4,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = txDataByCompiled;
+exports.txDataByCompiled = txDataByCompiled;
 var _toConsumableArray2 = _interopRequireDefault(require("@babel/runtime/helpers/toConsumableArray"));
 var _ethers = require("ethers");
 function txDataByCompiled(abi, bytecode, args) {

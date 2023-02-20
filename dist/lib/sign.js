@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = sign;
+exports.sign = sign;
 var _secp256k = require("secp256k1");
 var _util = require("./util");
 /**

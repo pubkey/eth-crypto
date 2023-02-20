@@ -7,7 +7,7 @@ import { addLeading0x } from './util';
  * where 04 has stripped from left
  * @returns {string}
  */
-export default function publicKeyOfPrivateKey(privateKey) {
+export function publicKeyByPrivateKey(privateKey) {
   privateKey = addLeading0x(privateKey);
   var publicKeyBuffer = privateToPublic(toBuffer(privateKey));
   return publicKeyBuffer.toString('hex');

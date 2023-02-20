@@ -3,8 +3,8 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.createIdentity = createIdentity;
 exports.createPrivateKey = createPrivateKey;
-exports["default"] = createIdentity;
 var _ethers = require("ethers");
 var _ethereumjsUtil = require("ethereumjs-util");
 var MIN_ENTROPY_SIZE = 128;

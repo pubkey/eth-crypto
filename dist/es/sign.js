@@ -8,7 +8,7 @@ import { addLeading0x, removeLeading0x } from './util';
  * @param  {string} hash
  * @return {string} hexString
  */
-export default function sign(privateKey, hash) {
+export function sign(privateKey, hash) {
   hash = addLeading0x(hash);
   if (hash.length !== 66) throw new Error('EthCrypto.sign(): Can only sign hashes, given: ' + hash);
   var sigObj = secp256k1_sign(new Uint8Array(Buffer.from(removeLeading0x(hash), 'hex')), new Uint8Array(Buffer.from(removeLeading0x(privateKey), 'hex')));
