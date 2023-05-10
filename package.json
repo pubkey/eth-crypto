@@ -89,7 +89,7 @@
     "ts-node": "10.9.1",
     "typescript": "5.0.4",
     "uglify-es": "3.3.9",
-    "web3": "1.9.0",
+    "web3": "1.10.0",
     "webpack": "5.75.0",
     "webpack-bundle-analyzer": "4.8.0",
     "webpack-cli": "5.1.1",
