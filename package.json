@@ -85,7 +85,7 @@
     "rimraf": "4.4.1",
     "solhint": "3.4.1",
     "solidity-cli": "1.0.3",
-    "terser-webpack-plugin": "5.3.8",
+    "terser-webpack-plugin": "5.3.9",
     "ts-node": "10.9.1",
     "typescript": "5.0.4",
     "uglify-es": "3.3.9",
