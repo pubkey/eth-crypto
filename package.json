@@ -68,7 +68,7 @@
     "ganache-cli": "6.12.2",
     "gzip-size-cli": "5.1.0",
     "is-node": "1.0.2",
-    "js-sha3": "0.8.0",
+    "js-sha3": "0.9.1",
     "karma": "6.4.2",
     "karma-babel-preprocessor": "8.0.2",
     "karma-browserify": "8.1.0",
