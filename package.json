@@ -69,7 +69,7 @@
     "gzip-size-cli": "5.1.0",
     "is-node": "1.0.2",
     "js-sha3": "0.9.3",
-    "karma": "6.4.2",
+    "karma": "6.4.3",
     "karma-babel-preprocessor": "8.0.2",
     "karma-browserify": "8.1.0",
     "karma-chrome-launcher": "3.2.0",
