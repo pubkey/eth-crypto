@@ -1,6 +1,4 @@
-import {
-    ecdsaSign as secp256k1_sign
-} from 'secp256k1';
+import { secp256k1 } from '@noble/curves/secp256k1';
 import {
     addLeading0x,
     removeLeading0x
@@ -18,13 +16,11 @@ export function sign(privateKey, hash) {
     if (hash.length !== 66)
         throw new Error('EthCrypto.sign(): Can only sign hashes, given: ' + hash);
 
-    const sigObj = secp256k1_sign(
+    const sigObj = secp256k1.sign(
         new Uint8Array(Buffer.from(removeLeading0x(hash), 'hex')),
         new Uint8Array(Buffer.from(removeLeading0x(privateKey), 'hex'))
-    );
-
-    const recoveryId = sigObj.recid === 1 ? '1c' : '1b';
-
-    const newSignature = '0x' + Buffer.from(sigObj.signature).toString('hex') + recoveryId;
+    )
+    const recoveryId = sigObj.recovery === 1 ? '1c' : '1b';
+    const newSignature = '0x' + sigObj.toCompactHex() + recoveryId;
     return newSignature;
 }
