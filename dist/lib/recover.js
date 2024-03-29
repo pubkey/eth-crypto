@@ -7,7 +7,7 @@ exports.recover = recover;
 var _recoverPublicKey = require("./recover-public-key");
 var _publicKey = require("./public-key");
 /**
- * returns the adress with which the messageHash was signed
+ * returns the address with which the messageHash was signed
  * @param  {string} sigString
  * @param  {string} hash
  * @return {string} address

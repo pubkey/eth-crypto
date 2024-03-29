@@ -27,8 +27,8 @@ function decompress(startsWith02Or03) {
 }
 
 /**
- * generates the ethereum-adress of the publicKey
- * We create the checksum-adress which is case-sensitive
+ * generates the ethereum-address of the publicKey
+ * We create the checksum-address which is case-sensitive
  * @returns {string} address
  */
 function toAddress(publicKey) {
