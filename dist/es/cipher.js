@@ -14,6 +14,7 @@ export function stringify(cipher) {
   ]);
   return ret.toString('hex');
 }
+
 export function parse(str) {
   if (typeof str !== 'string') return str;
   var buf = Buffer.from(str, 'hex');
