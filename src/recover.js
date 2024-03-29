@@ -4,7 +4,7 @@ import {
 } from './public-key';
 
 /**
- * returns the adress with which the messageHash was signed
+ * returns the address with which the messageHash was signed
  * @param  {string} sigString
  * @param  {string} hash
  * @return {string} address
