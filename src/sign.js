@@ -19,7 +19,7 @@ export function sign(privateKey, hash) {
     const sigObj = secp256k1.sign(
         new Uint8Array(Buffer.from(removeLeading0x(hash), 'hex')),
         new Uint8Array(Buffer.from(removeLeading0x(privateKey), 'hex'))
-    )
+    );
     const recoveryId = sigObj.recovery === 1 ? '1c' : '1b';
     const newSignature = '0x' + sigObj.toCompactHex() + recoveryId;
     return newSignature;
