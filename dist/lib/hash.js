@@ -20,5 +20,4 @@ function keccak256(params) {
   }
   return _ethers.utils.solidityKeccak256(types, values);
 }
-var SIGN_PREFIX = '\x19Ethereum Signed Message:\n32';
-exports.SIGN_PREFIX = SIGN_PREFIX;
+var SIGN_PREFIX = exports.SIGN_PREFIX = '\x19Ethereum Signed Message:\n32';

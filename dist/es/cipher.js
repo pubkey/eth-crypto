@@ -12,9 +12,9 @@ export function stringify(cipher) {
   // 32bit
   Buffer.from(cipher.ciphertext, 'hex') // var bit
   ]);
-
   return ret.toString('hex');
 }
+
 export function parse(str) {
   if (typeof str !== 'string') return str;
   var buf = Buffer.from(str, 'hex');
