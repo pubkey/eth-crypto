@@ -9,8 +9,8 @@ contract DonationBag {
     // each donation contains this amount of wei
     uint public amountPerDonation = 1000000000000000000; // one ether
 
-    // one address can recieve only one donation
-    // the ones already recieved one, are stored here
+    // one address can receive only one donation
+    // the ones already received one, are stored here
     mapping (address => bool) public alreadyRecieved;
 
     // constructor
@@ -82,7 +82,7 @@ contract DonationBag {
         bytes32 s
         ) public {
 
-        // already recieved donation -> revert
+        // already received donation -> revert
         if (alreadyRecieved[msg.sender] == true) revert();
 
         // signature not valid -> revert
