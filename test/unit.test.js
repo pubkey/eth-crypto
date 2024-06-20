@@ -15,7 +15,9 @@ const HEX_STRING = '0x55030130e79efc853f8644d32c11a58d47018cc3a08a16ac4fb9c09af4
 describe('unit.test.js', () => {
     describe('.createIdentity()', () => {
         it('should create an identity', () => {
+            console.log('attemt to create identity');
             const ident = EthCrypto.createIdentity();
+            console.log('new identity created', ident);
             assert.equal(typeof ident.privateKey, 'string');
             assert.equal(typeof ident.publicKey, 'string');
             assert.equal(typeof ident.address, 'string');

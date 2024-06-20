@@ -19,7 +19,6 @@ function stringify(cipher) {
   // 32bit
   Buffer.from(cipher.ciphertext, 'hex') // var bit
   ]);
-
   return ret.toString('hex');
 }
 function parse(str) {
