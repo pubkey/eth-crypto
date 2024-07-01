@@ -1,4 +1,5 @@
 import { compress, decompress } from './public-key';
+
 export function stringify(cipher) {
   if (typeof cipher === 'string') return cipher;
 
@@ -12,7 +13,6 @@ export function stringify(cipher) {
   // 32bit
   Buffer.from(cipher.ciphertext, 'hex') // var bit
   ]);
-
   return ret.toString('hex');
 }
 export function parse(str) {

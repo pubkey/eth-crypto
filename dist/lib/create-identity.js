@@ -1,14 +1,20 @@
 "use strict";
 
+var _typeof = require("@babel/runtime/helpers/typeof");
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.createIdentity = createIdentity;
 exports.createPrivateKey = createPrivateKey;
-var _ethers = require("ethers");
-var _ethereumjsUtil = require("ethereumjs-util");
+var ethersUtils = _interopRequireWildcard(require("ethers"));
+var _publicKeyByPrivateKey = require("./public-key-by-private-key");
+function _getRequireWildcardCache(e) { if ("function" != typeof WeakMap) return null; var r = new WeakMap(), t = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(e) { return e ? t : r; })(e); }
+function _interopRequireWildcard(e, r) { if (!r && e && e.__esModule) return e; if (null === e || "object" != _typeof(e) && "function" != typeof e) return { "default": e }; var t = _getRequireWildcardCache(r); if (t && t.has(e)) return t.get(e); var n = { __proto__: null }, a = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var u in e) if ("default" !== u && {}.hasOwnProperty.call(e, u)) { var i = a ? Object.getOwnPropertyDescriptor(e, u) : null; i && (i.get || i.set) ? Object.defineProperty(n, u, i) : n[u] = e[u]; } return n["default"] = e, t && t.set(e, n), n; }
+// import { stripHexPrefix } from 'ethereumjs-util';
+
 var MIN_ENTROPY_SIZE = 128;
-var keccak256 = _ethers.utils.keccak256;
+var keccak256 = ethersUtils.keccak256,
+  Wallet = ethersUtils.Wallet;
 
 /**
  * create a privateKey from the given entropy or a new one
@@ -22,8 +28,8 @@ function createPrivateKey(entropy) {
     var outerHex = keccak256(entropy);
     return outerHex;
   } else {
-    var innerHex = keccak256(_ethers.utils.concat([_ethers.utils.randomBytes(32), _ethers.utils.randomBytes(32)]));
-    var middleHex = _ethers.utils.concat([_ethers.utils.concat([_ethers.utils.randomBytes(32), innerHex]), _ethers.utils.randomBytes(32)]);
+    var innerHex = keccak256(ethersUtils.concat([ethersUtils.randomBytes(32), ethersUtils.randomBytes(32)]));
+    var middleHex = ethersUtils.concat([ethersUtils.concat([ethersUtils.randomBytes(32), innerHex]), ethersUtils.randomBytes(32)]);
     var _outerHex = keccak256(middleHex);
     return _outerHex;
   }
@@ -36,11 +42,10 @@ function createPrivateKey(entropy) {
  */
 function createIdentity(entropy) {
   var privateKey = createPrivateKey(entropy);
-  var wallet = new _ethers.Wallet(privateKey);
+  var wallet = new Wallet(privateKey);
   var identity = {
     privateKey: privateKey,
-    // remove trailing '0x04'
-    publicKey: (0, _ethereumjsUtil.stripHexPrefix)(wallet.publicKey).slice(2),
+    publicKey: (0, _publicKeyByPrivateKey.publicKeyByPrivateKey)(privateKey),
     address: wallet.address
   };
   return identity;

@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.encryptWithPublicKey = encryptWithPublicKey;
 var _eccrypto = require("eccrypto");
 var _publicKey = require("./public-key");
+
 function encryptWithPublicKey(publicKey, message, opts) {
   // ensure its an uncompressed publicKey
   publicKey = (0, _publicKey.decompress)(publicKey);

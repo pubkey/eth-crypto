@@ -1,4 +1,4 @@
-import { utils as ethersUtils } from 'ethers';
+import * as ethersUtils from 'ethers';
 export function keccak256(params) {
   var types = [];
   var values = [];
@@ -11,6 +11,6 @@ export function keccak256(params) {
       values.push(p.value);
     });
   }
-  return ethersUtils.solidityKeccak256(types, values);
+  return ethersUtils.solidityPackedKeccak256(types, values);
 }
 export var SIGN_PREFIX = '\x19Ethereum Signed Message:\n32';

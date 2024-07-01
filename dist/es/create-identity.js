@@ -1,7 +1,10 @@
-import { utils as ethersUtils, Wallet } from 'ethers';
-import { stripHexPrefix } from 'ethereumjs-util';
+import * as ethersUtils from 'ethers';
+import { publicKeyByPrivateKey } from './public-key-by-private-key';
+// import { stripHexPrefix } from 'ethereumjs-util';
+
 var MIN_ENTROPY_SIZE = 128;
-var keccak256 = ethersUtils.keccak256;
+
+var { Wallet, keccak256 } = ethersUtils;
 
 /**
  * create a privateKey from the given entropy or a new one
@@ -32,8 +35,7 @@ export function createIdentity(entropy) {
   var wallet = new Wallet(privateKey);
   var identity = {
     privateKey: privateKey,
-    // remove trailing '0x04'
-    publicKey: stripHexPrefix(wallet.publicKey).slice(2),
+    publicKey: publicKeyByPrivateKey(privateKey),
     address: wallet.address
   };
   return identity;
