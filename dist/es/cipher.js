@@ -1,5 +1,4 @@
 import { compress, decompress } from './public-key';
-
 export function stringify(cipher) {
   if (typeof cipher === 'string') return cipher;
 

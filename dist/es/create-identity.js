@@ -3,8 +3,8 @@ import { publicKeyByPrivateKey } from './public-key-by-private-key';
 // import { stripHexPrefix } from 'ethereumjs-util';
 
 var MIN_ENTROPY_SIZE = 128;
-
-var { Wallet, keccak256 } = ethersUtils;
+var keccak256 = ethersUtils.keccak256,
+  Wallet = ethersUtils.Wallet;
 
 /**
  * create a privateKey from the given entropy or a new one

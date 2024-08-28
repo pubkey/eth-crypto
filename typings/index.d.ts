@@ -84,7 +84,7 @@ type txDataByCompiledType = (
     bytecode: string,
     args?: Array<string | number | BigNumber>
 ) => string;
-export const txDataByCompiled: txDataByCompiledType;
+export const txDataByCompiled: Promise<txDataByCompiledType>;
 
 type calculateContractAddressType = (
     creatorAddress: string,

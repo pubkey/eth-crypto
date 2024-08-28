@@ -10,10 +10,10 @@ First we create two identities, `creator` and `receiver`.
 const EthCrypto = require('eth-crypto');
 
 const creatorIdentity = EthCrypto.createIdentity();
-const recieverIdentity = EthCrypto.createIdentity();
+const receiverIdentity = EthCrypto.createIdentity();
 ```
 
-Then we start a local testnet to use later. At the testnet, we give the `creatorIdentity` a balance of 10 ether. We also give one ether to the `recieverIdentity` so we have enough gas to send transactions.
+Then we start a local testnet to use later. At the testnet, we give the `creatorIdentity` a balance of 10 ether. We also give one ether to the `receiverIdentity` so we have enough gas to send transactions.
 
 ```javascript
 const Web3 = require('web3');
@@ -31,10 +31,10 @@ const ganacheProvider = ganache.provider({
             secretKey: creatorIdentity.privateKey,
             balance: web3.utils.toWei('10', 'ether')
         },
-        // we also give some wei to the recieverIdentity
+        // we also give some wei to the receiverIdentity
         // so it can send transaction to the chain
         {
-            secretKey: recieverIdentity.privateKey,
+            secretKey: receiverIdentity.privateKey,
             balance: web3.utils.toWei('1', 'ether')
         }
     ]
@@ -81,7 +81,7 @@ Now that we have the bytecode of the contract, we can submit a transaction to cr
 
 ```javascript
 // create contract-create-code
-const createCode = EthCrypto.txDataByCompiled(
+const createCode = await EthCrypto.txDataByCompiled(
     compiledDonationBag.interface, // abi
     compiledDonationBag.bytecode, // bytecode
     [creatorIdentity.address] // constructor-arguments
@@ -147,7 +147,7 @@ console.log(balance); // > '1000000000000000000'
 
 ## Sign the message
 
-Lets sign a message with the `creatorIdentity` where the donator validates a donation to the `recieverIdentity`.
+Lets sign a message with the `creatorIdentity` where the donator validates a donation to the `receiverIdentity`.
 
 ```javascript
 const signHash = EthCrypto.hash.keccak256([
@@ -159,7 +159,7 @@ const signHash = EthCrypto.hash.keccak256([
         value: contractAddress
     }, { // receiverAddress
         type: 'address',
-        value: recieverIdentity.address
+        value: receiverIdentity.address
     }
 ]);
 
@@ -200,7 +200,7 @@ const recieveCode = contractInstance
 
 // create+sign the transaction
 const recieveTx = {
-    from: recieverIdentity.address,
+    from: receiverIdentity.address,
     to: contractAddress,
     nonce: 0,
     gasLimit: 5000000,
@@ -209,7 +209,7 @@ const recieveTx = {
 };
 const serializedRecieveTx = EthCrypto.signTransaction(
     recieveTx,
-    recieverIdentity.privateKey
+    receiverIdentity.privateKey
 );
 
 // submit the tx
@@ -219,7 +219,7 @@ const receipt3 = await web3.eth.sendSignedTransaction(serializedRecieveTx);
 If everything has gone right, the receiver should now have more ether than before. Let's check this.
 
 ```javascript
-const receiverBalance = await web3.eth.getBalance(recieverIdentity.address);
+const receiverBalance = await web3.eth.getBalance(receiverIdentity.address);
 console.dir(receiverBalance);
 // '1999802840000000000'
 ```

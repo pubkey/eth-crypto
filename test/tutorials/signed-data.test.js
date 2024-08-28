@@ -13,7 +13,7 @@ describe('signed-data.md', () => {
     it('all', async function() {
         this.timeout(12000);
         const creatorIdentity = EthCrypto.createIdentity();
-        const recieverIdentity = EthCrypto.createIdentity();
+        const receiverIdentity = EthCrypto.createIdentity();
 
         const web3 = new Web3('http://');
         web3.transactionConfirmationBlocks = 1;
@@ -25,14 +25,15 @@ describe('signed-data.md', () => {
                     secretKey: creatorIdentity.privateKey,
                     balance: web3.utils.toWei('10', 'ether')
                 },
-                // we also give some wei to the recieverIdentity
+                // we also give some wei to the receiverIdentity
                 // so it can send transaction to the chain
                 {
-                    secretKey: recieverIdentity.privateKey,
+                    secretKey: receiverIdentity.privateKey,
                     balance: web3.utils.toWei('1', 'ether')
                 }
             ]
         });
+        
         web3.setProvider(ganacheProvider);
 
         const path = require('path');
@@ -41,7 +42,7 @@ describe('signed-data.md', () => {
         const compiled = await SolidityCli.compileFile(contractPath);
         const compiledDonationBag = compiled[':DonationBag'];
 
-        const createCode = EthCrypto.txDataByCompiled(
+        const createCode = await EthCrypto.txDataByCompiled(
             JSON.parse(compiledDonationBag.interface), // abi
             compiledDonationBag.bytecode, // bytecode
             [creatorIdentity.address] // constructor-arguments
@@ -55,6 +56,7 @@ describe('signed-data.md', () => {
             gasPrice: 5000000000,
             data: createCode
         };
+
         const serializedTx = EthCrypto.signTransaction(
             rawTx,
             creatorIdentity.privateKey
@@ -62,6 +64,7 @@ describe('signed-data.md', () => {
 
         // submit
         const receipt = await web3.eth.sendSignedTransaction(serializedTx);
+
         const contractAddress = receipt.contractAddress;
         // console.log('contractAddress: ' + contractAddress);
         // console.log('creator address: ' + creatorIdentity.address);
@@ -71,8 +74,11 @@ describe('signed-data.md', () => {
 
         // create contract instance
         // console.log('# create contract instance');
+
+        const abi = JSON.parse(compiledDonationBag.interface);
+
         const contractInstance = new web3.eth.Contract(
-            JSON.parse(compiledDonationBag.interface),
+            abi,
             contractAddress
         );
 
@@ -104,7 +110,7 @@ describe('signed-data.md', () => {
         // check prefixedHash
         const solHash = await contractInstance
             .methods
-            .prefixedHash(recieverIdentity.address)
+            .prefixedHash(receiverIdentity.address)
             .call();
         // console.log('solHash: ' + solHash);
 
@@ -117,7 +123,7 @@ describe('signed-data.md', () => {
             value: contractAddress
         }, {
             type: 'address',
-            value: recieverIdentity.address
+            value: receiverIdentity.address
         }]);
         assert.equal(signHash, solHash);
 
@@ -126,9 +132,10 @@ describe('signed-data.md', () => {
             signHash
         );
         const vrs = EthCrypto.vrs.fromString(signature);
+
         const isValid = await contractInstance
             .methods.isSignatureValid(
-                recieverIdentity.address,
+                receiverIdentity.address,
                 vrs.v,
                 vrs.r,
                 vrs.s
@@ -142,8 +149,9 @@ describe('signed-data.md', () => {
                 vrs.r,
                 vrs.s
             ).encodeABI();
+
         const recieveTx = {
-            from: recieverIdentity.address,
+            from: receiverIdentity.address,
             to: contractAddress,
             nonce: 0,
             gasLimit: 5000000,
@@ -152,12 +160,12 @@ describe('signed-data.md', () => {
         };
         const serializedRecieveTx = EthCrypto.signTransaction(
             recieveTx,
-            recieverIdentity.privateKey
+            receiverIdentity.privateKey
         );
         await web3.eth.sendSignedTransaction(serializedRecieveTx);
 
         // check receiver-balance
-        const receiverBalance = await web3.eth.getBalance(recieverIdentity.address);
+        const receiverBalance = await web3.eth.getBalance(receiverIdentity.address);
         // 1999802840000000000
         assert.ok(parseInt(receiverBalance) > parseInt(web3.utils.toWei('1', 'ether')));
     });

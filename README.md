@@ -278,7 +278,7 @@ const compiled = await SolidityCli.compileCode(
     'contract ExampleContract {...'
 )[':ExampleContract'];
 
-const createCode = EthCrypto.txDataByCompiled(
+const createCode = await EthCrypto.txDataByCompiled(
     compiled.interface, // abi
     compiled.bytecode, // bytecode
     [identity.address] // constructor-arguments
