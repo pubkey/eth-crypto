@@ -19,9 +19,9 @@ Cryptographic javascript-functions for ethereum and tutorials on how to use them
 
   In this tutorial we will sign data in javascript and validate the signature inside of a smart-contract.
 
-- **[Sending encrypted and signed data to other identites](./tutorials/encrypted-message.md)**  
+- **[Sending encrypted and signed data to other identities](./tutorials/encrypted-message.md)**  
 
-  In this tutorial we will use the ethereum-identites and asymmetric cryptography to send an encrypted and signed message from Alice to Bob.
+  In this tutorial we will use the ethereum-identities and asymmetric cryptography to send an encrypted and signed message from Alice to Bob.
 
 ## Sponsored by
 
