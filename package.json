@@ -58,7 +58,7 @@
     "async-test-util": "2.5.0",
     "babel-loader": "9.2.1",
     "bn.js": "5.2.1",
-    "browserify": "17.0.0",
+    "browserify": "17.0.1",
     "concurrently": "9.0.1",
     "convert-hrtime": "5.0.0",
     "cross-env": "7.0.3",
