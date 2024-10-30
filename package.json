@@ -82,7 +82,7 @@
     "karma-opera-launcher": "1.0.0",
     "karma-safari-launcher": "1.0.0",
     "mocha": "10.8.2",
-    "rimraf": "4.4.1",
+    "rimraf": "6.0.1",
     "solhint": "5.0.3",
     "solidity-cli": "1.0.3",
     "terser-webpack-plugin": "5.3.10",
