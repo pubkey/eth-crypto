@@ -1,11 +1,11 @@
-import { utils as ethersUtils } from 'ethers';
+import * as ethers from 'ethers';
 /**
  * split signature-hex into parts
  * @param  {string} hexString
  * @return {{v: string, r: string, s: string}}
  */
 export function fromString(hexString) {
-  var arr = ethersUtils.splitSignature(hexString);
+  var arr = ethers.Signature.from(hexString);
   return {
     // convert "v" to hex
     v: "0x".concat(arr.v.toString(16)),
@@ -20,5 +20,5 @@ export function fromString(hexString) {
  * @return {string} hexString
  */
 export function toString(sig) {
-  return ethersUtils.joinSignature(sig);
+  return ethers.Signature.from(sig).serialized;
 }

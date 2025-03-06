@@ -1,17 +1,14 @@
-import { ContractFactory } from 'ethers';
+import { Interface, concat } from 'ethers';
 
-export function txDataByCompiled(
-    abi,
-    bytecode,
-    args
-) {
-    // solc returns a string which is often passed instead of the json
-    if (typeof abi === 'string') abi = JSON.parse(abi);
+export function txDataByCompiled(abi, bytecode, args) {
+  // solc returns a string which is often passed instead of the JSON
+  if (typeof abi === 'string') {
+    abi = JSON.parse(abi);
+  }
 
-    // Construct a Contract Factory
-    const factory = new ContractFactory(abi, '0x' + bytecode);
+  const iface = new Interface(abi);
+  const encodedArgs = iface.encodeDeploy(args);
+  const data = concat(['0x' + bytecode.replace(/^0x/, ''), encodedArgs]);
 
-    const deployTransaction = factory.getDeployTransaction(...args);
-
-    return deployTransaction.data;
+  return data;
 }
