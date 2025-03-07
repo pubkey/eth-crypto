@@ -6,7 +6,6 @@ export function txDataByCompiled(abi, bytecode, args) {
   }
   var iface = new Interface(abi);
   var encodedArgs = iface.encodeDeploy(args);
-  console.log('encodedArgs: ', bytecode);
   var data = concat(['0x' + bytecode.replace(/^0x/, ''), encodedArgs]);
   return data;
 }
