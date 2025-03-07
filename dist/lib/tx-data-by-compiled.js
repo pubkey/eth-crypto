@@ -12,6 +12,7 @@ function txDataByCompiled(abi, bytecode, args) {
   }
   var iface = new _ethers.Interface(abi);
   var encodedArgs = iface.encodeDeploy(args);
+  console.log('encodedArgs: ', bytecode);
   var data = (0, _ethers.concat)(['0x' + bytecode.replace(/^0x/, ''), encodedArgs]);
   return data;
 }
