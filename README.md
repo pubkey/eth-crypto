@@ -1,3 +1,6 @@
+> [!WARNING]  
+> The library is deprecated. It is suggested to use [ethers](https://ethers.org/) or [viem](https://viem.sh) instead.
+
 <p align="center">
     <a href="https://twitter.com/pubkeypubkey">
         <img src="https://img.shields.io/twitter/follow/pubkeypubkey.svg?style=social&logo=twitter"
