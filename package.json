@@ -67,7 +67,7 @@
     "eslint": "8.57.1",
     "ganache-cli": "6.12.2",
     "gzip-size-cli": "5.1.0",
-    "is-node": "1.0.2",
+    "is-node": "1.1.1",
     "js-sha3": "0.9.3",
     "karma": "6.4.4",
     "karma-babel-preprocessor": "8.0.2",
