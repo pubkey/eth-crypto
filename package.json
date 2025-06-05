@@ -97,7 +97,7 @@
     "crypto-browserify": "3.12.1"
   },
   "dependencies": {
-    "@babel/runtime": "7.27.4",
+    "@babel/runtime": "7.27.6",
     "@ethereumjs/tx": "3.5.2",
     "@types/bn.js": "5.1.6",
     "eccrypto": "1.1.6",
