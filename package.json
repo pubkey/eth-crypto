@@ -99,7 +99,7 @@
   "dependencies": {
     "@babel/runtime": "7.27.6",
     "@ethereumjs/tx": "3.5.2",
-    "@types/bn.js": "5.1.6",
+    "@types/bn.js": "5.2.0",
     "eccrypto": "1.1.6",
     "ethereumjs-util": "7.1.5",
     "ethers": "5.8.0",
