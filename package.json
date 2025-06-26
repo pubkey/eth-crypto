@@ -90,7 +90,7 @@
     "terser-webpack-plugin": "5.3.14",
     "ts-node": "10.9.2",
     "typescript": "5.5.4",
-    "uglify-es": "3.3.9",
+    "uglify-js": "3.19.3",
     "web3": "1.10.4",
     "webpack": "5.75.0",
     "webpack-bundle-analyzer": "4.10.2",
