@@ -1,5 +1,5 @@
 import { utils as ethersUtils, Wallet } from 'ethers';
-import { stripHexPrefix } from 'ethereumjs-util';
+import { stripHexPrefix } from '@ethereumjs/util';
 
 const MIN_ENTROPY_SIZE = 128;
 const { keccak256 } = ethersUtils;

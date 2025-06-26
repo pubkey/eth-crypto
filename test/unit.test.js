@@ -65,7 +65,6 @@ describe('unit.test.js', () => {
     describe('.publicKeyByPrivateKey()', () => {
         describe('positive', () => {
             it('should give the correct publicKey', () => {
-                console.dir(EthCrypto);
                 const publicKey = EthCrypto.publicKeyByPrivateKey(TEST_DATA.privateKey);
                 assert.equal(publicKey, TEST_DATA.publicKey);
             });
