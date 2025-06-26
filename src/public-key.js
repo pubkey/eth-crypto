@@ -4,8 +4,9 @@ import {
 import {
     pubToAddress,
     toChecksumAddress,
-    toBuffer
-} from 'ethereumjs-util';
+    hexToBytes,
+    bytesToHex
+} from '@ethereumjs/util';
 import {
     hexToUnit8Array,
     uint8ArrayToHex,
@@ -50,8 +51,11 @@ export function toAddress(publicKey) {
 
     // normalize key
     publicKey = decompress(publicKey);
+    publicKey = addLeading0x(publicKey);
 
-    const addressBuffer = pubToAddress(toBuffer(addLeading0x(publicKey)));
-    const checkSumAdress = toChecksumAddress(addLeading0x(addressBuffer.toString('hex')));
+    const addressBuffer = pubToAddress(hexToBytes(publicKey));
+    const address = bytesToHex(addressBuffer);
+
+    const checkSumAdress = toChecksumAddress(addLeading0x(address));
     return checkSumAdress;
 }

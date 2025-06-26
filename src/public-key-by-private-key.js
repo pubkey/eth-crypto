@@ -1,9 +1,11 @@
 import {
     privateToPublic,
-    toBuffer
-} from 'ethereumjs-util';
+    hexToBytes,
+    bytesToHex
+} from '@ethereumjs/util';
 import {
-    addLeading0x
+    addLeading0x,
+    removeLeading0x
 } from './util';
 
 /**
@@ -14,6 +16,7 @@ import {
  */
 export function publicKeyByPrivateKey(privateKey) {
     privateKey = addLeading0x(privateKey);
-    const publicKeyBuffer = privateToPublic(toBuffer(privateKey));
-    return publicKeyBuffer.toString('hex');
+    const publicKeyBuffer = privateToPublic(hexToBytes(privateKey));
+    const ret = removeLeading0x(bytesToHex(publicKeyBuffer));
+    return ret;
 }
