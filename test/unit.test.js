@@ -367,7 +367,7 @@ describe('unit.test.js', () => {
     });
     describe('.signTransaction()', () => {
         describe('positive', () => {
-            it('should sign our transaction', () => {
+            it('should sign our transaction', async () => {
                 const ident = EthCrypto.createIdentity();
                 const rawTx = {
                     from: ident.address,
@@ -376,7 +376,7 @@ describe('unit.test.js', () => {
                     gasPrice: 5000000000,
                     gasLimit: 21000
                 };
-                const signed = EthCrypto.signTransaction(
+                const signed = await EthCrypto.signTransaction(
                     rawTx,
                     ident.privateKey
                 );
@@ -384,7 +384,7 @@ describe('unit.test.js', () => {
             });
         });
         describe('negative', () => {
-            it('should throw on non-key', () => {
+            it('should throw on non-key', async () => {
                 const ident = EthCrypto.createIdentity();
                 const rawTx = {
                     from: ident.address,
@@ -394,7 +394,7 @@ describe('unit.test.js', () => {
                     gasLimit: 21000
                 };
                 const ident2 = EthCrypto.createIdentity();
-                assert.throws(
+                await AsyncTestUtil.assertThrows(
                     () => EthCrypto.signTransaction(
                         rawTx,
                         ident2.privateKey

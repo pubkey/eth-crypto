@@ -46,7 +46,7 @@ An ethereum-transaction is basically a json-object with defined values. Lets cre
 Before the transaction can be submitted to an ethereum-node, it must be signed with the `privateKey` and serialized to a hex-string.
 
 ```javascript
-    const serializedTx = EthCrypto.signTransaction(
+    const serializedTx = await EthCrypto.signTransaction(
         rawTransaction,
         identity.privateKey
     );

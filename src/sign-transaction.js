@@ -1,16 +1,18 @@
 
-import { Transaction } from '@ethereumjs/tx';
+import { createTxFromRPC } from '@ethereumjs/tx';
+import {
+    bytesToHex
+} from '@ethereumjs/util';
 import { publicKeyByPrivateKey } from './public-key-by-private-key';
 import {
     toAddress as addressByPublicKey
 } from './public-key';
 
-export function signTransaction(
+export async function signTransaction(
     rawTx,
     privateKey,
     txOptions = {}
 ) {
-
     // check if privateKey->address matches rawTx.from
     const publicKey = publicKeyByPrivateKey(privateKey);
     const address = addressByPublicKey(publicKey);
@@ -19,8 +21,9 @@ export function signTransaction(
 
     const privateKeyBuffer = Buffer.from(privateKey.replace(/^.{2}/g, ''), 'hex');
 
-    const tx = Transaction.fromTxData(rawTx, txOptions);
+    const tx = await createTxFromRPC(rawTx, txOptions);
     const signedTx = tx.sign(privateKeyBuffer);
-    const serializedTx = signedTx.serialize().toString('hex');
+    const serializedTx = bytesToHex(signedTx.serialize());
+
     return serializedTx;
 }
