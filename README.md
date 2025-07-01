@@ -71,7 +71,8 @@ const EthCrypto = require('eth-crypto');
 - [signTransaction()](#signtransaction)
 - [txDataByCompiled()](#txdatabycompiled)
 - [calculateContractAddress()](#calculatecontractaddress)
-- [hex.compress() hex.decompress()](#hex-compressdecompress)
+- [hex compress/decompress](#hex-compressdecompress)
+
 ### createIdentity()
 
 Creates a new ethereum-identity with privateKey, publicKey and address as hex-string.
@@ -243,7 +244,7 @@ const str = EthCrypto.cipher.parse('59ab06532fc965b0107977f43e69e5a4038db32099da
 
 ### signTransaction()
 
-Signs a raw transaction with the privateKey. Returns a serialized tx which can be submitted to the node.
+Signs a raw transaction with the privateKey. Returns a `Promise` that resolves a serialized tx-string which can be submitted to the node.
 
 ```javascript
 const identity = EthCrypto.createIdentity();
@@ -255,7 +256,7 @@ const rawTx = {
     nonce: 0,
     gasLimit: 21000
 };
-const signedTx = EthCrypto.signTransaction(
+const signedTx = await EthCrypto.signTransaction(
     rawTx,
     identity.privateKey
 );
@@ -285,7 +286,7 @@ const createCode = EthCrypto.txDataByCompiled(
 );
 
 // now you can submit this to the blockchain
-const serializedTx = EthCrypto.signTransaction(
+const serializedTx = await EthCrypto.signTransaction(
     {
         from: identity.address,
         nonce: 0,

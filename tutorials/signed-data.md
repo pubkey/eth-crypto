@@ -95,7 +95,7 @@ const rawTx = {
     gasPrice: 5000000000,
     data: createCode
 };
-const serializedTx = EthCrypto.signTransaction(
+const serializedTx = await EthCrypto.signTransaction(
     rawTx,
     creatorIdentity.privateKey
 );
@@ -134,7 +134,7 @@ const rawTx2 = {
     gasLimit: 600000,
     gasPrice: 20000000000
 };
-const serializedTx2 = EthCrypto.signTransaction(
+const serializedTx2 = await EthCrypto.signTransaction(
     rawTx2,
     creatorIdentity.privateKey
 );
@@ -207,7 +207,7 @@ const recieveTx = {
     gasPrice: 5000000000,
     data: recieveCode
 };
-const serializedRecieveTx = EthCrypto.signTransaction(
+const serializedRecieveTx = await EthCrypto.signTransaction(
     recieveTx,
     recieverIdentity.privateKey
 );

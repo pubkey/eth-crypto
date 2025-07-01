@@ -115,7 +115,7 @@ describe('integration.test.js', () => {
                 gasLimit: 60000,
                 gasPrice: parseInt(gasPrice)
             };
-            const serializedTx = EthCrypto.signTransaction(
+            const serializedTx = await EthCrypto.signTransaction(
                 rawTx,
                 identity.privateKey
             );

@@ -76,7 +76,7 @@ type signTransactionType = (
     rawTx: RawTx,
     privateKey: string,
     txOptions?: TxOptions
-) => string;
+) => Promise<string>;
 export const signTransaction: signTransactionType;
 
 type txDataByCompiledType = (
