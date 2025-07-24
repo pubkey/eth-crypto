@@ -97,7 +97,7 @@
     "webpack-cli": "5.1.4"
   },
   "dependencies": {
-    "@babel/runtime": "7.27.6",
+    "@babel/runtime": "7.28.2",
     "@ethereumjs/tx": "10.0.0",
     "@ethereumjs/util": "10.0.0",
     "@types/bn.js": "5.2.0",
