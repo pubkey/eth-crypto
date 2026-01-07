@@ -93,7 +93,7 @@
     "uglify-js": "3.19.3",
     "web3": "1.10.4",
     "webpack": "5.75.0",
-    "webpack-bundle-analyzer": "5.1.0",
+    "webpack-bundle-analyzer": "5.1.1",
     "webpack-cli": "5.1.4"
   },
   "dependencies": {
