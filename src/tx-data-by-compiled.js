@@ -1,6 +1,6 @@
 import { ContractFactory } from 'ethers';
 
-export function txDataByCompiled(
+export async function txDataByCompiled(
     abi,
     bytecode,
     args
@@ -11,7 +11,7 @@ export function txDataByCompiled(
     // Construct a Contract Factory
     const factory = new ContractFactory(abi, '0x' + bytecode);
 
-    const deployTransaction = factory.getDeployTransaction(...args);
+    const deployTransaction = await factory.getDeployTransaction(...args);
 
     return deployTransaction.data;
 }

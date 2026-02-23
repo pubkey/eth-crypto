@@ -19,8 +19,9 @@ const configuration = {
     detectBrowsers: {
         enabled: true,
         usePhantomJS: false,
-        postDetection: function(availableBrowser) {
+        postDetection: function (availableBrowser) {
             // return ['Firefox']; // comment in to test specific browser
+            // return ['Chromium'];
             const browsers = availableBrowser
                 .filter(b => !['PhantomJS', 'FirefoxAurora', 'FirefoxNightly'].includes(b))
                 .map(b => {
@@ -64,7 +65,24 @@ const configuration = {
             flags: ['--no-sandbox']
         }
     },
-    singleRun: true
+    singleRun: true,
+    browserify: {
+        transform: [
+            [
+                'babelify',
+                {
+                    global: true,
+                    presets: [
+                        [
+                            '@babel/preset-env',
+                            { targets: { chrome: '80' } }
+                        ]
+                    ],
+                    plugins: ['@babel/plugin-transform-class-properties']
+                }
+            ]
+        ]
+    }
 };
 
 if (process.env.TRAVIS) {
@@ -76,6 +94,6 @@ if (process.env.TRAVIS) {
     configuration.reporters = [];
 }
 
-module.exports = function(config) {
+module.exports = function (config) {
     config.set(configuration);
 };
