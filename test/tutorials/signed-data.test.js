@@ -10,7 +10,7 @@ const BN = require('bn.js');
 const EthCrypto = require('../../dist/lib/index');
 
 describe('signed-data.md', () => {
-    it('all', async function() {
+    it('all', async function () {
         this.timeout(12000);
         const creatorIdentity = EthCrypto.createIdentity();
         const recieverIdentity = EthCrypto.createIdentity();
@@ -41,7 +41,7 @@ describe('signed-data.md', () => {
         const compiled = await SolidityCli.compileFile(contractPath);
         const compiledDonationBag = compiled[':DonationBag'];
 
-        const createCode = EthCrypto.txDataByCompiled(
+        const createCode = await EthCrypto.txDataByCompiled(
             JSON.parse(compiledDonationBag.interface), // abi
             compiledDonationBag.bytecode, // bytecode
             [creatorIdentity.address] // constructor-arguments

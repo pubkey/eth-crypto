@@ -1,5 +1,5 @@
 import {
-    utils as ethersUtils
+    Signature
 } from 'ethers';
 /**
  * split signature-hex into parts
@@ -7,7 +7,7 @@ import {
  * @return {{v: string, r: string, s: string}}
  */
 export function fromString(hexString) {
-    const arr = ethersUtils.splitSignature(hexString);
+    const arr = Signature.from(hexString);
     return {
         // convert "v" to hex
         v: `0x${arr.v.toString(16)}`,
@@ -22,5 +22,5 @@ export function fromString(hexString) {
  * @return {string} hexString
  */
 export function toString(sig) {
-    return ethersUtils.joinSignature(sig);
+    return Signature.from(sig).serialized;
 }
