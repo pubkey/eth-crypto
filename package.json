@@ -24,7 +24,7 @@
     "test": "npm run test:node && npm run test:browser",
     "test:node": "npm run build && mocha ./test/index.test.js -b --timeout 6000 --exit",
     "test:browser": "npm run build && karma start ./config/karma.conf.js --single-run",
-    "test:size": "npm run build && rimraf test_tmp/browserify.js && browserify --no-builtins dist/lib/browserify.index.js > test_tmp/browserify.js && uglifyjs --compress --mangle --output test_tmp/browserify.min.js -- test_tmp/browserify.js && echo \"Build-Size (minified+gzip):\" && gzip-size --raw test_tmp/browserify.min.js",
+    "test:size": "npm run build:webpack && echo \"Build-Size (minified+gzip):\" && gzip-size --raw ./test_tmp/webpack.bundle.js",
     "test:typings": "npm run build && mocha ./test/typings.test.js -b --timeout 12000 --exit",
     "test:deps": "dependency-check ./package.json --no-dev --unused --ignore-module @types/bn.js",
     "lint": "eslint --ignore-path .eslintignore src test config && solhint \"contracts/**/*.sol\"",
@@ -52,11 +52,13 @@
   "devDependencies": {
     "@babel/cli": "7.28.6",
     "@babel/core": "7.28.6",
+    "@babel/plugin-transform-class-properties": "^7.28.6",
     "@babel/plugin-transform-runtime": "7.28.5",
     "@babel/preset-env": "7.28.6",
     "assert": "2.1.0",
     "async-test-util": "2.5.0",
     "babel-loader": "10.0.0",
+    "babelify": "^10.0.0",
     "bn.js": "5.2.2",
     "browserify": "17.0.1",
     "concurrently": "9.2.1",
@@ -102,7 +104,10 @@
     "@ethereumjs/util": "10.1.0",
     "@types/bn.js": "5.2.0",
     "ethereum-cryptography": "2.2.1",
-    "ethers": "5.8.0",
+    "ethers": "6.16.0",
     "secp256k1": "5.0.1"
+  },
+  "overrides": {
+    "acorn": "^8"
   }
 }

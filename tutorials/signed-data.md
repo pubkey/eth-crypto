@@ -81,7 +81,7 @@ Now that we have the bytecode of the contract, we can submit a transaction to cr
 
 ```javascript
 // create contract-create-code
-const createCode = EthCrypto.txDataByCompiled(
+const createCode = await EthCrypto.txDataByCompiled(
     compiledDonationBag.interface, // abi
     compiledDonationBag.bytecode, // bytecode
     [creatorIdentity.address] // constructor-arguments

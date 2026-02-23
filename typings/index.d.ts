@@ -83,7 +83,7 @@ type txDataByCompiledType = (
     abi: any,
     bytecode: string,
     args?: Array<string | number | BigNumber>
-) => string;
+) => Promise<string>;
 export const txDataByCompiled: txDataByCompiledType;
 
 type calculateContractAddressType = (
