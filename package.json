@@ -24,7 +24,7 @@
     "test": "npm run test:node && npm run test:browser",
     "test:node": "npm run build && mocha ./test/index.test.js -b --timeout 6000 --exit",
     "test:browser": "npm run build && karma start ./config/karma.conf.js --single-run",
-    "test:size": "npm run build && rimraf test_tmp/browserify.js && browserify --no-builtins dist/lib/browserify.index.js > test_tmp/browserify.js && uglifyjs --compress --mangle --output test_tmp/browserify.min.js -- test_tmp/browserify.js && echo \"Build-Size (minified+gzip):\" && gzip-size --raw test_tmp/browserify.min.js",
+    "test:size": "npm run build:webpack && echo \"Build-Size (minified+gzip):\" && gzip-size --raw ./test_tmp/webpack.bundle.js",
     "test:typings": "npm run build && mocha ./test/typings.test.js -b --timeout 12000 --exit",
     "test:deps": "dependency-check ./package.json --no-dev --unused --ignore-module @types/bn.js",
     "lint": "eslint --ignore-path .eslintignore src test config && solhint \"contracts/**/*.sol\"",
@@ -106,5 +106,8 @@
     "eccrypto": "1.1.6",
     "ethers": "6.16.0",
     "secp256k1": "5.0.1"
+  },
+  "overrides": {
+    "acorn": "^8"
   }
 }
