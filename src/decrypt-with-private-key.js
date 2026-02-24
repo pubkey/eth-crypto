@@ -6,16 +6,16 @@ import {
 } from 'ethereum-cryptography/aes';
 import {
     sha512
-} from '@noble/hashes/sha512';
+} from '@noble/hashes/sha2.js';
 import {
     hmac
-} from '@noble/hashes/hmac';
+} from '@noble/hashes/hmac.js';
 import {
     sha256
-} from '@noble/hashes/sha256';
+} from '@noble/hashes/sha2.js';
 import {
     concatBytes
-} from '@noble/hashes/utils';
+} from '@noble/hashes/utils.js';
 import {
     parse
 } from './cipher';
