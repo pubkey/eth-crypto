@@ -12,7 +12,7 @@ var _ethers = require("ethers");
  * @return {{v: string, r: string, s: string}}
  */
 function fromString(hexString) {
-  var arr = _ethers.utils.splitSignature(hexString);
+  var arr = _ethers.Signature.from(hexString);
   return {
     // convert "v" to hex
     v: "0x".concat(arr.v.toString(16)),
@@ -27,5 +27,5 @@ function fromString(hexString) {
  * @return {string} hexString
  */
 function toString(sig) {
-  return _ethers.utils.joinSignature(sig);
+  return _ethers.Signature.from(sig).serialized;
 }

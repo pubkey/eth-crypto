@@ -8,7 +8,6 @@ exports.createPrivateKey = createPrivateKey;
 var _ethers = require("ethers");
 var _util = require("@ethereumjs/util");
 var MIN_ENTROPY_SIZE = 128;
-var keccak256 = _ethers.utils.keccak256;
 
 /**
  * create a privateKey from the given entropy or a new one
@@ -19,12 +18,12 @@ function createPrivateKey(entropy) {
   if (entropy) {
     if (!Buffer.isBuffer(entropy)) throw new Error('EthCrypto.createPrivateKey(): given entropy is no Buffer');
     if (Buffer.byteLength(entropy, 'utf8') < MIN_ENTROPY_SIZE) throw new Error('EthCrypto.createPrivateKey(): Entropy-size must be at least ' + MIN_ENTROPY_SIZE);
-    var outerHex = keccak256(entropy);
+    var outerHex = (0, _ethers.keccak256)(entropy);
     return outerHex;
   } else {
-    var innerHex = keccak256(_ethers.utils.concat([_ethers.utils.randomBytes(32), _ethers.utils.randomBytes(32)]));
-    var middleHex = _ethers.utils.concat([_ethers.utils.concat([_ethers.utils.randomBytes(32), innerHex]), _ethers.utils.randomBytes(32)]);
-    var _outerHex = keccak256(middleHex);
+    var innerHex = (0, _ethers.keccak256)((0, _ethers.concat)([(0, _ethers.randomBytes)(32), (0, _ethers.randomBytes)(32)]));
+    var middleHex = (0, _ethers.concat)([(0, _ethers.concat)([(0, _ethers.randomBytes)(32), innerHex]), (0, _ethers.randomBytes)(32)]);
+    var _outerHex = (0, _ethers.keccak256)(middleHex);
     return _outerHex;
   }
 }
@@ -40,7 +39,7 @@ function createIdentity(entropy) {
   var identity = {
     privateKey: privateKey,
     // remove trailing '0x04'
-    publicKey: (0, _util.stripHexPrefix)(wallet.publicKey).slice(2),
+    publicKey: (0, _util.stripHexPrefix)(wallet.signingKey.publicKey).slice(2),
     address: wallet.address
   };
   return identity;
