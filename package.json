@@ -57,7 +57,7 @@
     "@babel/preset-env": "7.29.0",
     "assert": "2.1.0",
     "async-test-util": "2.5.0",
-    "babel-loader": "10.1.0",
+    "babel-loader": "10.1.1",
     "babelify": "^10.0.0",
     "bn.js": "5.2.3",
     "browserify": "17.0.1",
