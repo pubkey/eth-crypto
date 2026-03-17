@@ -54,7 +54,7 @@
     "@babel/core": "7.29.0",
     "@babel/plugin-transform-class-properties": "^7.28.6",
     "@babel/plugin-transform-runtime": "7.29.0",
-    "@babel/preset-env": "7.29.0",
+    "@babel/preset-env": "7.29.2",
     "assert": "2.1.0",
     "async-test-util": "2.5.0",
     "babel-loader": "10.1.1",
@@ -101,7 +101,7 @@
     "webpack-cli": "5.1.4"
   },
   "dependencies": {
-    "@babel/runtime": "7.28.6",
+    "@babel/runtime": "7.29.2",
     "@ethereumjs/tx": "10.1.1",
     "@ethereumjs/util": "10.1.1",
     "@types/bn.js": "5.2.0",
