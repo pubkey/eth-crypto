@@ -105,7 +105,7 @@
     "@ethereumjs/tx": "10.1.1",
     "@ethereumjs/util": "10.1.1",
     "@types/bn.js": "5.2.0",
-    "@noble/hashes": "2.0.1",
+    "@noble/hashes": "2.2.0",
     "ethereum-cryptography": "3.2.0",
     "ethers": "6.16.0",
     "secp256k1": "5.0.1"
