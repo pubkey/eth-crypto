@@ -1,4 +1,4 @@
-import { ecdsaRecover } from 'secp256k1';
+import { secp256k1 } from 'ethereum-cryptography/secp256k1';
 import { removeLeading0x, hexToUnit8Array, uint8ArrayToHex } from './util';
 
 /**
@@ -15,7 +15,8 @@ export function recoverPublicKey(signature, hash) {
   var vValue = signature.slice(-2); // last 2 chars
 
   var recoveryNumber = vValue === '1c' ? 1 : 0;
-  var pubKey = uint8ArrayToHex(ecdsaRecover(hexToUnit8Array(sigOnly), recoveryNumber, hexToUnit8Array(removeLeading0x(hash)), false));
+  var point = secp256k1.Signature.fromCompact(hexToUnit8Array(sigOnly)).addRecoveryBit(recoveryNumber).recoverPublicKey(hexToUnit8Array(removeLeading0x(hash)));
+  var pubKey = uint8ArrayToHex(point.toRawBytes(false));
 
   // remove trailing '04'
   pubKey = pubKey.slice(2);

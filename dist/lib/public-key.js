@@ -6,20 +6,20 @@ Object.defineProperty(exports, "__esModule", {
 exports.compress = compress;
 exports.decompress = decompress;
 exports.toAddress = toAddress;
-var _secp256k = require("secp256k1");
+var _secp256k = require("ethereum-cryptography/secp256k1");
 var _util = require("@ethereumjs/util");
 var _util2 = require("./util");
 function compress(startsWith04) {
   // add trailing 04 if not done before
   var testBuffer = Buffer.from(startsWith04, 'hex');
   if (testBuffer.length === 64) startsWith04 = '04' + startsWith04;
-  return (0, _util2.uint8ArrayToHex)((0, _secp256k.publicKeyConvert)((0, _util2.hexToUnit8Array)(startsWith04), true));
+  return (0, _util2.uint8ArrayToHex)(_secp256k.secp256k1.ProjectivePoint.fromHex((0, _util2.hexToUnit8Array)(startsWith04)).toRawBytes(true));
 }
 function decompress(startsWith02Or03) {
   // if already decompressed an not has trailing 04
   var testBuffer = Buffer.from(startsWith02Or03, 'hex');
   if (testBuffer.length === 64) startsWith02Or03 = '04' + startsWith02Or03;
-  var decompressed = (0, _util2.uint8ArrayToHex)((0, _secp256k.publicKeyConvert)((0, _util2.hexToUnit8Array)(startsWith02Or03), false));
+  var decompressed = (0, _util2.uint8ArrayToHex)(_secp256k.secp256k1.ProjectivePoint.fromHex((0, _util2.hexToUnit8Array)(startsWith02Or03)).toRawBytes(false));
 
   // remove trailing 04
   decompressed = decompressed.substring(2);
