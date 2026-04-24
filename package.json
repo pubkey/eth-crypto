@@ -91,7 +91,7 @@
     "solhint": "6.2.1",
     "solidity-cli": "1.0.3",
     "stream-browserify": "3.0.0",
-    "terser-webpack-plugin": "5.4.0",
+    "terser-webpack-plugin": "5.5.0",
     "ts-node": "10.9.2",
     "typescript": "6.0.3",
     "uglify-js": "3.19.3",
