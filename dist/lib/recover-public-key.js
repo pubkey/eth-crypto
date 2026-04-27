@@ -4,7 +4,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.recoverPublicKey = recoverPublicKey;
-var _secp256k = require("secp256k1");
+var _secp256k = require("ethereum-cryptography/secp256k1");
 var _util = require("./util");
 /**
  * returns the publicKey for the privateKey with which the messageHash was signed
@@ -20,7 +20,8 @@ function recoverPublicKey(signature, hash) {
   var vValue = signature.slice(-2); // last 2 chars
 
   var recoveryNumber = vValue === '1c' ? 1 : 0;
-  var pubKey = (0, _util.uint8ArrayToHex)((0, _secp256k.ecdsaRecover)((0, _util.hexToUnit8Array)(sigOnly), recoveryNumber, (0, _util.hexToUnit8Array)((0, _util.removeLeading0x)(hash)), false));
+  var point = _secp256k.secp256k1.Signature.fromCompact((0, _util.hexToUnit8Array)(sigOnly)).addRecoveryBit(recoveryNumber).recoverPublicKey((0, _util.hexToUnit8Array)((0, _util.removeLeading0x)(hash)));
+  var pubKey = (0, _util.uint8ArrayToHex)(point.toRawBytes(false));
 
   // remove trailing '04'
   pubKey = pubKey.slice(2);

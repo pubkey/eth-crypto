@@ -1,6 +1,6 @@
 import {
-    publicKeyConvert
-} from 'secp256k1';
+    secp256k1
+} from 'ethereum-cryptography/secp256k1';
 import {
     pubToAddress,
     toChecksumAddress,
@@ -20,10 +20,9 @@ export function compress(startsWith04) {
     if (testBuffer.length === 64) startsWith04 = '04' + startsWith04;
 
 
-    return uint8ArrayToHex(publicKeyConvert(
-        hexToUnit8Array(startsWith04),
-        true
-    ));
+    return uint8ArrayToHex(
+        secp256k1.ProjectivePoint.fromHex(hexToUnit8Array(startsWith04)).toRawBytes(true)
+    );
 }
 
 export function decompress(startsWith02Or03) {
@@ -32,10 +31,9 @@ export function decompress(startsWith02Or03) {
     const testBuffer = Buffer.from(startsWith02Or03, 'hex');
     if (testBuffer.length === 64) startsWith02Or03 = '04' + startsWith02Or03;
 
-    let decompressed = uint8ArrayToHex(publicKeyConvert(
-        hexToUnit8Array(startsWith02Or03),
-        false
-    ));
+    let decompressed = uint8ArrayToHex(
+        secp256k1.ProjectivePoint.fromHex(hexToUnit8Array(startsWith02Or03)).toRawBytes(false)
+    );
 
     // remove trailing 04
     decompressed = decompressed.substring(2);
