@@ -17,7 +17,7 @@ jobs:
       # @link https://docs.npmjs.com/generating-provenance-statements#about-npm-provenance
       id-token: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
           node-version-file: '.nvmrc'
