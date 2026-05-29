@@ -102,7 +102,7 @@
   },
   "dependencies": {
     "@babel/runtime": "7.29.7",
-    "@ethereumjs/tx": "10.1.1",
+    "@ethereumjs/tx": "10.1.2",
     "@ethereumjs/util": "10.1.1",
     "@types/bn.js": "5.2.0",
     "@noble/hashes": "2.2.0",
