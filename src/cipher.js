@@ -35,7 +35,11 @@ export function parse(str) {
     };
 
     // decompress publicKey
-    ret.ephemPublicKey = '04' + decompress(ret.ephemPublicKey);
+    if (ret.ephemPublicKey.startsWith('04')) {
+        ret.ephemPublicKey = '04' + decompress(ret.ephemPublicKey);
+    } else {
+        ret.ephemPublicKey = '04' + decompress(ret.ephemPublicKey);
+    }
 
     return ret;
 }
