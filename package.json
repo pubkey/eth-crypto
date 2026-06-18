@@ -107,7 +107,7 @@
     "@types/bn.js": "5.2.0",
     "@noble/hashes": "2.2.0",
     "ethereum-cryptography": "3.2.0",
-    "ethers": "6.16.0"
+    "ethers": "6.17.0"
   },
   "overrides": {
     "acorn": "^8"
