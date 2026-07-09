@@ -59,7 +59,7 @@
     "async-test-util": "2.5.0",
     "babel-loader": "10.1.1",
     "babelify": "^10.0.0",
-    "bn.js": "5.2.4",
+    "bn.js": "5.2.5",
     "browserify": "17.0.1",
     "concurrently": "10.0.3",
     "convert-hrtime": "5.0.0",
