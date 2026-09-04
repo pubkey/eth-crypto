@@ -93,7 +93,7 @@
     "stream-browserify": "3.0.0",
     "terser-webpack-plugin": "5.6.1",
     "ts-node": "10.9.2",
-    "typescript": "6.0.3",
+    "typescript": "7.0.2",
     "uglify-js": "3.19.3",
     "web3": "1.10.4",
     "webpack": "5.106.2",
